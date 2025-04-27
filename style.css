@@ -1,0 +1,133 @@
+/* --- Global Styles --- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d1117;
+  color: #c9d1d9;
+  line-height: 1.6;
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #1f6feb;
+  transform: scale(1.05);
+}
+
+/* --- Hero Section --- */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, #0d1117 0%, #161b22 100%);
+}
+
+.hero .profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #58a6ff;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #8b949e;
+}
+
+.hero nav {
+  margin-top: 20px;
+}
+
+.hero nav a {
+  margin: 0 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.hero nav a.hovered {
+  background-color: #1f6feb;
+  color: #ffffff;
+}
+
+/* --- Section Styles --- */
+.section {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.section h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid #58a6ff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* --- Lists --- */
+.skills, .projects, .certificates {
+  list-style: none;
+  padding-left: 0;
+}
+
+.skills li, .projects li, .certificates li {
+  background: #161b22;
+  margin: 10px 0;
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.skills li:hover, .projects li:hover, .certificates li:hover {
+  background: #1f2937;
+  transform: translateY(-4px);
+}
+
+/* --- Experience Section --- */
+.experience h3 {
+  margin-top: 20px;
+  color: #58a6ff;
+}
+
+.experience p {
+  margin-bottom: 20px;
+}
+
+/* --- Contact Section --- */
+#contact p {
+  margin: 10px 0;
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #161b22;
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: #8b949e;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero nav a {
+    display: inline-block;
+    margin: 8px 6px;
+  }
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muhammad Hanif Al Azis | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <img src="img/profile-placeholder.jpeg" alt="Profile Picture" class="profile-pic">
+    <h1>Muhammad Hanif Al Azis</h1>
+    <p>A Data Enthusiast with a passion for uncovering insights through exploration, analysis, and visualization!</p>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>A driven individual with a focus on <strong>Data Science</strong> and <strong>Data Analysis</strong>. Currently learning Advanced SQL, Deep Learning with TensorFlow, and Data Storytelling. Passionate about exploring data to solve real-world problems and communicate findings effectively. Fun fact: I love combining logic and creativity—whether in data or in life!</p>
+    <h3>Skills</h3>
+    <ul class="skills">
+      <li>Python, SQL, Pandas, NumPy, Matplotlib, Seaborn</li>
+      <li>Tableau, Power BI, Looker Studio, Google Spreadsheet</li>
+      <li>Data Analysis, Data Visualization, Data Storytelling</li>
+    </ul>
+  </section>
+
+  <section id="experience" class="section">
+    <h2>Experience</h2>
+    <div class="experience">
+      <h3>Data Cleansing Operator | PT Fan Integrasi Teknologi</h3>
+      <p>Assigned to PT KAI. Standardizing material data, analyzing operational data, and supporting digital transformation through clean data management.</p>
+      <h3>PIC | Aetozee Aesthetic Galaxy</h3>
+      <p>Analyzed financial data, improved distributor operations, and optimized supply chain performance.</p>
+      <h3>Management | Bakso Sehat Bakso Atom Galaxy</h3>
+      <p>Performed sales and inventory analysis to support restaurant operational decisions.</p>
+      <h3>Co-Founder | Beifimil</h3>
+      <p>Developed business planning, legal compliance, and product preparation for a skincare brand.</p>
+      <h3>Marketing | Unggul Generasi Propertindo</h3>
+      <p>Managed digital ad campaigns and trained new employees in digital marketing.</p>
+    </div>
+  </section>
+
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <ul class="projects">
+      <li><a href="https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024" target="_blank">Amazon Valentine's Best Sellers Dashboard 2024</a></li>
+      <li><a href="https://github.com/hanifalazis/Tugas-Proyek-Machine-Learning" target="_blank">Clustering & Classification Project</a></li>
+      <li><a href="https://public.tableau.com/app/profile/muhammad.hanif.al.azis" target="_blank">Tableau Public Dashboards</a></li>
+      <li><a href="https://shorturl.at/t4qii" target="_blank">Google Spreadsheet Accounting App</a></li>
+      <li><a href="https://shorturl.at/Emag0" target="_blank">Looker Studio Dashboard</a></li>
+      <li><a href="http://bit.ly/3XZW8mA" target="_blank">Amazon 2024 Valentine Best Sellers Analysis (Python)</a></li>
+    </ul>
+  </section>
+
+  <section id="certificates" class="section">
+    <h2>Certificates</h2>
+    <ul class="certificates">
+      <li><a href="https://shorturl.at/rXkKQ" target="_blank">Belajar Machine Learning untuk Pemula - Dicoding</a></li>
+      <li><a href="https://shorturl.at/Eyajc" target="_blank">SQL Advanced - HackerRank</a></li>
+      <li><a href="https://shorturl.at/T5tv6" target="_blank">Belajar Analisis Data dengan Python - Dicoding</a></li>
+      <li><a href="https://shorturl.at/f5j9R" target="_blank">Belajar Dasar Data Science - Dicoding</a></li>
+      <li><a href="https://shorturl.at/giaEO" target="_blank">Belajar Dasar Structured Query Language - Dicoding</a></li>
+      <li><a href="https://shorturl.at/wGp42" target="_blank">Memulai Pemrograman dengan Python - Dicoding</a></li>
+      <li><a href="https://shorturl.at/8H2qb" target="_blank">Alibaba Cloud Associate - Big Data</a></li>
+    </ul>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:hanifalaziz51@gmail.com">hanifalaziz51@gmail.com</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/hanifalazis" target="_blank">Muhammad Hanif Al Azis</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Muhammad Hanif Al Azis</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('mouseover', () => link.classList.add('hovered'));
+      link.addEventListener('mouseout', () => link.classList.remove('hovered'));
+    });
+  </script>
+
+</body>
+</html>
