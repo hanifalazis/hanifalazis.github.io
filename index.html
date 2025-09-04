@@ -1,103 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Muhammad Hanif Al Azis | Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <title>Muhammad Hanif Al-Azis | Portfolio</title>
 </head>
 <body>
-  <header class="hero">
-    <img src="img/profile-placeholder.jpeg" alt="Profile Picture" class="profile-pic">
-    <h1>Muhammad Hanif Al Azis</h1>
-    <p>A Data Enthusiast with a passion for uncovering insights through exploration, analysis, and visualization!</p>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#certificates">Certificates</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+    <header>
+        <a href="#home" class="logo">Hanif</a>
+        <nav>
+            <a href="#home" class="active">Home</a>
+            <a href="#about">Tentang</a>
+            <a href="#education">Pendidikan</a>
+            <a href="#skills">Keahlian</a>
+            <a href="#experience">Pengalaman</a>
+            <a href="#portfolio">Portofolio</a>
+            <a href="#certifications">Sertifikat</a>
+            <a href="#contact">Kontak</a>
+        </nav>
+    </header>
 
-  <section id="about" class="section">
-    <h2>About Me</h2>
-    <p>A driven individual with a focus on <strong>Data Science</strong> and <strong>Data Analysis</strong>. Currently learning Advanced SQL, Deep Learning with TensorFlow, and Data Storytelling. Passionate about exploring data to solve real-world problems and communicate findings effectively. Fun fact: I love combining logic and creativity—whether in data or in life!</p>
-    <h3>Skills</h3>
-    <ul class="skills">
-      <li>Python, SQL, Pandas, NumPy, Matplotlib, Seaborn</li>
-      <li>Tableau, Power BI, Looker Studio, Google Spreadsheet</li>
-      <li>Data Analysis, Data Visualization, Data Storytelling</li>
-    </ul>
-  </section>
+    <!-- Hero Section -->
+    <section class="home" id="home">
+        <div class="home-img" data-aos="fade-right">
+            <img src="img/main.jpg" alt="Muhammad Hanif Al-Azis">
+        </div>
+        <div class="home-content" data-aos="fade-left">
+            <h1 class="hero-title">Muhammad Hanif Al-Azis</h1>
+            <div class="typing-hero">
+                <span class="typing-label">I'm </span><span class="typing-dynamic"></span>
+            </div>
+            <p class="hero-desc">Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.</p>
+            <div class="cta-buttons">
+                <a href="CV - Muhammad Hanif Al Azis.pdf" class="btn primary" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
+                <a href="https://linkedin.com/in/hanifalazis" class="btn secondary" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                <a href="#portfolio" class="btn tertiary"><i class="fa-solid fa-chart-column"></i> Lihat Portofolio</a>
+            </div>
+        </div>
+    </section>
 
-  <section id="experience" class="section">
-    <h2>Experience</h2>
-    <div class="experience">
-      <h3>Data Cleansing Operator | PT Fan Integrasi Teknologi</h3>
-      <p>Assigned to PT KAI. Standardizing material data, analyzing operational data, and supporting digital transformation through clean data management.</p>
-      <h3>PIC | Aetozee Aesthetic Galaxy</h3>
-      <p>Analyzed financial data, improved distributor operations, and optimized supply chain performance.</p>
-      <h3>Management | Bakso Sehat Bakso Atom Galaxy</h3>
-      <p>Performed sales and inventory analysis to support restaurant operational decisions.</p>
-      <h3>Co-Founder | Beifimil</h3>
-      <p>Developed business planning, legal compliance, and product preparation for a skincare brand.</p>
-      <h3>Marketing | Unggul Generasi Propertindo</h3>
-      <p>Managed digital ad campaigns and trained new employees in digital marketing.</p>
-    </div>
-  </section>
+    <!-- Tentang Saya -->
+    <section id="about" data-aos="fade-up">
+        <h2>Tentang Saya</h2>
+        <p>Saya memiliki pengalaman lintas industri—mulai dari makanan & minuman, skincare, hingga properti—dengan peran yang selalu berkaitan dengan pengelolaan data, analisis, dan optimalisasi proses.</p>
+        <p>Keahlian utama saya mencakup data cleansing, data analysis, dan visualisasi data, ditunjang dengan penguasaan Python, SQL, serta tools analitik modern seperti Power BI, Tableau, dan Looker Studio.</p>
+        <p>Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis.</p>
+    </section>
 
-  <section id="projects" class="section">
-    <h2>Projects</h2>
-    <ul class="projects">
-      <li><a href="https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024" target="_blank">Amazon Valentine's Best Sellers Dashboard 2024</a></li>
-      <li><a href="https://github.com/hanifalazis/Tugas-Proyek-Machine-Learning" target="_blank">Clustering & Classification Project</a></li>
-      <li><a href="https://public.tableau.com/app/profile/muhammad.hanif.al.azis" target="_blank">Tableau Public Dashboards</a></li>
-      <li><a href="https://shorturl.at/t4qii" target="_blank">Google Spreadsheet Accounting App</a></li>
-      <li><a href="https://shorturl.at/Emag0" target="_blank">Looker Studio Dashboard</a></li>
-      <li><a href="http://bit.ly/3XZW8mA" target="_blank">Amazon 2024 Valentine Best Sellers Analysis (Python)</a></li>
-    </ul>
-  </section>
+    <!-- Pendidikan -->
+    <section id="education" data-aos="fade-up">
+        <h2>Pendidikan</h2>
+        <ul>
+            <li><strong>S1 Statistika</strong> | Universitas Terbuka (2024 – sekarang)</li>
+            <li><strong>MAS Ma’had Al-Zaytun</strong> (2018 – 2021)</li>
+        </ul>
+    </section>
 
-  <section id="certificates" class="section">
-    <h2>Certificates</h2>
-    <ul class="certificates">
-      <li><a href="https://shorturl.at/rXkKQ" target="_blank">Belajar Machine Learning untuk Pemula - Dicoding</a></li>
-      <li><a href="https://shorturl.at/Eyajc" target="_blank">SQL Advanced - HackerRank</a></li>
-      <li><a href="https://shorturl.at/T5tv6" target="_blank">Belajar Analisis Data dengan Python - Dicoding</a></li>
-      <li><a href="https://shorturl.at/f5j9R" target="_blank">Belajar Dasar Data Science - Dicoding</a></li>
-      <li><a href="https://shorturl.at/giaEO" target="_blank">Belajar Dasar Structured Query Language - Dicoding</a></li>
-      <li><a href="https://shorturl.at/wGp42" target="_blank">Memulai Pemrograman dengan Python - Dicoding</a></li>
-      <li><a href="https://shorturl.at/8H2qb" target="_blank">Alibaba Cloud Associate - Big Data</a></li>
-    </ul>
-  </section>
+    <!-- Keahlian -->
+    <section id="skills" data-aos="fade-up">
+        <h2>Keahlian</h2>
+        <div class="skills-grid">
+            <div>
+                <h3>Data Analysis Tools</h3>
+                <ul>
+                    <li>Microsoft Excel / Google Spreadsheet</li>
+                    <li>MySQL</li>
+                    <li>Looker Studio</li>
+                    <li>Power BI</li>
+                    <li>Tableau</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Programming</h3>
+                <ul>
+                    <li>Python (Pandas, NumPy, Matplotlib)</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Soft Skills</h3>
+                <ul>
+                    <li>Analytical Thinking</li>
+                    <li>Problem Solving</li>
+                    <li>Collaboration & Communication</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-  <section id="contact" class="section">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:hanifalaziz51@gmail.com">hanifalaziz51@gmail.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/hanifalazis" target="_blank">Muhammad Hanif Al Azis</a></p>
-  </section>
+    <!-- Pengalaman Kerja -->
+    <section id="experience" data-aos="fade-up">
+        <h2>Pengalaman Kerja</h2>
+        <div class="experience-list">
+            <div class="job">
+                <h3>Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)</h3>
+                <span>Februari 2025 – Sekarang</span>
+                <ul>
+                    <li>Memastikan kualitas dan konsistensi data material serta operasional.</li>
+                    <li>Melakukan mapping & standardisasi data historis ke format terkini.</li>
+                    <li>Menganalisis data penggunaan material 5 tahun terakhir.</li>
+                    <li>Merancang template checksheet standar untuk maintenance.</li>
+                    <li>Mendukung transformasi digital melalui data yang bersih & terstruktur.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <h3>Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare</h3>
+                <span>Juni 2024 – September 2024</span>
+                <ul>
+                    <li>Menyusun dan menganalisis laporan keuangan (laba rugi & neraca).</li>
+                    <li>Merancang sistem faktur yang efisien.</li>
+                    <li>Bekerja sama dengan distributor untuk optimalisasi supply chain.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <h3>Manajemen | Bakso Sehat Bakso Atom Galaxy – Restoran</h3>
+                <span>September 2023 – September 2024</span>
+                <ul>
+                    <li>Menganalisis data penjualan mingguan & bulanan untuk insight bisnis.</li>
+                    <li>Mengawasi SOP operasional restoran.</li>
+                    <li>Melakukan analisis inventaris untuk efisiensi stok & mengurangi pemborosan.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <h3>Co-Founder | Beifimil – Skincare</h3>
+                <span>Oktober 2022 – Mei 2024</span>
+                <ul>
+                    <li>Membuat rencana bisnis & menyiapkan kebutuhan perusahaan (HKI, cetak biru).</li>
+                    <li>Bekerja sama dengan maklon skincare untuk pengembangan produk.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <h3>Marketing | Unggul Generasi Propertindo – Developer Properti</h3>
+                <span>Juli 2021 – Juni 2022</span>
+                <ul>
+                    <li>Mengelola kampanye iklan Facebook & Instagram.</li>
+                    <li>Menganalisis performa iklan berbayar.</li>
+                    <li>Melatih karyawan baru di bidang pemasaran digital.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <p>&copy; 2025 Muhammad Hanif Al Azis</p>
-  </footer>
+    <!-- Portofolio -->
+    <section id="portfolio" data-aos="fade-up">
+        <h2>Portofolio (Projects)</h2>
+        <div class="portfolio-list">
+            <div class="project">
+                <h3>📊 Aplikasi Akuntansi berbasis Google Spreadsheet</h3>
+                <p>Fitur: Jurnal Kas, Jurnal Penjualan & Pembelian, Laporan Aset, Inventory, Laba Rugi, Neraca.</p>
+                <p>Rumus yang digunakan: INDEX MATCH, SUMIFS, QUERY, UNIQUE, FILTER, CHOOSECOLUMN, dll.</p>
+                <a href="#" class="btn" target="_blank">🔗 Lihat Project</a>
+            </div>
+            <div class="project">
+                <h3>🐍 Analisis Data Python – Amazon Best Sellers (Valentine 2024)</h3>
+                <p>Dataset: “2024 Amazon Best Sellers: Top Valentine Gifts”</p>
+                <p>Analisis tren & visualisasi dengan Python (Pandas, Matplotlib).</p>
+                <a href="#" class="btn" target="_blank">🔗 Lihat Project</a>
+            </div>
+        </div>
+    </section>
 
-  <script>
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
+    <!-- Sertifikat -->
+    <section id="certifications" data-aos="fade-up">
+        <h2>Sertifikat</h2>
+        <ul>
+            <li>Belajar Machine Learning untuk Pemula – Dicoding (Des 2024)</li>
+            <li>SQL Advanced – HackerRank (Des 2024)</li>
+            <li>Analisis Data dengan Python – Dicoding (Nov 2024)</li>
+            <li>Dasar Data Science – Dicoding (Nov 2024)</li>
+            <li>Dasar SQL – Dicoding (Nov 2024)</li>
+            <li>Pemrograman dengan Python – Dicoding (Nov 2024)</li>
+            <li>Alibaba Cloud Associate – Big Data (Sep 2024)</li>
+        </ul>
+    </section>
 
-    const navLinks = document.querySelectorAll('nav a');
-    navLinks.forEach(link => {
-      link.addEventListener('mouseover', () => link.classList.add('hovered'));
-      link.addEventListener('mouseout', () => link.classList.remove('hovered'));
-    });
-  </script>
-
+    <!-- Kontak -->
+    <section id="contact" data-aos="fade-up">
+        <h2>Kontak</h2>
+        <ul>
+            <li>📧 Email: <a href="mailto:muhammad.hanifalazis@gmail.com">muhammad.hanifalazis@gmail.com</a></li>
+            <li>🔗 LinkedIn: <a href="https://linkedin.com/in/hanifalazis" target="_blank">linkedin.com/in/hanifalazis</a></li>
+            <li>📱 WhatsApp: <a href="https://wa.me/6281280534553" target="_blank">+62 812-8053-4553</a></li>
+        </ul>
+    </section>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

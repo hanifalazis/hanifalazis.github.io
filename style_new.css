@@ -14,7 +14,6 @@
 html {
     font-size: 62.5%;
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
 }
 
 body {
@@ -281,12 +280,12 @@ nav a:hover::before {
 
 /* Sections - Universal Styling */
 section {
-    padding: 4rem 7% 3rem 7%;
+    min-height: 80vh;
+    padding: 6rem 7% 4rem 7%;
     margin: 4rem auto;
     max-width: 1200px;
     background: linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(35, 35, 35, 0.95) 100%);
     border-radius: 2.5rem;
-    scroll-margin-top: 6rem;
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -607,8 +606,8 @@ section#contact a:hover {
     }
     
     section {
-        padding: 3rem 5% 2rem 5%;
-        margin: 2rem auto;
+        padding: 5rem 5% 3rem 5%;
+        margin: 3rem auto;
     }
     
     .home {
@@ -628,10 +627,9 @@ section#contact a:hover {
     }
     
     section {
-        padding: 3rem 4% 2rem 4%;
-        margin: 1.5rem auto;
+        padding: 4rem 4% 2.5rem 4%;
+        margin: 2rem auto;
         border-radius: 1.5rem;
-        scroll-margin-top: 5rem;
     }
     
     .home {
@@ -689,10 +687,9 @@ section#contact a:hover {
     }
     
     section {
-        padding: 2.5rem 4% 1.5rem 4%;
-        margin: 1rem auto;
+        padding: 3rem 4% 2rem 4%;
+        margin: 1.5rem auto;
         border-radius: 1rem;
-        scroll-margin-top: 4.5rem;
     }
     
     .home {
@@ -741,26 +738,4 @@ section#contact a:hover {
     section h2 {
         font-size: 2.8rem;
     }
-    
-    section {
-        padding: 2rem 3% 1.5rem 3%;
-        margin: 0.5rem auto;
-        scroll-margin-top: 4.5rem;
-    }
-}
-
-/* Additional optimization for content-based height */
-section:not(.home) {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-/* Minimize empty space at bottom */
-section:last-of-type {
-    margin-bottom: 2rem;
-}
-
-body {
-    padding-bottom: 0;
 }
