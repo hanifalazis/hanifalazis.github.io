@@ -56,6 +56,28 @@ h3 {
 p {
     margin-bottom: 1rem;
     color: #444;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.7;
+}
+
+/* Global text justification for list items */
+li {
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.7;
+}
+
+/* Global text justification for span elements */
+span:not(.stat-number):not(.stat-text):not(.result-number):not(.result-label):not(.step-number):not(.pricing-amount):not(.pricing-period) {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* Text justification for all text content */
+div:not(.btn):not(.hero-stat):not(.step-number):not(.result-item):not(.tool-item):not(.hero-buttons):not(.cta-buttons) {
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 /* Buttons */
@@ -202,7 +224,7 @@ p {
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -212,7 +234,7 @@ p {
 }
 
 .hero-title i {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: #ffd700;
 }
 
@@ -321,7 +343,7 @@ section {
     margin-right: auto;
 }
 
-/* Text justification for longer paragraphs */
+/* Text justification for ALL text content */
 .text-justify,
 .about-text p,
 .portfolio-card p,
@@ -336,15 +358,70 @@ section {
 .process-step p,
 .benefit-item p,
 .testimonial-text,
-.cta-section p {
+.cta-section p,
+.problem-card p,
+.solution-card p,
+.pricing-card p,
+.faq-item p,
+.experience-list li,
+.structure-features li,
+.features-list li,
+div:not(.btn):not(.icon):not(.number):not(.header) {
     text-align: justify;
     text-justify: inter-word;
     line-height: 1.7;
 }
 
+/* Global text justification for all readable content */
+body {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 /* Keep section descriptions centered but justify longer content */
 .section-description.text-justify {
     text-align: justify;
+}
+
+/* Override justify for specific elements that should stay centered/left */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.hero-title,
+.btn,
+.nav-menu,
+.nav-link,
+.nav-menu li,
+.stat-number,
+.stat-text,
+.hero-subtitle,
+.section-subtitle,
+.step-number,
+.result-number,
+.result-label,
+.tool-item,
+.social-link,
+.pricing-amount,
+.pricing-period,
+.faq-question,
+.contact-info,
+.hero-buttons,
+.cta-buttons,
+.portfolio-category,
+.tools-grid .tool-item {
+    text-align: center !important;
+}
+
+/* Keep navigation and buttons left/center aligned */
+.nav-menu li,
+.nav-link,
+.hamburger,
+.btn,
+button,
+.hero-stats,
+.hero-stat,
+.tools-grid,
+.process-steps .step-number {
+    text-align: center !important;
 }
 
 /* Problems Section */
@@ -508,6 +585,14 @@ section {
 .demo-section {
     margin-top: 4rem;
     text-align: center;
+}
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .demo-container {
@@ -1509,6 +1594,10 @@ section {
     margin: 1rem 0;
     color: #667eea;
     font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .process-guarantee {
@@ -1559,17 +1648,27 @@ section {
     background: linear-gradient(135deg, #f8f9ff 0%, #e6ebff 100%);
 }
 
+.about-section .section-title {
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
 .about-content {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 3rem;
-    align-items: center;
+    align-items: start;
     max-width: 1000px;
     margin: 0 auto;
 }
 
 .about-image {
     text-align: center;
+    align-self: center;
+    position: sticky;
+    top: 50%;
+    transform: translateY(-25%);
 }
 
 .profile-img {
@@ -1828,7 +1927,7 @@ section {
     }
     
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
         justify-content: center;
     }
     
@@ -1843,6 +1942,12 @@ section {
     .about-content {
         grid-template-columns: 1fr;
         text-align: center;
+    }
+    
+    .about-image {
+        position: static;
+        transform: none;
+        margin-bottom: 2rem;
     }
     
     .footer-content {
@@ -1864,6 +1969,11 @@ section {
     
     .pricing-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .demo-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
     
     .setup-grid {
@@ -1906,13 +2016,13 @@ section {
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         flex-direction: column;
         gap: 0.5rem;
     }
     
     .hero-title i {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
     
     .section-title {
@@ -1948,6 +2058,10 @@ section {
     .step-arrow {
         transform: rotate(90deg);
         margin: 0.5rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
     
     .tools-grid {
