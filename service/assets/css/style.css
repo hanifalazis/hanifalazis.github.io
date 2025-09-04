@@ -235,6 +235,11 @@ p {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
+.hero-description.text-justify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 .hero-buttons {
     display: flex;
     gap: 1rem;
@@ -314,6 +319,32 @@ section {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Text justification for longer paragraphs */
+.text-justify,
+.about-text p,
+.portfolio-card p,
+.step-content p,
+.problem-item p,
+.solution-benefit p,
+.structure-item p,
+.pricing-description,
+.faq-answer,
+.guarantee-card p,
+.service-card p,
+.process-step p,
+.benefit-item p,
+.testimonial-text,
+.cta-section p {
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.7;
+}
+
+/* Keep section descriptions centered but justify longer content */
+.section-description.text-justify {
+    text-align: justify;
 }
 
 /* Problems Section */
