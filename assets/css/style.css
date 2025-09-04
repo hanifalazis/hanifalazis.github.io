@@ -720,7 +720,7 @@ section li::before {
     
     .hero-desc {
         font-size: 1.6rem;
-        text-align: center;
+        text-align: justify;
         margin-bottom: 3rem;
         line-height: 1.8;
     }
@@ -751,6 +751,20 @@ section li::before {
         margin-bottom: 2.5rem;
         line-height: 1.8;
         font-size: 1.6rem;
+        text-align: justify;
+    }
+    
+    section ul {
+        font-size: 1.6rem;
+    }
+    
+    section li {
+        font-size: 1.6rem;
+        line-height: 1.7;
+    }
+    
+    .btn {
+        font-size: 1.5rem;
     }
 }
 
@@ -794,9 +808,10 @@ section li::before {
     }
     
     .hero-desc {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         line-height: 1.7;
         margin-bottom: 3rem;
+        text-align: justify;
     }
     
     .cta-buttons {
@@ -808,15 +823,7 @@ section li::before {
     
     .btn {
         padding: 1.5rem 3rem;
-        font-size: 1.4rem;
-        width: 100%;
-        max-width: 320px;
-        text-align: center;
-    }
-    
-    .btn {
-        padding: 1.5rem 3rem;
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         width: 100%;
         max-width: 320px;
         text-align: center;
@@ -832,7 +839,18 @@ section li::before {
     section p {
         margin-bottom: 2.5rem;
         line-height: 1.8;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        text-align: justify;
+    }
+    
+    section ul {
+        font-size: 1.6rem;
+    }
+    
+    section li {
+        font-size: 1.6rem;
+        line-height: 1.7;
+    }
     }
     
     .skills-grid {
@@ -866,7 +884,16 @@ section li::before {
     }
     
     .project p {
+        font-size: 1.6rem;
+        line-height: 1.7;
+    }
+    
+    .skills-grid li {
         font-size: 1.5rem;
+    }
+    
+    .job p, .job li {
+        font-size: 1.6rem;
         line-height: 1.7;
     }
 }
@@ -903,9 +930,10 @@ section li::before {
     }
     
     .hero-desc {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         line-height: 1.7;
         margin-bottom: 3rem;
+        text-align: justify;
     }
     
     section {
@@ -920,14 +948,15 @@ section li::before {
     }
     
     section p {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         line-height: 1.8;
         margin-bottom: 2.5rem;
+        text-align: justify;
     }
     
     .btn {
         padding: 1.2rem 2.5rem;
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         max-width: 280px;
     }
     
@@ -936,7 +965,7 @@ section li::before {
     }
     
     .skill-item h3 {
-        font-size: 1.8rem;
+        font-size: 2rem;
         margin-bottom: 1.5rem;
     }
     
@@ -945,7 +974,7 @@ section li::before {
     }
     
     .project h3 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin-bottom: 2rem;
     }
     
@@ -957,8 +986,46 @@ section li::before {
     
     .btn {
         padding: 1.2rem 2.5rem;
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         max-width: 280px;
+    }
+    
+    /* Improve readability for lists and job descriptions */
+    section ul {
+        font-size: 1.6rem;
+    }
+    
+    section li {
+        font-size: 1.6rem;
+        margin-bottom: 1.2rem;
+        line-height: 1.7;
+    }
+    
+    .skills-grid li {
+        font-size: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .job {
+        padding: 2.5rem 2rem;
+    }
+    
+    .job h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .job .company {
+        font-size: 1.6rem;
+    }
+    
+    .job .period {
+        font-size: 1.4rem;
+    }
+    
+    .job p, .job li {
+        font-size: 1.6rem;
+        line-height: 1.7;
     }
     
     /* Add more space between sections */
