@@ -1,18 +1,39 @@
 // script.js
-// Smooth scroll for navigation
-const navLinks = document.querySelectorAll('nav a');
-navLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    if (this.hash !== '') {
-      e.preventDefault();
-      const hash = this.hash;
-      document.querySelector(hash).scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
-  });
+// Hamburger Menu
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+
+hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
 });
 
+// Close mobile menu when clicking on a nav link
+const navLinks = document.querySelectorAll('nav a');
+navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        // Close mobile menu
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        
+        // Smooth scroll for navigation
+        if (this.hash !== '') {
+            e.preventDefault();
+            const hash = this.hash;
+            document.querySelector(hash).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    }
+});
 
 // Animate on scroll (AOS)
 AOS.init({

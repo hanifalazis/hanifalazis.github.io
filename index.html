@@ -6,28 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-    <link rel="stylesheet" href="style.css?v=2024">
+    <link rel="stylesheet" href="assets/css/style.css?v=2024">
     <title>Muhammad Hanif Al-Azis | Portfolio</title>
 </head>
 <body>
     <header>
         <a href="#home" class="logo">Hanif</a>
-        <nav>
+        <div class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="nav-menu">
             <a href="#home" class="active">Home</a>
             <a href="#about">Tentang</a>
             <a href="#education">Pendidikan</a>
             <a href="#skills">Keahlian</a>
             <a href="#experience">Pengalaman</a>
             <a href="#portfolio">Portofolio</a>
-            <a href="#certifications">Sertifikat</a>
-            <a href="#contact">Kontak</a>
+            <a href="service/jasa.html" target="_blank">Jasa</a>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="home" id="home">
         <div class="home-img" data-aos="fade-right">
-            <img src="img/main.jpg" alt="Muhammad Hanif Al-Azis">
+            <img src="assets/images/profile.jpg" alt="Muhammad Hanif Al-Azis">
         </div>
         <div class="home-content" data-aos="fade-left">
             <h1 class="hero-title">Muhammad Hanif Al-Azis</h1>
@@ -36,7 +40,7 @@
             </div>
             <p class="hero-desc">Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.</p>
             <div class="cta-buttons">
-                <a href="CV - Muhammad Hanif Al Azis.pdf" class="btn primary" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
+                <a href="assets/files/cv-muhammad-hanif-al-azis.pdf" class="btn primary" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
                 <a href="https://linkedin.com/in/hanifalazis" class="btn secondary" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
                 <a href="#portfolio" class="btn tertiary"><i class="fa-solid fa-chart-column"></i> Lihat Portofolio</a>
             </div>
@@ -163,30 +167,7 @@
         </div>
     </section>
 
-    <!-- Sertifikat -->
-    <section id="certifications" data-aos="fade-up">
-        <h2>Sertifikat</h2>
-        <ul>
-            <li>Belajar Machine Learning untuk Pemula – Dicoding (Des 2024)</li>
-            <li>SQL Advanced – HackerRank (Des 2024)</li>
-            <li>Analisis Data dengan Python – Dicoding (Nov 2024)</li>
-            <li>Dasar Data Science – Dicoding (Nov 2024)</li>
-            <li>Dasar SQL – Dicoding (Nov 2024)</li>
-            <li>Pemrograman dengan Python – Dicoding (Nov 2024)</li>
-            <li>Alibaba Cloud Associate – Big Data (Sep 2024)</li>
-        </ul>
-    </section>
-
-    <!-- Kontak -->
-    <section id="contact" data-aos="fade-up">
-        <h2>Kontak</h2>
-        <ul>
-            <li>📧 Email: <a href="mailto:muhammad.hanifalazis@gmail.com">muhammad.hanifalazis@gmail.com</a></li>
-            <li>🔗 LinkedIn: <a href="https://linkedin.com/in/hanifalazis" target="_blank">linkedin.com/in/hanifalazis</a></li>
-            <li>📱 WhatsApp: <a href="https://wa.me/6281280534553" target="_blank">+62 812-8053-4553</a></li>
-        </ul>
-    </section>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="script.js?v=2024"></script>
+    <script src="assets/js/script.js?v=2024"></script>
 </body>
 </html>

@@ -1,0 +1,41 @@
+<!-- Profile Picture Placeholder -->
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="profileBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="highlight" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.3);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" />
+    </radialGradient>
+    <filter id="profileShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.2)"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="150" cy="150" r="150" fill="url(#profileBg)" filter="url(#profileShadow)"/>
+  
+  <!-- Person silhouette -->
+  <!-- Head -->
+  <circle cx="150" cy="120" r="35" fill="rgba(255,255,255,0.9)"/>
+  
+  <!-- Body/Shoulders -->
+  <ellipse cx="150" cy="220" rx="60" ry="45" fill="rgba(255,255,255,0.9)"/>
+  
+  <!-- Professional icon overlay -->
+  <circle cx="200" cy="100" r="25" fill="rgba(255,255,255,0.95)" stroke="#667eea" stroke-width="2"/>
+  <text x="200" y="108" font-family="Arial, sans-serif" font-size="20" fill="#667eea" text-anchor="middle">📊</text>
+  
+  <!-- Highlight effect -->
+  <ellipse cx="150" cy="150" rx="140" ry="140" fill="url(#highlight)"/>
+  
+  <!-- Name placeholder -->
+  <rect x="75" y="260" width="150" height="25" rx="12" fill="rgba(255,255,255,0.9)"/>
+  <text x="150" y="277" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">Muhammad Hanif</text>
+  
+  <!-- Title -->
+  <rect x="85" y="290" width="130" height="18" rx="9" fill="rgba(255,255,255,0.8)"/>
+  <text x="150" y="302" font-family="Arial, sans-serif" font-size="11" fill="#667eea" text-anchor="middle">Data Engineer</text>
+</svg>

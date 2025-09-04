@@ -1,0 +1,101 @@
+﻿    <section id="process" class="process-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Bagaimana Prosesnya?
+            </h2>
+            <p class="section-description">
+                Langkah-langkah sistematis untuk mengubah data bisnis Anda menjadi dashboard yang powerful dan actionable.
+            </p>
+
+            <div class="process-steps">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Konsultasi & Assessment</h3>
+                        <p>Diskusi kebutuhan bisnis, audit data existing, dan identifikasi KPI yang diperlukan untuk dashboard Anda.</p>
+                        <div class="step-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>1-2 hari</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Data Collection & Cleaning</h3>
+                        <p>Pengumpulan dan pembersihan data historis, standarisasi format, dan eliminasi duplikasi atau error data.</p>
+                        <div class="step-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>3-5 hari</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Template & Dashboard Creation</h3>
+                        <p>Pembuatan template input yang user-friendly dan dashboard interaktif dengan visualisasi yang mudah dipahami.</p>
+                        <div class="step-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>4-7 hari</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Testing & Training</h3>
+                        <p>UAT (User Acceptance Testing), training tim untuk penggunaan template dan dashboard, serta dokumentasi lengkap.</p>
+                        <div class="step-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>2-3 hari</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="step-item final-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Go Live & Maintenance</h3>
+                        <p>Dashboard siap digunakan dengan support maintenance rutin untuk memastikan data accuracy dan system reliability.</p>
+                        <div class="step-duration ongoing">
+                            <i class="fas fa-infinity"></i>
+                            <span>Ongoing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-guarantee">
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Money Back Guarantee</h3>
+                    <p>Jika dalam 7 hari pertama Anda tidak puas dengan hasil dashboard, kami akan refund 100% biaya setup Anda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->

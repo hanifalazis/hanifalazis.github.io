@@ -89,6 +89,35 @@ nav a:hover::before {
     width: 100%;
 }
 
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger-menu span {
+    width: 25px;
+    height: 3px;
+    background: #b74b4b;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
 /* Hero Section */
 .home {
     display: flex;
@@ -279,10 +308,19 @@ nav a:hover::before {
     transform: translateY(-3px);
 }
 
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
 /* Sections - Universal Styling */
 section {
-    padding: 4rem 7% 3rem 7%;
-    margin: 4rem auto;
+    padding: 6rem 7% 5rem 7%;
+    margin: 6rem auto;
     max-width: 1200px;
     background: linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(35, 35, 35, 0.95) 100%);
     border-radius: 2.5rem;
@@ -585,21 +623,6 @@ section li::before {
     position: relative;
 }
 
-/* Contact Section */
-section#contact a {
-    color: #b74b4b;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border-bottom: 2px solid transparent;
-}
-
-section#contact a:hover {
-    color: #fff;
-    border-bottom-color: #b74b4b;
-    text-shadow: 0 0 10px #b74b4b;
-}
-
 /* Responsive Design */
 @media (max-width: 1200px) {
     html {
@@ -618,86 +641,140 @@ section#contact a:hover {
 }
 
 @media (max-width: 900px) {
+    .hamburger-menu {
+        display: flex;
+    }
+    
     header {
-        padding: 1.5rem 5%;
+        padding: 2rem 5%;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem 0;
+        border-top: 1px solid rgba(183, 75, 75, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    nav.active {
+        display: flex;
     }
     
     nav a {
-        margin-left: 2rem;
-        font-size: 1.4rem;
+        margin: 0.8rem 0;
+        font-size: 1.6rem;
+        padding: 1.2rem 2rem;
+        border-radius: 0.8rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(183, 75, 75, 0.1);
+    }
+    
+    nav a:hover,
+    nav a.active {
+        background: rgba(183, 75, 75, 0.2);
+        color: #b74b4b;
+        transform: translateX(10px);
     }
     
     section {
-        padding: 3rem 4% 2rem 4%;
-        margin: 1.5rem auto;
-        border-radius: 1.5rem;
+        padding: 5rem 5% 4rem 5%;
+        margin: 4rem auto;
+        border-radius: 2rem;
         scroll-margin-top: 5rem;
     }
     
     .home {
         flex-direction: column;
-        gap: 3rem;
+        gap: 4rem;
         min-height: 90vh;
-        margin-top: 9rem;
+        margin-top: 10rem;
         text-align: center;
+        padding: 5rem 5% 4rem 5%;
     }
     
     .home-img {
         width: 220px;
         height: 220px;
+        order: -1;
     }
     
     .hero-title {
         font-size: 3.5rem;
+        margin-bottom: 2rem;
     }
     
     .typing-hero {
         font-size: 1.8rem;
+        margin-bottom: 3rem;
     }
     
     .hero-desc {
         font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        line-height: 1.8;
     }
     
     .cta-buttons {
         justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
     }
     
     .skills-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
     }
     
     .portfolio-list {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
+    }
+    
+    section h2 {
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+    }
+    
+    /* Add more breathing space to content */
+    section p {
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+        font-size: 1.6rem;
     }
 }
 
 @media (max-width: 600px) {
     html {
-        font-size: 50%;
+        font-size: 52%;
     }
     
     header {
-        padding: 1rem 4%;
-    }
-    
-    nav a {
-        margin-left: 1.5rem;
-        font-size: 1.2rem;
+        padding: 1.5rem 4%;
     }
     
     section {
-        padding: 2.5rem 4% 1.5rem 4%;
-        margin: 1rem auto;
-        border-radius: 1rem;
-        scroll-margin-top: 4.5rem;
+        padding: 5rem 4% 4rem 4%;
+        margin: 4rem auto;
+        border-radius: 2rem;
+        scroll-margin-top: 8rem;
     }
     
     .home {
-        margin-top: 10rem;
-        padding: 2rem 4%;
+        margin-top: 12rem;
+        padding: 4rem 4%;
+        gap: 3rem;
+        min-height: 85vh;
     }
     
     .home-img {
@@ -707,45 +784,186 @@ section#contact a:hover {
     
     .hero-title {
         font-size: 3rem;
+        line-height: 1.2;
+        margin-bottom: 2.5rem;
     }
     
     .typing-hero {
         font-size: 1.6rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-desc {
+        font-size: 1.5rem;
+        line-height: 1.7;
+        margin-bottom: 3rem;
     }
     
     .cta-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 1.5rem;
+        width: 100%;
     }
     
     .btn {
-        padding: 1rem 2rem;
+        padding: 1.5rem 3rem;
         font-size: 1.4rem;
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+    }
+    
+    .btn {
+        padding: 1.5rem 3rem;
+        font-size: 1.4rem;
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+    }
+    
+    section h2 {
+        font-size: 3rem;
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+    
+    /* Add more breathing space */
+    section p {
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+        font-size: 1.5rem;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    .skill-item {
+        padding: 2.5rem 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .skill-item h3 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .portfolio-list {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    .project {
+        padding: 3rem 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .project h3 {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .project p {
+        font-size: 1.5rem;
+        line-height: 1.7;
     }
 }
 
 @media (max-width: 400px) {
+    html {
+        font-size: 50%;
+    }
+    
+    header {
+        padding: 1.5rem 3%;
+    }
+    
+    .home {
+        padding: 4rem 3%;
+        gap: 3rem;
+        margin-top: 10rem;
+    }
+    
     .home-img {
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
     
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
+        line-height: 1.2;
+        margin-bottom: 2.5rem;
     }
     
     .typing-hero {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-desc {
         font-size: 1.4rem;
+        line-height: 1.7;
+        margin-bottom: 3rem;
+    }
+    
+    section {
+        padding: 4rem 3% 3rem 3%;
+        margin: 3rem auto;
+        scroll-margin-top: 8rem;
     }
     
     section h2 {
         font-size: 2.8rem;
+        margin-bottom: 3rem;
     }
     
-    section {
-        padding: 2rem 3% 1.5rem 3%;
-        margin: 0.5rem auto;
-        scroll-margin-top: 4.5rem;
+    section p {
+        font-size: 1.4rem;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+    }
+    
+    .btn {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.3rem;
+        max-width: 280px;
+    }
+    
+    .skill-item {
+        padding: 2.5rem 2rem;
+    }
+    
+    .skill-item h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .project {
+        padding: 2.5rem 2rem;
+    }
+    
+    .project h3 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Extra mobile optimizations */
+    .cta-buttons {
+        gap: 1.2rem;
+        flex-direction: column;
+    }
+    
+    .btn {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.3rem;
+        max-width: 280px;
+    }
+    
+    /* Add more space between sections */
+    section + section {
+        margin-top: 4rem;
     }
 }
 
