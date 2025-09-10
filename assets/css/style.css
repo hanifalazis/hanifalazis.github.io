@@ -1,3 +1,40 @@
+/* Education List Style - match skills-grid li */
+#education ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-left: 0;
+    list-style: none;
+}
+#education li {
+    background: rgba(183, 75, 75, 0.1);
+    border-radius: 1rem;
+    border-left: 4px solid #b74b4b;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.6rem;
+    color: #eee;
+    margin-bottom: 0;
+    position: relative;
+    display: block;
+    line-height: 1.7;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Panah pendidikan: beri jarak dan sejajarkan dengan teks */
+#education li::before {
+    width: auto;
+    text-align: center;
+    padding-top: 0.1em;
+    margin-right: 0.7em;
+}
+#education li:hover {
+    background: rgba(183, 75, 75, 0.2);
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+}
+
+/* Education: biarkan wrap sebagai satu teks penuh */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 /* Base Reset and Global Styles */
@@ -384,20 +421,36 @@ section ul {
     margin-bottom: 2rem;
     z-index: 2;
     position: relative;
+    list-style: none;
+    padding-left: 0;
 }
 
 section li {
     margin-bottom: 1rem;
     padding-left: 2rem;
     position: relative;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    column-gap: 0.7em;
+    min-width: 0;
+}
+
+section li strong, section li span {
+    word-break: break-word;
+    min-width: 0;
 }
 
 section li::before {
     content: '▶';
-    position: absolute;
-    left: 0;
+    display: inline-block;
+    width: 1.2em;
+    flex: 0 0 1.2em;
     color: #b74b4b;
-    font-size: 1.2rem;
+    font-size: 1em;
+    text-align: center;
+    line-height: 1;
+    padding-top: 0.35em;
 }
 
 /* Skills Grid */
@@ -462,11 +515,27 @@ section li::before {
     font-size: 1.6rem;
     color: #eee;
     margin-bottom: 1rem;
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 1.5rem 0.8rem 2rem;
     background: rgba(183, 75, 75, 0.1);
     border-radius: 1rem;
     border-left: 4px solid #b74b4b;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    column-gap: 0.7em;
+}
+
+.skills-grid li::before {
+    content: '▶';
+    color: #b74b4b;
+    display: inline-block;
+    width: 1.2em;
+    flex: 0 0 1.2em;
+    text-align: center;
+    line-height: 1;
+    font-size: 1em;
+    padding-top: 0.35em;
 }
 
 .skills-grid li:hover {
