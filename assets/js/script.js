@@ -87,10 +87,18 @@ navLinks.forEach(link => {
   });
 });
 
-// Highlight nav on scroll
+// Highlight nav on scroll + compact header
 const sections = document.querySelectorAll('section[id]');
+const headerEl = document.querySelector('header');
 window.addEventListener('scroll', () => {
   let scrollPos = window.scrollY || window.pageYOffset;
+  // Toggle compact header when scrolling
+  if (headerEl) {
+    const isScrolled = scrollPos > 10;
+    if (isScrolled !== headerEl.classList.contains('scrolled')) {
+      headerEl.classList.toggle('scrolled', isScrolled);
+    }
+  }
   let offset = 120; // adjust for header height
   let found = false;
 
@@ -148,7 +156,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Initialize nav state on load
+// Initialize nav state and header style on load
 window.dispatchEvent(new Event('scroll'));
 
 // Correct hash scroll on initial load (direct link like /#skills)
