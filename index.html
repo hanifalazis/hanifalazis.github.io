@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Let the browser know we support dark and light UA styling -->
+    <meta name="color-scheme" content="light dark">
     <!-- Browser theme colors for dark/light -->
     <meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#f3f6fb" media="(prefers-color-scheme: light)">
@@ -65,7 +67,7 @@
     <meta name="msapplication-TileColor" content="#2a5da8">
         
         <script>
-            // Early theme init to prevent FOUC between dark and light
+            // Early theme init to prevent FOUC. Default follows system unless user has chosen.
             (function() {
                 try {
                     const stored = localStorage.getItem('theme');

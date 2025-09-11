@@ -20,6 +20,32 @@ hamburger.addEventListener('keydown', (e) => {
 
 // Close mobile menu when clicking on a nav link
 const navLinks = document.querySelectorAll('nav a');
+
+function smoothScrollWithStabilize(targetEl) {
+  if (!targetEl) return;
+  // Use CSS scroll-margin-top to handle header offset
+  targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // After layout/animations settle, snap precisely again
+  let lastTop = null;
+  let stableFrames = 0;
+  let tries = 0;
+  function check() {
+    const topNow = targetEl.getBoundingClientRect().top;
+    if (lastTop !== null && Math.abs(topNow - lastTop) < 0.5) {
+      stableFrames++;
+    } else {
+      stableFrames = 0;
+    }
+    lastTop = topNow;
+    tries++;
+    if (stableFrames >= 3 || tries > 40) {
+      targetEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      return;
+    }
+    requestAnimationFrame(check);
+  }
+  requestAnimationFrame(check);
+}
 navLinks.forEach(link => {
   link.addEventListener('click', function(e) {
     // Close mobile menu
@@ -38,9 +64,8 @@ navLinks.forEach(link => {
     if (this.hash !== '') {
       e.preventDefault();
       const hash = this.hash;
-      document.querySelector(hash).scrollIntoView({
-        behavior: 'smooth'
-      });
+      const target = document.querySelector(hash);
+      smoothScrollWithStabilize(target);
     }
   });
 });
@@ -66,12 +91,38 @@ window.addEventListener('scroll', () => {
       found = true;
     }
   });
-  // Remove highlight if not in any section
-  if (!found) navLinks.forEach(link => { link.classList.remove('active'); link.removeAttribute('aria-current'); });
+  // If no section matched, check if we're at (or near) the bottom, then highlight Portfolio
+  if (!found) {
+    const nearBottom = window.innerHeight + scrollPos >= (document.documentElement.scrollHeight - 2);
+    if (nearBottom) {
+      navLinks.forEach(link => {
+        if (link.hash === '#portfolio') {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.classList.remove('active');
+          link.removeAttribute('aria-current');
+        }
+      });
+    } else {
+      navLinks.forEach(link => { link.classList.remove('active'); link.removeAttribute('aria-current'); });
+    }
+  }
 });
 
 // Initialize nav state on load
 window.dispatchEvent(new Event('scroll'));
+
+// Correct hash scroll on initial load (direct link like /#skills)
+window.addEventListener('load', () => {
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) {
+  // slight delay to allow AOS/paint
+  setTimeout(() => smoothScrollWithStabilize(target), 100);
+    }
+  }
+});
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', function(e) {
@@ -143,27 +194,48 @@ if (typingElement) {
     }
   }
 
-  function setMode(mode) {
+  function applyMode(mode, persist) {
     if (mode === 'dark') {
       html.classList.add('dark');
       html.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
     } else {
       html.classList.remove('dark');
       html.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
+    }
+    if (persist) {
+      localStorage.setItem('theme', mode);
     }
     updateIcons(mode);
   }
 
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function currentModeFromSystem() {
+    return mq.matches ? 'dark' : 'light';
+  }
+
+  function getUserChoice() {
+    try { return localStorage.getItem('theme'); } catch { return null; }
+  }
+
   // Initialize icons based on current state
-  const initial = html.getAttribute('data-theme') || 'dark';
+  const initial = html.getAttribute('data-theme') || currentModeFromSystem();
   updateIcons(initial);
+
+  // React to system scheme changes IF user hasn't chosen manually
+  mq.addEventListener?.('change', (e) => {
+    const userChoice = getUserChoice();
+    if (!userChoice) {
+      applyMode(e.matches ? 'dark' : 'light', false);
+    }
+  });
 
   if (btn) {
     btn.addEventListener('click', () => {
+      const userChoice = getUserChoice();
       const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      setMode(current === 'dark' ? 'light' : 'dark');
+      const next = current === 'dark' ? 'light' : 'dark';
+      // Persist explicit user choice
+      applyMode(next, true);
     });
   }
 })();
