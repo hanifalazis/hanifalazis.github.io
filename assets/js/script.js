@@ -8,6 +8,10 @@ function toggleMenu() {
   navMenu.classList.toggle('active');
   const expanded = hamburger.classList.contains('active');
   hamburger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  // When menu opens, refresh highlight based on current scroll position
+  if (expanded) {
+    window.dispatchEvent(new Event('scroll'));
+  }
 }
 
 hamburger.addEventListener('click', toggleMenu);
@@ -20,6 +24,20 @@ hamburger.addEventListener('keydown', (e) => {
 
 // Close mobile menu when clicking on a nav link
 const navLinks = document.querySelectorAll('nav a');
+// Short lock so tap highlight stays until section reached
+let navActiveLock = null; // { hash: '#id', until: timestamp }
+
+function setActiveLinkByHash(hash) {
+  navLinks.forEach(l => {
+    if (l.hash === hash) {
+      l.classList.add('active');
+      l.setAttribute('aria-current', 'page');
+    } else {
+      l.classList.remove('active');
+      l.removeAttribute('aria-current');
+    }
+  });
+}
 
 function smoothScrollWithStabilize(targetEl) {
   if (!targetEl) return;
@@ -52,16 +70,15 @@ navLinks.forEach(link => {
     hamburger.classList.remove('active');
     navMenu.classList.remove('active');
 
-    // Remove active from all links, add to clicked
-    navLinks.forEach(l => {
-      l.classList.remove('active');
-      l.removeAttribute('aria-current');
-    });
-    this.classList.add('active');
-    this.setAttribute('aria-current', 'page');
+  // Remove active from all links, add to clicked
+  navLinks.forEach(l => { l.classList.remove('active'); l.removeAttribute('aria-current'); });
+  this.classList.add('active');
+  this.setAttribute('aria-current', 'page');
+  // Lock highlight briefly so scroll handler doesn't clear it immediately
+  navActiveLock = { hash: this.hash, until: Date.now() + 1500 };
 
     // Smooth scroll for navigation
-    if (this.hash !== '') {
+  if (this.hash !== '') {
       e.preventDefault();
       const hash = this.hash;
       const target = document.querySelector(hash);
@@ -76,6 +93,28 @@ window.addEventListener('scroll', () => {
   let scrollPos = window.scrollY || window.pageYOffset;
   let offset = 120; // adjust for header height
   let found = false;
+
+  // If user just tapped a nav link, keep it highlighted until we arrive (or timeout)
+  if (navActiveLock) {
+    const { hash, until } = navActiveLock;
+    const targetId = hash ? hash.replace('#','') : '';
+    const targetSection = targetId ? document.getElementById(targetId) : null;
+    if (targetSection) {
+      const top = targetSection.offsetTop - offset;
+      const bottom = top + targetSection.offsetHeight;
+      if (scrollPos >= top && scrollPos < bottom) {
+        // Arrived at target; clear lock and proceed with normal handling
+        navActiveLock = null;
+      }
+    }
+    if (navActiveLock && Date.now() < until) {
+      // Enforce tapped highlight and skip automatic recalculation for now
+      setActiveLinkByHash(hash);
+      return;
+    }
+    // Lock expired; proceed
+    navActiveLock = null;
+  }
   sections.forEach(section => {
     const top = section.offsetTop - offset;
     const bottom = top + section.offsetHeight;
@@ -104,9 +143,8 @@ window.addEventListener('scroll', () => {
           link.removeAttribute('aria-current');
         }
       });
-    } else {
-      navLinks.forEach(link => { link.classList.remove('active'); link.removeAttribute('aria-current'); });
     }
+    // Otherwise, preserve current active instead of clearing everything to avoid flicker gaps
   }
 });
 
@@ -183,6 +221,30 @@ if (typingElement) {
   const iconSun = document.getElementById('icon-sun');
   const iconMoon = document.getElementById('icon-moon');
 
+  // Swap themed assets (e.g., Power BI icon) based on current mode
+  function updateThemedAssets(mode) {
+    const themedImgs = document.querySelectorAll('img[data-src-light][data-src-dark]');
+    themedImgs.forEach(img => {
+      const lightSrc = img.getAttribute('data-src-light');
+      const darkSrc = img.getAttribute('data-src-dark');
+      const target = mode === 'dark' ? darkSrc : lightSrc;
+      if (target && img.getAttribute('src') !== target) {
+        img.setAttribute('src', target);
+      }
+  // Mark current variant for CSS fine-tuning
+  img.setAttribute('data-variant', mode === 'dark' ? 'dark' : 'light');
+      // Reset visibility and rewire fallback handling for this image
+      const li = img.closest('li.has-icon');
+      const fallback = li ? li.querySelector('.si.si-fallback') : null;
+      if (fallback) fallback.style.display = 'none';
+      img.style.display = '';
+      img.onerror = () => {
+        if (fallback) fallback.style.display = 'inline-flex';
+        img.style.display = 'none';
+      };
+    });
+  }
+
   function updateIcons(mode) {
     if (!iconSun || !iconMoon) return;
     if (mode === 'dark') {
@@ -206,6 +268,7 @@ if (typingElement) {
       localStorage.setItem('theme', mode);
     }
     updateIcons(mode);
+  updateThemedAssets(mode);
   }
 
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -220,6 +283,7 @@ if (typingElement) {
   // Initialize icons based on current state
   const initial = html.getAttribute('data-theme') || currentModeFromSystem();
   updateIcons(initial);
+  updateThemedAssets(initial);
 
   // React to system scheme changes IF user hasn't chosen manually
   mq.addEventListener?.('change', (e) => {
@@ -238,4 +302,26 @@ if (typingElement) {
       applyMode(next, true);
     });
   }
+})();
+
+// Replace broken brand icons with fallback monogram badges
+(function() {
+  const items = document.querySelectorAll('.skills-grid li.has-icon');
+  items.forEach(li => {
+    const img = li.querySelector('img.si-img');
+    const fallback = li.querySelector('.si.si-fallback');
+    if (img && fallback) {
+      // Hide fallback by default; show only on error
+      fallback.style.display = 'none';
+      img.addEventListener('error', () => {
+        fallback.style.display = 'inline-flex';
+        img.style.display = 'none';
+      }, { once: true });
+      // If image already failed before JS ran
+      if (img.complete && img.naturalWidth === 0) {
+        fallback.style.display = 'inline-flex';
+        img.style.display = 'none';
+      }
+    }
+  });
 })();

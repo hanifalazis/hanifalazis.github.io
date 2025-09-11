@@ -1,8 +1,6 @@
 /* Education List Style - match skills-grid li */
 #education ul {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+    /* Use default block flow, keep spacing via li margins */
     padding-left: 0;
     list-style: none;
 }
@@ -10,12 +8,12 @@
     background: rgba(42, 93, 168, 0.1);
     border-radius: 1rem;
     border-left: 4px solid #2a5da8;
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 1.5rem 0.8rem 2.8rem; /* extra left padding for breathing room */
     font-size: 1.6rem;
     color: #eee;
-    margin-bottom: 0;
+    margin-bottom: 1.2rem; /* spacing between items */
     position: relative;
-    display: block;
+    display: block;         /* standard single-column list item */
     line-height: 1.7;
     box-sizing: border-box;
     transition: all 0.3s ease;
@@ -23,10 +21,13 @@
 
 /* Panah pendidikan: beri jarak dan sejajarkan dengan teks */
 #education li::before {
-    width: auto;
+    content: '▶';               /* explicit to avoid inheritance quirks */
+    position: absolute;
+    left: 0.6rem;               /* sit inside left padding */
+    top: 0.9rem;                /* align vertically with first line */
+    width: 1.2em;               /* visual width of the arrow */
     text-align: center;
-    padding-top: 0.1em;
-    margin-right: 0.7em;
+    color: #2a5da8;
 }
 #education li:hover {
     background: rgba(42, 93, 168, 0.2);
@@ -96,6 +97,28 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
 }
+
+/* Typography scale (consistent across breakpoints) */
+:root {
+    --fs-base: 1.6rem; /* 16px at 62.5% html */
+    --fs-body: clamp(1.55rem, 1.5rem + 0.2vw, 1.6rem);
+    --fs-body-lg: clamp(1.7rem, 1.6rem + 0.4vw, 1.9rem);
+    --fs-h1: clamp(3.2rem, 2rem + 3vw, 5rem);
+    --fs-h2: clamp(2.4rem, 1.6rem + 1.8vw, 3.2rem);
+    --fs-h3: clamp(2rem, 1.2rem + 1.2vw, 2.4rem);
+    --fs-subtitle: clamp(1.8rem, 1.6rem + 0.8vw, 2.2rem);
+    --fs-nav: 1.6rem;
+    --fs-logo: clamp(2.4rem, 2rem + 1vw, 2.8rem);
+    --fs-hero-title: clamp(3.2rem, 2.2rem + 3vw, 5rem);
+    --fs-small: clamp(1.4rem, 1.3rem + 0.2vw, 1.5rem);
+}
+
+body { font-size: var(--fs-body); }
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+p, li { font-size: var(--fs-body); }
 
 /* Light mode overrides */
 html[data-theme='light'] body {
@@ -215,7 +238,7 @@ header {
 }
 
 .logo {
-    font-size: 2.8rem;
+    font-size: var(--fs-logo);
     color: #2a5da8;
     font-weight: 900;
     letter-spacing: 2px;
@@ -230,7 +253,7 @@ header {
 }
 
 nav a {
-    font-size: 1.6rem;
+    font-size: var(--fs-nav);
     color: #fff;
     margin-left: 3rem;
     font-weight: 500;
@@ -241,7 +264,8 @@ nav a {
 }
 
 nav a:hover,
-nav a.active {
+nav a.active,
+nav a[aria-current="page"] {
     color: #2a5da8;
     border-bottom: 2px solid #2a5da8;
 }
@@ -360,7 +384,7 @@ nav a:hover::before {
 }
 
 .hero-title {
-    font-size: 4.5rem;
+    font-size: var(--fs-hero-title);
     font-weight: 800;
     color: #fff;
     margin-bottom: 1rem;
@@ -373,7 +397,7 @@ nav a:hover::before {
 }
 
 .typing-hero {
-    font-size: 2.2rem;
+    font-size: var(--fs-subtitle);
     font-weight: 700;
     margin-bottom: 2rem;
     min-height: 3rem;
@@ -399,7 +423,7 @@ nav a:hover::before {
 }
 
 .hero-desc {
-    font-size: 1.8rem;
+    font-size: var(--fs-body-lg);
     color: #ddd;
     line-height: 1.8;
     margin-bottom: 3rem;
@@ -415,7 +439,7 @@ nav a:hover::before {
 
 .btn {
     padding: 1.2rem 2.5rem;
-    font-size: 1.6rem;
+    font-size: var(--fs-body);
     font-weight: 600;
     border-radius: 50px;
     transition: all 0.3s ease;
@@ -656,7 +680,7 @@ section li::before {
     border-left: 4px solid #2a5da8;
     transition: all 0.3s ease;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: nowrap;
     column-gap: 0.7em;
 }
@@ -671,6 +695,53 @@ section li::before {
     line-height: 1;
     font-size: 1em;
     padding-top: 0.35em;
+}
+
+/* When list has icons, remove arrow and align icons */
+.skills-grid li.has-icon::before {
+    content: '';
+    width: 0.6em;
+    flex: 0 0 0.6em;
+}
+.skills-grid li.has-icon i {
+    font-size: 1.4rem;
+    color: #2a5da8;
+    opacity: 0.9;
+}
+html[data-theme='light'] .skills-grid li.has-icon i {
+    color: #2a5da8;
+}
+
+/* Simple inline SVG badges */
+.si { display: inline-flex; align-items: center; justify-content: center; margin-right: 0.6rem; }
+.si-icon { width: 18px; height: 18px; }
+.si-bg { fill: rgba(42, 93, 168, 0.15); }
+.si-text { fill: #2a5da8; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+html[data-theme='light'] .si-bg { fill: rgba(42, 93, 168, 0.12); }
+html[data-theme='light'] .si-text { fill: #2a5da8; }
+
+/* Official brand icons (as <img>): unify to monochrome for consistency */
+.si-img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    /* Dark mode: make icons white so they match text */
+    filter: brightness(0) invert(1) opacity(0.9);
+}
+/* Light mode: tint icons to primary blue (#2a5da8) using CSS filter approximation */
+html[data-theme='light'] .si-img {
+    /* Show original brand colors in light mode */
+    filter: none;
+}
+
+/* Fine-tune Power BI size parity across themes */
+.si-powerbi[data-variant="dark"] {
+    transform: scale(1.12);
+    transform-origin: center;
 }
 
 .skills-grid li:hover {
@@ -829,10 +900,6 @@ section li::before {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    html {
-        font-size: 55%;
-    }
-    
     section {
         padding: 3rem 5% 2rem 5%;
         margin: 2rem auto;
@@ -868,6 +935,13 @@ section li::before {
     border-top: 1px solid rgba(42, 93, 168, 0.2);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
+
+    /* Light mode colors for mobile nav */
+    html[data-theme='light'] nav {
+        background: rgba(255, 255, 255, 0.98);
+        border-top: 1px solid rgba(42, 93, 168, 0.15);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    }
     
     nav.active {
         display: flex;
@@ -882,12 +956,27 @@ section li::before {
         transition: all 0.3s ease;
     border-bottom: 1px solid rgba(42, 93, 168, 0.1);
     }
+
+    html[data-theme='light'] nav a {
+        color: #0f172a;
+        border-bottom-color: rgba(15, 23, 42, 0.06);
+    }
     
     nav a:hover,
-    nav a.active {
-    background: rgba(42, 93, 168, 0.2);
-    color: #2a5da8;
+    nav a.active,
+    nav a[aria-current="page"] {
+        background: rgba(42, 93, 168, 0.2);
+        color: #2a5da8;
         transform: translateX(10px);
+        box-shadow: inset 4px 0 0 #2a5da8;
+    }
+
+    html[data-theme='light'] nav a:hover,
+    html[data-theme='light'] nav a.active,
+    html[data-theme='light'] nav a[aria-current="page"] {
+        background: rgba(42, 93, 168, 0.1);
+        color: #2a5da8;
+        box-shadow: inset 4px 0 0 #2a5da8;
     }
     
     section {
@@ -912,10 +1001,7 @@ section li::before {
         order: -1;
     }
     
-    .hero-title {
-        font-size: 3.5rem;
-        margin-bottom: 2rem;
-    }
+    .hero-title { margin-bottom: 2rem; }
     
     .typing-hero {
         font-size: 2.2rem;
@@ -945,37 +1031,17 @@ section li::before {
         gap: 3rem;
     }
     
-    section h2 {
-        font-size: 3.2rem;
-        margin-bottom: 3rem;
-    }
+    section h2 { margin-bottom: 3rem; }
     
     /* Add more breathing space to content */
-    section p {
-        margin-bottom: 2.5rem;
-        line-height: 1.8;
-        font-size: 1.6rem;
-        text-align: justify;
-    }
+    section p { margin-bottom: 2.5rem; line-height: 1.8; text-align: justify; }
     
-    section ul {
-        font-size: 1.6rem;
-    }
     
-    section li {
-        font-size: 1.6rem;
-        line-height: 1.7;
-    }
+    section li { line-height: 1.7; }
     
-    .btn {
-        font-size: 1.5rem;
-    }
 }
 
 @media (max-width: 600px) {
-    html {
-        font-size: 52%;
-    }
     
     header {
         padding: 1.5rem 4%;
@@ -1000,23 +1066,11 @@ section li::before {
         height: 180px;
     }
     
-    .hero-title {
-        font-size: 3rem;
-        line-height: 1.2;
-        margin-bottom: 2.5rem;
-    }
+    .hero-title { line-height: 1.2; margin-bottom: 2.5rem; }
     
-    .typing-hero {
-        font-size: 2rem;
-        margin-bottom: 2.5rem;
-    }
+    .typing-hero { margin-bottom: 2.5rem; }
     
-    .hero-desc {
-        font-size: 1.6rem;
-        line-height: 1.7;
-        margin-bottom: 3rem;
-        text-align: justify;
-    }
+    .hero-desc { line-height: 1.7; margin-bottom: 3rem; text-align: justify; }
     
     .cta-buttons {
         flex-direction: column;
