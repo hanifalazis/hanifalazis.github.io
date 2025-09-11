@@ -110,7 +110,7 @@ body {
     --fs-nav: 1.6rem;
     --fs-logo: clamp(2.4rem, 2rem + 1vw, 2.8rem);
     /* Smaller so long names fit without clipping */
-    --fs-hero-title: clamp(2.6rem, 1.8rem + 2.2vw, 4rem);
+    --fs-hero-title: clamp(2.4rem, 1.7rem + 2.0vw, 3.8rem);
     --fs-small: clamp(1.4rem, 1.3rem + 0.2vw, 1.5rem);
 }
 
@@ -162,6 +162,7 @@ html[data-theme='light'] .hero-title {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    white-space: nowrap; /* keep single line in light mode as well */
 }
 
 html[data-theme='light'] .hero-desc {
@@ -394,7 +395,8 @@ nav a:hover::before {
     font-weight: 800;
     color: #fff;
     margin-bottom: 1rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    white-space: nowrap; /* keep the full name on one line */
     line-height: 1.2;
     background: linear-gradient(135deg, #fff 0%, #2a5da8 100%);
     -webkit-background-clip: text;
@@ -904,6 +906,108 @@ html[data-theme='light'] .si-img {
     position: relative;
 }
 
+/* Footer */
+.site-footer {
+    background: #111;
+    color: #aaa;
+    padding: 3rem 7%; /* Reduced top/bottom padding */
+    text-align: center;
+    border-top: 1px solid rgba(42, 93, 168, 0.2);
+    margin-top: 5rem;
+}
+
+.footer-content h3 {
+    font-size: 2.4rem;
+    color: #2a5da8;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.footer-content p {
+    margin: 0 auto 2rem;
+    font-size: 1.6rem;
+    color: #aaa;
+    max-width: 60ch;
+    line-height: 1.7;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: row; /* Changed from column to row */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center the items */
+    align-items: center;
+    gap: 2.5rem; /* Increased gap for horizontal layout */
+    margin-bottom: 2.5rem;
+}
+
+.footer-link {
+    color: #ddd;
+    font-size: 1.6rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #2a5da8;
+}
+
+.footer-link i {
+    font-size: 1.8rem;
+    color: #2a5da8;
+}
+
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.footer-socials a {
+    color: #aaa;
+    font-size: 3rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-socials a:hover {
+    color: #2a5da8;
+    transform: scale(1.2) translateY(-2px);
+}
+
+/* Light mode footer */
+html[data-theme='light'] .site-footer {
+    background: #f8fafc;
+    border-top-color: rgba(42, 93, 168, 0.1);
+}
+
+html[data-theme='light'] .footer-content h3 {
+    color: #2a5da8;
+}
+
+html[data-theme='light'] .footer-content p {
+    color: #475569;
+}
+
+html[data-theme='light'] .footer-link {
+    color: #334155;
+}
+
+html[data-theme='light'] .footer-link:hover {
+    color: #2a5da8;
+}
+
+html[data-theme='light'] .footer-socials a {
+    color: #475569;
+}
+
+html[data-theme='light'] .footer-socials a:hover {
+    color: #2a5da8;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     section {
@@ -1007,7 +1111,7 @@ html[data-theme='light'] .si-img {
         order: -1;
     }
     
-    .hero-title { margin-bottom: 2rem; }
+    .hero-title { margin-bottom: 2rem; font-size: clamp(2.2rem, 1.6rem + 2.2vw, 3.2rem); letter-spacing: 0.4px; }
     
     .typing-hero {
         font-size: 2.2rem;
@@ -1072,7 +1176,7 @@ html[data-theme='light'] .si-img {
         height: 180px;
     }
     
-    .hero-title { line-height: 1.2; margin-bottom: 2.5rem; }
+    .hero-title { line-height: 1.2; margin-bottom: 2.5rem; font-size: clamp(2rem, 1.6rem + 2vw, 2.8rem); letter-spacing: 0.3px; }
     
     .typing-hero { margin-bottom: 2.5rem; }
     
@@ -1103,7 +1207,6 @@ html[data-theme='light'] .si-img {
     section p {
         margin-bottom: 2.5rem;
         line-height: 1.8;
-        font-size: 1.6rem;
         text-align: justify;
     }
     
