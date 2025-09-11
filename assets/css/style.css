@@ -298,9 +298,9 @@ nav a:hover::before {
     justify-content: center;
     gap: 6rem;
     background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, rgba(42, 93, 168, 0.1) 100%);
-    min-height: 100vh;
+    min-height: 0;
     margin-top: 8rem;
-    padding: 4rem 7% 2rem 7%;
+    padding: 4rem 7% 4rem 7%;
     border-radius: 2rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -900,7 +900,7 @@ section li::before {
     .home {
         flex-direction: column;
         gap: 4rem;
-        min-height: 90vh;
+        min-height: 0;
         margin-top: 10rem;
         text-align: center;
         padding: 5rem 5% 4rem 5%;
@@ -990,9 +990,9 @@ section li::before {
     
     .home {
         margin-top: 12rem;
-        padding: 4rem 4%;
+        padding: 4rem 4% 4.5rem 4%;
         gap: 3rem;
-        min-height: 85vh;
+        min-height: 0;
     }
     
     .home-img {

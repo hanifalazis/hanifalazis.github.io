@@ -33,8 +33,29 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-    <link rel="stylesheet" href="assets/css/style.css?v=2024">
-    <!-- App Icons -->
+        <link rel="stylesheet" href="assets/css/style.css?v=2024">
+        <!-- Tailwind config must be defined BEFORE loading the CDN script -->
+            <script>
+                window.tailwind = window.tailwind || {};
+                tailwind.config = {
+                    darkMode: 'class',
+                    safelist: [
+                        'fixed','right-4','bottom-4','rounded-full','p-3','p-4','md:p-5','shadow-lg','border','border-white/10',
+                        'bg-white/80','text-gray-800','hover:scale-105','transition','dark:bg-gray-800/90','dark:text-white','dark:border-white/10',
+                        'z-[1100]','text-xl','md:text-2xl','hidden'
+                    ],
+                    theme: {
+                        extend: {
+                            colors: {
+                                primary: { DEFAULT: '#2a5da8', light: '#3f78d1' }
+                            }
+                        }
+                    }
+                };
+            </script>
+        <!-- Tailwind CSS CDN (for rapid theming) -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- App Icons -->
     <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/assets/icons/favicon-192.png" sizes="192x192" type="image/png">
     <link rel="icon" href="/assets/icons/favicon-512.png" sizes="512x512" type="image/png">
@@ -42,24 +63,7 @@
     <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#2a5da8">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="msapplication-TileColor" content="#2a5da8">
-        <!-- Tailwind CSS CDN (for rapid theming) -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            // Tailwind config: enable class-based dark mode and define primary color
-            tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                    extend: {
-                        colors: {
-                            primary: {
-                                DEFAULT: '#2a5da8',
-                                light: '#3f78d1'
-                            }
-                        }
-                    }
-                }
-            }
-        </script>
+        
         <script>
             // Early theme init to prevent FOUC between dark and light
             (function() {
@@ -107,7 +111,7 @@
                 <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
         <!-- Theme Toggle -->
             <button id="theme-toggle" aria-label="Toggle theme"
-            class="fixed z-[1100] right-4 bottom-4 rounded-full p-3 shadow-lg border border-white/10 bg-white/80 text-gray-800 hover:scale-105 transition dark:bg-gray-800/90 dark:text-white dark:border-white/10">
+            class="fixed z-[1100] right-4 bottom-4 rounded-full p-4 md:p-5 shadow-lg border border-white/10 bg-white/80 text-xl md:text-2xl text-gray-800 hover:scale-105 transition dark:bg-gray-800/90 dark:text-white dark:border-white/10">
                 <span id="icon-sun" class="hidden"><i class="fa-solid fa-sun"></i></span>
                 <span id="icon-moon" class="hidden"><i class="fa-solid fa-moon"></i></span>
         </button>
