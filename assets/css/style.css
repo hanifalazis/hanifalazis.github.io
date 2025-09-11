@@ -109,7 +109,8 @@ body {
     --fs-subtitle: clamp(1.8rem, 1.6rem + 0.8vw, 2.2rem);
     --fs-nav: 1.6rem;
     --fs-logo: clamp(2.4rem, 2rem + 1vw, 2.8rem);
-    --fs-hero-title: clamp(3.2rem, 2.2rem + 3vw, 5rem);
+    /* Smaller so long names fit without clipping */
+    --fs-hero-title: clamp(2.6rem, 1.8rem + 2.2vw, 4rem);
     --fs-small: clamp(1.4rem, 1.3rem + 0.2vw, 1.5rem);
 }
 
@@ -132,9 +133,15 @@ html[data-theme='light'] header {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-html[data-theme='light'] nav a {
-    color: #0f172a;
+html[data-theme='light'] header.scrolled {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+    border-bottom-color: rgba(42, 93, 168, 0.12);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
+
+html[data-theme='light'] nav a { color: #0f172a; }
 
 html[data-theme='light'] nav a:hover,
 html[data-theme='light'] nav a.active {
@@ -145,14 +152,9 @@ html[data-theme='light'] .hamburger-menu span {
     background: #2a5da8;
 }
 
-html[data-theme='light'] .home {
-    background: linear-gradient(135deg, #ffffff 0%, #f3f6fb 50%, rgba(42, 93, 168, 0.08) 100%);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-}
+html[data-theme='light'] .home { background: transparent; box-shadow: none; }
 
-html[data-theme='light'] .home::before {
-    background: radial-gradient(circle at 20% 80%, rgba(42, 93, 168, 0.08) 0%, transparent 50%);
-}
+html[data-theme='light'] .home::before { content: none; }
 
 html[data-theme='light'] .hero-title {
     /* Darker gradient for better contrast on light bg */
@@ -177,9 +179,9 @@ html[data-theme='light'] .btn.tertiary {
 }
 
 html[data-theme='light'] section {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-    border-color: rgba(42, 93, 168, 0.12);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(0, 0, 0, 0.02);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 html[data-theme='light'] section p,
@@ -228,6 +230,7 @@ header {
     padding: 1.5rem 7%;
     background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: space-between;
@@ -236,6 +239,18 @@ header {
     border-bottom: 1px solid rgba(42, 93, 168, 0.2);
     transition: all 0.3s ease;
 }
+
+/* Compact, translucent header when scrolled */
+header.scrolled {
+    padding: 0.8rem 7%;
+    background: rgba(10, 10, 10, 0.28);
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.2);
+    border-bottom-color: rgba(42, 93, 168, 0.15);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+header.scrolled .logo { font-size: calc(var(--fs-logo) * 0.9); }
+header.scrolled nav a { margin-left: 2.2rem; }
 
 .logo {
     font-size: var(--fs-logo);
@@ -321,26 +336,17 @@ nav a:hover::before {
     align-items: center;
     justify-content: center;
     gap: 6rem;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, rgba(42, 93, 168, 0.1) 100%);
+    background: transparent;
     min-height: 0;
     margin-top: 8rem;
     padding: 7rem 7% 7rem 7%;
-    border-radius: 2rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    box-shadow: none;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
-.home::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(42, 93, 168, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
+.home::before { content: none; }
 
 .home-img {
     position: relative;
@@ -388,13 +394,15 @@ nav a:hover::before {
     font-weight: 800;
     color: #fff;
     margin-bottom: 1rem;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     line-height: 1.2;
     background: linear-gradient(135deg, #fff 0%, #2a5da8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* Removed nowrap to avoid clipping on some widths */
 
 .typing-hero {
     font-size: var(--fs-subtitle);
@@ -492,9 +500,11 @@ nav a:hover::before {
 }
 
 .btn.tertiary {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
     border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
 }
 
 .btn.tertiary:hover {
@@ -516,28 +526,24 @@ nav a:hover::before {
 /* Sections - Universal Styling */
 section {
     padding: 6rem 7% 5rem 7%;
-    margin: 6rem auto;
+    margin: 3rem auto 0; /* unified flow, less boxy spacing */
     max-width: 1200px;
-    background: linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(35, 35, 35, 0.95) 100%);
-    border-radius: 2.5rem;
+    background: transparent;   /* remove card background */
+    border-radius: 0;          /* no rounded corners */
     scroll-margin-top: 10rem;
-    box-shadow: 
-        0 25px 50px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(42, 93, 168, 0.1);
+    box-shadow: none;          /* remove card shadow */
+    border: none;              /* remove card border */
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 70% 30%, rgba(42, 93, 168, 0.05) 0%, transparent 50%);
-    pointer-events: none;
+/* remove decorative overlay to keep clean unified look */
+section::before { content: none; }
+
+/* seamless sections: no visible divider, keep spacing only */
+section + section {
+    border-top: none;
+    padding-top: 4rem;
 }
 
 section h2 {
