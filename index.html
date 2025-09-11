@@ -121,12 +121,6 @@
 </head>
 <body>
                 <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
-        <!-- Theme Toggle -->
-            <button id="theme-toggle" aria-label="Toggle theme"
-            class="fixed z-[1100] right-4 bottom-5 rounded-full p-5 md:p-6 shadow-lg border border-white/10 bg-white/80 text-2xl md:text-3xl text-gray-800 hover:scale-105 transition dark:bg-gray-800/90 dark:text-white dark:border-white/10">
-                <span id="icon-sun" class="hidden"><i class="fa-solid fa-sun"></i></span>
-                <span id="icon-moon" class="hidden"><i class="fa-solid fa-moon"></i></span>
-        </button>
     <header>
         <a href="#home" class="logo">Hifaliz</a>
                 <div class="hamburger-menu" id="hamburger" role="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false" tabindex="0">
@@ -137,11 +131,18 @@
                 <nav id="nav-menu" aria-label="Navigasi utama">
             <a href="#home" class="active">Home</a>
             <a href="#about">Tentang</a>
-            <a href="#education">Pendidikan</a>
             <a href="#skills">Keahlian</a>
             <a href="#experience">Pengalaman</a>
             <a href="#portfolio">Portofolio</a>
                         <a href="service" target="_blank" rel="noopener noreferrer">Jasa</a>
+            <!-- Theme switch: desktop (right of nav) and mobile (bottom of menu) -->
+            <div class="nav-theme-toggle" aria-label="Theme switch container">
+                <label for="theme-toggle-input" class="switch-label">🌙 Dark Mode</label>
+                <label class="switch" title="Dark mode">
+                    <input type="checkbox" id="theme-toggle-input" class="theme-toggle-input" data-theme-toggle aria-label="Toggle dark mode">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </nav>
     </header>
 
@@ -173,14 +174,7 @@
     <p>Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.</p>
     </section>
 
-    <!-- Pendidikan -->
-    <section id="education" data-aos="fade-up">
-        <h2>Pendidikan</h2>
-        <ul>
-            <li><strong>S1 Statistika</strong> | Universitas Terbuka (2024 – sekarang)</li>
-            <li><strong>MAS Ma’had Al-Zaytun</strong> (2018 – 2021)</li>
-        </ul>
-    </section>
+    
 
     <!-- Keahlian -->
     <section id="skills" data-aos="fade-up">

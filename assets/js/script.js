@@ -222,12 +222,10 @@ if (typingElement) {
   type();
 }
 
-// Theme toggle logic
+// Theme toggle logic (switch-style inside nav)
 (function() {
   const html = document.documentElement;
-  const btn = document.getElementById('theme-toggle');
-  const iconSun = document.getElementById('icon-sun');
-  const iconMoon = document.getElementById('icon-moon');
+  const toggles = () => document.querySelectorAll('[data-theme-toggle]');
 
   // Swap themed assets (e.g., Power BI icon) based on current mode
   function updateThemedAssets(mode) {
@@ -239,8 +237,8 @@ if (typingElement) {
       if (target && img.getAttribute('src') !== target) {
         img.setAttribute('src', target);
       }
-  // Mark current variant for CSS fine-tuning
-  img.setAttribute('data-variant', mode === 'dark' ? 'dark' : 'light');
+      // Mark current variant for CSS fine-tuning
+      img.setAttribute('data-variant', mode === 'dark' ? 'dark' : 'light');
       // Reset visibility and rewire fallback handling for this image
       const li = img.closest('li.has-icon');
       const fallback = li ? li.querySelector('.si.si-fallback') : null;
@@ -253,15 +251,8 @@ if (typingElement) {
     });
   }
 
-  function updateIcons(mode) {
-    if (!iconSun || !iconMoon) return;
-    if (mode === 'dark') {
-      iconMoon.classList.add('hidden');
-      iconSun.classList.remove('hidden');
-    } else {
-      iconSun.classList.add('hidden');
-      iconMoon.classList.remove('hidden');
-    }
+  function syncToggleUI(mode) {
+    toggles().forEach(input => { input.checked = (mode === 'dark'); });
   }
 
   function applyMode(mode, persist) {
@@ -273,25 +264,20 @@ if (typingElement) {
       html.setAttribute('data-theme', 'light');
     }
     if (persist) {
-      localStorage.setItem('theme', mode);
+      try { localStorage.setItem('theme', mode); } catch {}
     }
-    updateIcons(mode);
-  updateThemedAssets(mode);
+    updateThemedAssets(mode);
+    syncToggleUI(mode);
   }
 
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
-  function currentModeFromSystem() {
-    return mq.matches ? 'dark' : 'light';
-  }
+  const currentModeFromSystem = () => (mq.matches ? 'dark' : 'light');
+  const getUserChoice = () => { try { return localStorage.getItem('theme'); } catch { return null; } };
 
-  function getUserChoice() {
-    try { return localStorage.getItem('theme'); } catch { return null; }
-  }
-
-  // Initialize icons based on current state
+  // Initialize based on current state
   const initial = html.getAttribute('data-theme') || currentModeFromSystem();
-  updateIcons(initial);
   updateThemedAssets(initial);
+  syncToggleUI(initial);
 
   // React to system scheme changes IF user hasn't chosen manually
   mq.addEventListener?.('change', (e) => {
@@ -301,15 +287,13 @@ if (typingElement) {
     }
   });
 
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const userChoice = getUserChoice();
-      const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      // Persist explicit user choice
+  // Wire all toggles (works for both desktop and mobile positions)
+  toggles().forEach(input => {
+    input.addEventListener('change', (e) => {
+      const next = e.target.checked ? 'dark' : 'light';
       applyMode(next, true);
     });
-  }
+  });
 })();
 
 // Replace broken brand icons with fallback monogram badges
