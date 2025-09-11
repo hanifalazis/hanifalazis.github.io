@@ -143,10 +143,22 @@
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="lang-switch" role="group" aria-label="Language selector">
-                <button type="button" class="lang-btn active" data-lang="id">ID</button>
-                <span class="sep">|</span>
-                <button type="button" class="lang-btn" data-lang="en">EN</button>
+            <div class="lang-dropdown" role="group" aria-label="Language selector">
+                <button type="button" class="lang-current" id="lang-current" aria-expanded="false" aria-haspopup="true">
+                    <img src="assets/icons/flag-id.svg" alt="Indonesia" class="flag-icon">
+                    <span class="lang-text">ID</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="lang-options" id="lang-options" role="menu">
+                    <button type="button" class="lang-option active" data-lang="id" role="menuitem">
+                        <img src="assets/icons/flag-id.svg" alt="Indonesia" class="flag-icon">
+                        <span>Indonesia</span>
+                    </button>
+                    <button type="button" class="lang-option" data-lang="en" role="menuitem">
+                        <img src="assets/icons/flag-en.svg" alt="English" class="flag-icon">
+                        <span>English</span>
+                    </button>
+                </div>
             </div>
         </nav>
     </header>

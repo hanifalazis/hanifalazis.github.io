@@ -443,10 +443,23 @@ if (typingElement) {
         node.textContent = dict[key];
       }
     });
-    // Update active state on buttons
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
+    
+    // Update dropdown display
+    const langCurrent = document.getElementById('lang-current');
+    const langText = langCurrent?.querySelector('.lang-text');
+    const flagIcon = langCurrent?.querySelector('.flag-icon');
+    
+    if (langText && flagIcon) {
+      langText.textContent = lang.toUpperCase();
+      flagIcon.src = `assets/icons/flag-${lang}.svg`;
+      flagIcon.alt = lang === 'id' ? 'Indonesia' : 'English';
+    }
+    
+    // Update active state on dropdown options
+    document.querySelectorAll('.lang-option').forEach(option => {
+      option.classList.toggle('active', option.dataset.lang === lang);
     });
+    
     try { localStorage.setItem('lang', lang); } catch {}
   }
 
@@ -455,13 +468,67 @@ if (typingElement) {
   const initialLang = saved ? saved : ((navigator.language || 'id').toLowerCase().startsWith('en') ? 'en' : 'id');
   applyLanguage(initialLang);
 
-  // Wire language buttons
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      applyLanguage(lang);
+  // Language dropdown functionality
+  const langDropdown = document.querySelector('.lang-dropdown');
+  const langCurrent = document.getElementById('lang-current');
+  const langOptions = document.getElementById('lang-options');
+
+  if (langCurrent && langOptions) {
+    // Check if mobile (simplified check)
+    function isMobile() {
+      return window.innerWidth <= 900;
+    }
+
+    // Toggle dropdown (only on desktop)
+    langCurrent.addEventListener('click', (e) => {
+      if (isMobile()) return; // Don't toggle on mobile
+      
+      e.stopPropagation();
+      const isOpen = langDropdown.classList.contains('active');
+      langDropdown.classList.toggle('active');
+      langCurrent.setAttribute('aria-expanded', !isOpen);
     });
-  });
+
+    // Handle option selection
+    document.querySelectorAll('.lang-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const lang = option.dataset.lang;
+        applyLanguage(lang);
+        
+        // Only close dropdown on desktop
+        if (!isMobile()) {
+          langDropdown.classList.remove('active');
+          langCurrent.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Close dropdown when clicking outside (desktop only)
+    document.addEventListener('click', () => {
+      if (!isMobile()) {
+        langDropdown.classList.remove('active');
+        langCurrent.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close dropdown on escape key (desktop only)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && langDropdown.classList.contains('active') && !isMobile()) {
+        langDropdown.classList.remove('active');
+        langCurrent.setAttribute('aria-expanded', 'false');
+        langCurrent.focus();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (isMobile() && langDropdown.classList.contains('active')) {
+        langDropdown.classList.remove('active');
+        langCurrent.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 })();
 
 // Replace broken brand icons with fallback monogram badges
