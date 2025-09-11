@@ -296,6 +296,174 @@ if (typingElement) {
   });
 })();
 
+// Basic i18n implementation
+(function() {
+  const translations = {
+    id: {
+  'skip': 'Lewati ke konten utama',
+  'nav.home': 'Home',
+  'nav.about': 'Tentang',
+  'nav.skills': 'Keahlian',
+  'nav.experience': 'Pengalaman',
+  'nav.portfolio': 'Portofolio',
+  'nav.service': 'Jasa',
+      'theme.darkMode': '🌙 Mode Gelap',
+      'hero.name': 'Muhammad Hanif Al-Azis',
+      'hero.im': 'Saya ',
+      'hero.desc': 'Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.',
+      'cta.downloadCv': 'Download CV',
+      'cta.linkedin': 'LinkedIn',
+      'cta.viewPortfolio': 'Lihat Portofolio',
+      'about.title': 'Tentang Saya',
+      'about.p1': 'Saya adalah seorang Data Engineer & Analyst dengan pengalaman lintas industri, mulai dari makanan & minuman, skincare, hingga properti. Saya terbiasa menangani pengelolaan data skala besar, termasuk akses dan analisis database perusahaan menggunakan DBeaver dan PostgreSQL.',
+      'about.p2': 'Keahlian utama saya meliputi data cleansing, data analysis, visualisasi data, serta optimalisasi proses bisnis. Saya menguasai Python, SQL (MySQL & PostgreSQL), dan berbagai tools analitik modern seperti Power BI, Tableau, Looker Studio, serta DBeaver untuk eksplorasi dan manajemen database.',
+      'about.p3': 'Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.',
+      'skills.title': 'Keahlian',
+      'skills.dataTools': 'Alat Analisis Data',
+      'skills.programming': 'Pemrograman',
+      'skills.soft': 'Soft Skills',
+      'skills.analytical': 'Pemikiran Analitis',
+      'skills.problemSolving': 'Pemecahan Masalah',
+      'skills.collaboration': 'Kolaborasi & Komunikasi',
+      'experience.title': 'Pengalaman Kerja',
+      'exp.1.title': 'Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)',
+      'exp.1.period': 'Februari 2025 – Sekarang',
+      'exp.1.li1': 'Memastikan kualitas dan konsistensi data material serta operasional.',
+      'exp.1.li2': 'Melakukan mapping & standardisasi data historis ke format terkini.',
+      'exp.1.li3': 'Menganalisis data penggunaan material 5 tahun terakhir.',
+      'exp.1.li4': 'Merancang template checksheet standar untuk maintenance.',
+      'exp.1.li5': 'Mendukung transformasi digital melalui data yang bersih & terstruktur.',
+      'exp.2.title': 'Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare',
+      'exp.2.period': 'Juni 2024 – September 2024',
+      'exp.2.li1': 'Menyusun dan menganalisis laporan keuangan (laba rugi & neraca).',
+      'exp.2.li2': 'Merancang sistem faktur yang efisien.',
+      'exp.2.li3': 'Bekerja sama dengan distributor untuk optimalisasi supply chain.',
+      'exp.3.title': 'Manajemen | Bakso Sehat Bakso Atom Galaxy – Restoran',
+      'exp.3.period': 'September 2023 – September 2024',
+      'exp.3.li1': 'Menganalisis data penjualan mingguan & bulanan untuk insight bisnis.',
+      'exp.3.li2': 'Mengawasi SOP operasional restoran.',
+      'exp.3.li3': 'Melakukan analisis inventaris untuk efisiensi stok & mengurangi pemborosan.',
+      'exp.4.title': 'Co-Founder | Beifimil – Skincare',
+      'exp.4.period': 'Oktober 2022 – Mei 2024',
+      'exp.4.li1': 'Membuat rencana bisnis & menyiapkan kebutuhan perusahaan (HKI, cetak biru).',
+      'exp.4.li2': 'Bekerja sama dengan maklon skincare untuk pengembangan produk.',
+      'exp.5.title': 'Marketing | Unggul Generasi Propertindo – Developer Properti',
+      'exp.5.period': 'Juli 2021 – Juni 2022',
+      'exp.5.li1': 'Mengelola kampanye iklan Facebook & Instagram.',
+      'exp.5.li2': 'Menganalisis performa iklan berbayar.',
+      'exp.5.li3': 'Melatih karyawan baru di bidang pemasaran digital.',
+      'portfolio.title': 'Portofolio (Projects)',
+      'portfolio.p1.title': '📊 Aplikasi Akuntansi berbasis Google Spreadsheet',
+      'portfolio.p1.d1': 'Fitur: Jurnal Kas, Jurnal Penjualan & Pembelian, Laporan Aset, Inventory, Laba Rugi, Neraca.',
+      'portfolio.p1.d2': 'Rumus yang digunakan: INDEX MATCH, SUMIFS, QUERY, UNIQUE, FILTER, CHOOSECOLUMN, dll.',
+      'portfolio.p1.cta': '🔗 Lihat Project',
+      'portfolio.p2.title': '🐍 Analisis Data Python – Amazon Best Sellers (Valentine 2024)',
+      'portfolio.p2.d1': 'Dataset: “2024 Amazon Best Sellers: Top Valentine Gifts”',
+      'portfolio.p2.d2': 'Analisis tren & visualisasi dengan Python (Pandas, Matplotlib).',
+      'portfolio.p2.cta': '🔗 Lihat Project',
+      'footer.title': 'Tertarik untuk Bekerja Sama?',
+      'footer.desc': 'Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:',
+      'footer.email': 'hanif@hifaliz.com',
+      'footer.phone': '0812-8053-4553'
+    },
+    en: {
+  'skip': 'Skip to main content',
+  'nav.home': 'Home',
+  'nav.about': 'About',
+  'nav.skills': 'Skills',
+  'nav.experience': 'Experience',
+  'nav.portfolio': 'Portfolio',
+  'nav.service': 'Service',
+      'theme.darkMode': '🌙 Dark Mode',
+      'hero.name': 'Muhammad Hanif Al-Azis',
+      'hero.im': "I'm ",
+      'hero.desc': 'Detail-oriented professional with experience in data analysis, financial reporting, and digital marketing. Currently working as a Data Cleansing Engineer focused on delivering clean, accurate, and structured data to support digital transformation and data-driven decision making.',
+      'cta.downloadCv': 'Download CV',
+      'cta.linkedin': 'LinkedIn',
+      'cta.viewPortfolio': 'View Portfolio',
+      'about.title': 'About Me',
+      'about.p1': 'I am a Data Engineer & Analyst with cross-industry experience, from F&B and skincare to real estate. I handle large-scale data management, including corporate database access and analysis using DBeaver and PostgreSQL.',
+      'about.p2': 'My core skills include data cleansing, data analysis, data visualization, and business process optimization. I use Python, SQL (MySQL & PostgreSQL), and modern analytics tools like Power BI, Tableau, Looker Studio, and DBeaver for exploration and database management.',
+      'about.p3': 'I often collaborate with cross-functional teams to prepare reports, build dashboards, and deliver insights that support data-driven strategic decisions.',
+      'skills.title': 'Skills',
+      'skills.dataTools': 'Data Analysis Tools',
+      'skills.programming': 'Programming',
+      'skills.soft': 'Soft Skills',
+      'skills.analytical': 'Analytical Thinking',
+      'skills.problemSolving': 'Problem Solving',
+      'skills.collaboration': 'Collaboration & Communication',
+      'experience.title': 'Work Experience',
+  'exp.1.title': 'Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)',
+  'exp.1.period': 'February 2025 – Present',
+  'exp.1.li1': 'Ensure quality and consistency of material and operational data.',
+  'exp.1.li2': 'Map and standardize historical data to the latest format.',
+  'exp.1.li3': 'Analyze material usage data over the last 5 years.',
+  'exp.1.li4': 'Design standard checksheet templates for maintenance.',
+  'exp.1.li5': 'Support digital transformation through clean and structured data.',
+  'exp.2.title': 'Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare',
+  'exp.2.period': 'June 2024 – September 2024',
+  'exp.2.li1': 'Prepare and analyze financial reports (P&L and balance sheet).',
+  'exp.2.li2': 'Design an efficient invoicing system.',
+  'exp.2.li3': 'Collaborate with distributors to optimize the supply chain.',
+  'exp.3.title': 'Management | Bakso Sehat Bakso Atom Galaxy – Restaurant',
+  'exp.3.period': 'September 2023 – September 2024',
+  'exp.3.li1': 'Analyze weekly & monthly sales data for business insights.',
+  'exp.3.li2': 'Oversee restaurant operational SOPs.',
+  'exp.3.li3': 'Conduct inventory analysis to improve efficiency and reduce waste.',
+  'exp.4.title': 'Co-Founder | Beifimil – Skincare',
+  'exp.4.period': 'October 2022 – May 2024',
+  'exp.4.li1': 'Create business plans and prepare company requirements (IPR, blueprints).',
+  'exp.4.li2': 'Work with skincare manufacturers to develop products.',
+  'exp.5.title': 'Marketing | Unggul Generasi Propertindo – Property Developer',
+  'exp.5.period': 'July 2021 – June 2022',
+  'exp.5.li1': 'Manage Facebook & Instagram ad campaigns.',
+  'exp.5.li2': 'Analyze paid ads performance.',
+  'exp.5.li3': 'Train new employees in digital marketing.',
+      'portfolio.title': 'Portfolio (Projects)',
+      'portfolio.p1.title': '📊 Accounting App using Google Spreadsheet',
+      'portfolio.p1.d1': 'Features: Cash Journal, Sales & Purchase Journal, Asset Report, Inventory, Profit & Loss, Balance Sheet.',
+      'portfolio.p1.d2': 'Functions used: INDEX MATCH, SUMIFS, QUERY, UNIQUE, FILTER, CHOOSECOLUMN, etc.',
+      'portfolio.p1.cta': '🔗 View Project',
+      'portfolio.p2.title': '🐍 Python Data Analysis – Amazon Best Sellers (Valentine 2024)',
+      'portfolio.p2.d1': 'Dataset: “2024 Amazon Best Sellers: Top Valentine Gifts”',
+      'portfolio.p2.d2': 'Trend analysis & visualization with Python (Pandas, Matplotlib).',
+      'portfolio.p2.cta': '🔗 View Project',
+      'footer.title': 'Interested in Working Together?',
+      'footer.desc': "I'm always open to discussions, projects, or new opportunities. Reach me via:",
+      'footer.email': 'hanif@hifaliz.com',
+      'footer.phone': '+62 812-8053-4553'
+    }
+  };
+
+  function applyLanguage(lang) {
+    const dict = translations[lang] || translations.id;
+    document.querySelectorAll('[data-i18n]').forEach(node => {
+      const key = node.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        node.textContent = dict[key];
+      }
+    });
+    // Update active state on buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    try { localStorage.setItem('lang', lang); } catch {}
+  }
+
+  // Initialize preferred language
+  const saved = (() => { try { return localStorage.getItem('lang'); } catch { return null; } })();
+  const initialLang = saved ? saved : ((navigator.language || 'id').toLowerCase().startsWith('en') ? 'en' : 'id');
+  applyLanguage(initialLang);
+
+  // Wire language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      applyLanguage(lang);
+    });
+  });
+})();
+
 // Replace broken brand icons with fallback monogram badges
 (function() {
   const items = document.querySelectorAll('.skills-grid li.has-icon');

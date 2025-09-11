@@ -120,7 +120,7 @@
     </script>
 </head>
 <body>
-                <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+                <a href="#main-content" class="skip-link" data-i18n="skip">Lewati ke konten utama</a>
     <header>
         <a href="#home" class="logo">Hifaliz</a>
                 <div class="hamburger-menu" id="hamburger" role="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false" tabindex="0">
@@ -129,19 +129,24 @@
             <span></span>
         </div>
                 <nav id="nav-menu" aria-label="Navigasi utama">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">Tentang</a>
-            <a href="#skills">Keahlian</a>
-            <a href="#experience">Pengalaman</a>
-            <a href="#portfolio">Portofolio</a>
-                        <a href="service" target="_blank" rel="noopener noreferrer">Jasa</a>
+            <a href="#home" class="active" data-i18n="nav.home">Home</a>
+            <a href="#about" data-i18n="nav.about">Tentang</a>
+            <a href="#skills" data-i18n="nav.skills">Keahlian</a>
+            <a href="#experience" data-i18n="nav.experience">Pengalaman</a>
+            <a href="#portfolio" data-i18n="nav.portfolio">Portofolio</a>
+                        <a href="service" target="_blank" rel="noopener noreferrer" data-i18n="nav.service">Jasa</a>
             <!-- Theme switch: desktop (right of nav) and mobile (bottom of menu) -->
             <div class="nav-theme-toggle" aria-label="Theme switch container">
-                <label for="theme-toggle-input" class="switch-label">🌙 Dark Mode</label>
+                <label for="theme-toggle-input" class="switch-label" data-i18n="theme.darkMode">🌙 Mode Gelap</label>
                 <label class="switch" title="Dark mode">
                     <input type="checkbox" id="theme-toggle-input" class="theme-toggle-input" data-theme-toggle aria-label="Toggle dark mode">
                     <span class="slider"></span>
                 </label>
+            </div>
+            <div class="lang-switch" role="group" aria-label="Language selector">
+                <button type="button" class="lang-btn active" data-lang="id">ID</button>
+                <span class="sep">|</span>
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
             </div>
         </nav>
     </header>
@@ -153,35 +158,35 @@
             <img src="assets/images/profile.jpg" alt="Muhammad Hanif Al-Azis" decoding="async" fetchpriority="high" width="280" height="280">
         </div>
         <div class="home-content" data-aos="fade-left">
-            <h1 class="hero-title">Muhammad Hanif Al-Azis</h1>
+            <h1 class="hero-title" data-i18n="hero.name">Muhammad Hanif Al-Azis</h1>
             <div class="typing-hero">
-                <span class="typing-label">I'm </span><span class="typing-dynamic"></span>
+                <span class="typing-label" data-i18n="hero.im">I'm </span><span class="typing-dynamic"></span>
             </div>
-            <p class="hero-desc">Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.</p>
+            <p class="hero-desc" data-i18n="hero.desc">Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.</p>
             <div class="cta-buttons">
-                                <a href="assets/files/cv-muhammad-hanif-al-azis.pdf" class="btn primary" target="_blank" rel="noopener"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
-                                <a href="https://linkedin.com/in/hanifalazis" class="btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-                <a href="#portfolio" class="btn tertiary"><i class="fa-solid fa-chart-column"></i> Lihat Portofolio</a>
+                                <a href="assets/files/cv-muhammad-hanif-al-azis.pdf" class="btn primary" target="_blank" rel="noopener"><i class="fa-solid fa-file-arrow-down"></i> <span data-i18n="cta.downloadCv">Download CV</span></a>
+                                <a href="https://linkedin.com/in/hanifalazis" class="btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> <span data-i18n="cta.linkedin">LinkedIn</span></a>
+                <a href="#portfolio" class="btn tertiary"><i class="fa-solid fa-chart-column"></i> <span data-i18n="cta.viewPortfolio">Lihat Portofolio</span></a>
             </div>
         </div>
     </section>
 
     <!-- Tentang Saya -->
     <section id="about" data-aos="fade-up">
-    <h2>Tentang Saya</h2>
-    <p>Saya adalah seorang Data Engineer & Analyst dengan pengalaman lintas industri, mulai dari makanan & minuman, skincare, hingga properti. Saya terbiasa menangani pengelolaan data skala besar, termasuk akses dan analisis database perusahaan menggunakan DBeaver dan PostgreSQL.</p>
-    <p>Keahlian utama saya meliputi data cleansing, data analysis, visualisasi data, serta optimalisasi proses bisnis. Saya menguasai Python, SQL (MySQL & PostgreSQL), dan berbagai tools analitik modern seperti Power BI, Tableau, Looker Studio, serta DBeaver untuk eksplorasi dan manajemen database.</p>
-    <p>Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.</p>
+    <h2 data-i18n="about.title">Tentang Saya</h2>
+    <p data-i18n="about.p1">Saya adalah seorang Data Engineer & Analyst dengan pengalaman lintas industri, mulai dari makanan & minuman, skincare, hingga properti. Saya terbiasa menangani pengelolaan data skala besar, termasuk akses dan analisis database perusahaan menggunakan DBeaver dan PostgreSQL.</p>
+    <p data-i18n="about.p2">Keahlian utama saya meliputi data cleansing, data analysis, visualisasi data, serta optimalisasi proses bisnis. Saya menguasai Python, SQL (MySQL & PostgreSQL), dan berbagai tools analitik modern seperti Power BI, Tableau, Looker Studio, serta DBeaver untuk eksplorasi dan manajemen database.</p>
+    <p data-i18n="about.p3">Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.</p>
     </section>
 
     
 
     <!-- Keahlian -->
     <section id="skills" data-aos="fade-up">
-        <h2>Keahlian</h2>
+    <h2 data-i18n="skills.title">Keahlian</h2>
         <div class="skills-grid">
             <div>
-                                                <h3>Data Analysis Tools</h3>
+                                                <h3 data-i18n="skills.dataTools">Data Analysis Tools</h3>
                                                 <ul>
                                                                             <li class="has-icon">
                                                                                 <img class="si-img" src="assets/icons/brand-microsoft-excel-svgrepo-com.svg" alt="Google Sheets" width="20" height="20" loading="lazy" decoding="async" />
@@ -232,7 +237,7 @@
                                                 </ul>
             </div>
             <div>
-                                                <h3>Programming</h3>
+                                                <h3 data-i18n="skills.programming">Programming</h3>
                                                 <ul>
                                                         <li class="has-icon">
                                                             <img class="si-img" src="assets/icons/python-svgrepo-com (1).svg" alt="Python" width="20" height="20" loading="lazy" decoding="async" />
@@ -245,11 +250,11 @@
                                                 </ul>
             </div>
             <div>
-                <h3>Soft Skills</h3>
+                <h3 data-i18n="skills.soft">Soft Skills</h3>
                 <ul>
-                    <li>Analytical Thinking</li>
-                    <li>Problem Solving</li>
-                    <li>Collaboration & Communication</li>
+                    <li data-i18n="skills.analytical">Analytical Thinking</li>
+                    <li data-i18n="skills.problemSolving">Problem Solving</li>
+                    <li data-i18n="skills.collaboration">Collaboration & Communication</li>
                 </ul>
             </div>
         </div>
@@ -257,52 +262,52 @@
 
     <!-- Pengalaman Kerja -->
     <section id="experience" data-aos="fade-up">
-        <h2>Pengalaman Kerja</h2>
+    <h2 data-i18n="experience.title">Pengalaman Kerja</h2>
         <div class="experience-list">
             <div class="job">
-                <h3>Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)</h3>
-                <span>Februari 2025 – Sekarang</span>
+                <h3 data-i18n="exp.1.title">Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)</h3>
+                <span data-i18n="exp.1.period">Februari 2025 – Sekarang</span>
                 <ul>
-                    <li>Memastikan kualitas dan konsistensi data material serta operasional.</li>
-                    <li>Melakukan mapping & standardisasi data historis ke format terkini.</li>
-                    <li>Menganalisis data penggunaan material 5 tahun terakhir.</li>
-                    <li>Merancang template checksheet standar untuk maintenance.</li>
-                    <li>Mendukung transformasi digital melalui data yang bersih & terstruktur.</li>
+                    <li data-i18n="exp.1.li1">Memastikan kualitas dan konsistensi data material serta operasional.</li>
+                    <li data-i18n="exp.1.li2">Melakukan mapping & standardisasi data historis ke format terkini.</li>
+                    <li data-i18n="exp.1.li3">Menganalisis data penggunaan material 5 tahun terakhir.</li>
+                    <li data-i18n="exp.1.li4">Merancang template checksheet standar untuk maintenance.</li>
+                    <li data-i18n="exp.1.li5">Mendukung transformasi digital melalui data yang bersih & terstruktur.</li>
                 </ul>
             </div>
             <div class="job">
-                <h3>Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare</h3>
-                <span>Juni 2024 – September 2024</span>
+                <h3 data-i18n="exp.2.title">Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare</h3>
+                <span data-i18n="exp.2.period">Juni 2024 – September 2024</span>
                 <ul>
-                    <li>Menyusun dan menganalisis laporan keuangan (laba rugi & neraca).</li>
-                    <li>Merancang sistem faktur yang efisien.</li>
-                    <li>Bekerja sama dengan distributor untuk optimalisasi supply chain.</li>
+                    <li data-i18n="exp.2.li1">Menyusun dan menganalisis laporan keuangan (laba rugi & neraca).</li>
+                    <li data-i18n="exp.2.li2">Merancang sistem faktur yang efisien.</li>
+                    <li data-i18n="exp.2.li3">Bekerja sama dengan distributor untuk optimalisasi supply chain.</li>
                 </ul>
             </div>
             <div class="job">
-                <h3>Manajemen | Bakso Sehat Bakso Atom Galaxy – Restoran</h3>
-                <span>September 2023 – September 2024</span>
+                <h3 data-i18n="exp.3.title">Manajemen | Bakso Sehat Bakso Atom Galaxy – Restoran</h3>
+                <span data-i18n="exp.3.period">September 2023 – September 2024</span>
                 <ul>
-                    <li>Menganalisis data penjualan mingguan & bulanan untuk insight bisnis.</li>
-                    <li>Mengawasi SOP operasional restoran.</li>
-                    <li>Melakukan analisis inventaris untuk efisiensi stok & mengurangi pemborosan.</li>
+                    <li data-i18n="exp.3.li1">Menganalisis data penjualan mingguan & bulanan untuk insight bisnis.</li>
+                    <li data-i18n="exp.3.li2">Mengawasi SOP operasional restoran.</li>
+                    <li data-i18n="exp.3.li3">Melakukan analisis inventaris untuk efisiensi stok & mengurangi pemborosan.</li>
                 </ul>
             </div>
             <div class="job">
-                <h3>Co-Founder | Beifimil – Skincare</h3>
-                <span>Oktober 2022 – Mei 2024</span>
+                <h3 data-i18n="exp.4.title">Co-Founder | Beifimil – Skincare</h3>
+                <span data-i18n="exp.4.period">Oktober 2022 – Mei 2024</span>
                 <ul>
-                    <li>Membuat rencana bisnis & menyiapkan kebutuhan perusahaan (HKI, cetak biru).</li>
-                    <li>Bekerja sama dengan maklon skincare untuk pengembangan produk.</li>
+                    <li data-i18n="exp.4.li1">Membuat rencana bisnis & menyiapkan kebutuhan perusahaan (HKI, cetak biru).</li>
+                    <li data-i18n="exp.4.li2">Bekerja sama dengan maklon skincare untuk pengembangan produk.</li>
                 </ul>
             </div>
             <div class="job">
-                <h3>Marketing | Unggul Generasi Propertindo – Developer Properti</h3>
-                <span>Juli 2021 – Juni 2022</span>
+                <h3 data-i18n="exp.5.title">Marketing | Unggul Generasi Propertindo – Developer Properti</h3>
+                <span data-i18n="exp.5.period">Juli 2021 – Juni 2022</span>
                 <ul>
-                    <li>Mengelola kampanye iklan Facebook & Instagram.</li>
-                    <li>Menganalisis performa iklan berbayar.</li>
-                    <li>Melatih karyawan baru di bidang pemasaran digital.</li>
+                    <li data-i18n="exp.5.li1">Mengelola kampanye iklan Facebook & Instagram.</li>
+                    <li data-i18n="exp.5.li2">Menganalisis performa iklan berbayar.</li>
+                    <li data-i18n="exp.5.li3">Melatih karyawan baru di bidang pemasaran digital.</li>
                 </ul>
             </div>
         </div>
@@ -310,19 +315,19 @@
 
     <!-- Portofolio -->
     <section id="portfolio" data-aos="fade-up">
-        <h2>Portofolio (Projects)</h2>
+    <h2 data-i18n="portfolio.title">Portofolio (Projects)</h2>
         <div class="portfolio-list">
             <div class="project">
-                <h3>📊 Aplikasi Akuntansi berbasis Google Spreadsheet</h3>
-                <p>Fitur: Jurnal Kas, Jurnal Penjualan & Pembelian, Laporan Aset, Inventory, Laba Rugi, Neraca.</p>
-                <p>Rumus yang digunakan: INDEX MATCH, SUMIFS, QUERY, UNIQUE, FILTER, CHOOSECOLUMN, dll.</p>
-                <a href="https://docs.google.com/spreadsheets/d/19gcBJWEpWHnxFLaINBM3fFnQVFF4HSfbXfmzvMIjUEw/edit?usp=sharing" class="btn" target="_blank">🔗 Lihat Project</a>
+                <h3 data-i18n="portfolio.p1.title">📊 Aplikasi Akuntansi berbasis Google Spreadsheet</h3>
+                <p data-i18n="portfolio.p1.d1">Fitur: Jurnal Kas, Jurnal Penjualan & Pembelian, Laporan Aset, Inventory, Laba Rugi, Neraca.</p>
+                <p data-i18n="portfolio.p1.d2">Rumus yang digunakan: INDEX MATCH, SUMIFS, QUERY, UNIQUE, FILTER, CHOOSECOLUMN, dll.</p>
+                <a href="https://docs.google.com/spreadsheets/d/19gcBJWEpWHnxFLaINBM3fFnQVFF4HSfbXfmzvMIjUEw/edit?usp=sharing" class="btn" target="_blank" data-i18n="portfolio.p1.cta">🔗 Lihat Project</a>
             </div>
             <div class="project">
-                <h3>🐍 Analisis Data Python – Amazon Best Sellers (Valentine 2024)</h3>
-                <p>Dataset: “2024 Amazon Best Sellers: Top Valentine Gifts”</p>
-                <p>Analisis tren & visualisasi dengan Python (Pandas, Matplotlib).</p>
-                <a href="https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024" class="btn" target="_blank" rel="noopener noreferrer">🔗 Lihat Project</a>
+                <h3 data-i18n="portfolio.p2.title">🐍 Analisis Data Python – Amazon Best Sellers (Valentine 2024)</h3>
+                <p data-i18n="portfolio.p2.d1">Dataset: “2024 Amazon Best Sellers: Top Valentine Gifts”</p>
+                <p data-i18n="portfolio.p2.d2">Analisis tren & visualisasi dengan Python (Pandas, Matplotlib).</p>
+                <a href="https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024" class="btn" target="_blank" rel="noopener noreferrer" data-i18n="portfolio.p2.cta">🔗 Lihat Project</a>
             </div>
         </div>
     </section>
@@ -330,11 +335,11 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <h3>Tertarik untuk Bekerja Sama?</h3>
-            <p>Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:</p>
+            <h3 data-i18n="footer.title">Tertarik untuk Bekerja Sama?</h3>
+            <p data-i18n="footer.desc">Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:</p>
             <div class="footer-contact">
-                <a href="mailto:hanif@hifaliz.com" class="footer-link"><i class="fa-solid fa-envelope"></i> hanif@hifaliz.com</a>
-                <a href="tel:+6281280534553" class="footer-link"><i class="fa-solid fa-phone"></i> 0812-8053-4553</a>
+                <a href="mailto:hanif@hifaliz.com" class="footer-link"><i class="fa-solid fa-envelope"></i> <span data-i18n="footer.email">hanif@hifaliz.com</span></a>
+                <a href="tel:+6281280534553" class="footer-link"><i class="fa-solid fa-phone"></i> <span data-i18n="footer.phone">0812-8053-4553</span></a>
             </div>
             <div class="footer-socials">
                 <a href="https://linkedin.com/in/hanifalazis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
