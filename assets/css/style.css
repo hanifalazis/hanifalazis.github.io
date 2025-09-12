@@ -88,7 +88,16 @@ html[data-theme='light'] :focus-visible {
 html {
     font-size: 62.5%;
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    /* scroll-padding-top is removed as JS will handle the offset */
+}
+
+/* Disable AOS animations when scrolling via nav link */
+body.aos-disabled [data-aos],
+body.aos-suppressed [data-aos] {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
 }
 
 body {

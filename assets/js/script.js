@@ -24,151 +24,263 @@ hamburger.addEventListener('keydown', (e) => {
 
 // Close mobile menu when clicking on a nav link
 const navLinks = document.querySelectorAll('nav a');
-// Short lock so tap highlight stays until section reached
-let navActiveLock = null; // { hash: '#id', until: timestamp }
 
-function setActiveLinkByHash(hash) {
-  navLinks.forEach(l => {
-    if (l.hash === hash) {
-      l.classList.add('active');
-      l.setAttribute('aria-current', 'page');
-    } else {
-      l.classList.remove('active');
-      l.removeAttribute('aria-current');
-    }
-  });
-}
+// Track whether the user has performed a manual scroll
+let hasManualScrolled = false;
+// Global AOS suppression flag: when true, AOS remains disabled until manual scroll occurs
+let aosSuppressed = false;
+// Track ongoing scroll - managed for smooth transitions
+let isScrolling = false;
+let scrollTimeout = null;
+// Smart throttling for rapid clicks
+let lastClickTime = 0;
+let clickThrottleDelay = 100; // Allow new clicks every 100ms for responsiveness
+// Pre-calculated positions cache to eliminate calculation delays
+let positionCache = new Map();
+let headerHeightCache = null;
+let isInitialized = false;
 
-function smoothScrollWithStabilize(targetEl) {
-  if (!targetEl) return;
-  // Use CSS scroll-margin-top to handle header offset
-  targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // After layout/animations settle, snap precisely again
-  let lastTop = null;
-  let stableFrames = 0;
-  let tries = 0;
-  function check() {
-    const topNow = targetEl.getBoundingClientRect().top;
-    if (lastTop !== null && Math.abs(topNow - lastTop) < 0.5) {
-      stableFrames++;
-    } else {
-      stableFrames = 0;
-    }
-    lastTop = topNow;
-    tries++;
-    if (stableFrames >= 3 || tries > 40) {
-      targetEl.scrollIntoView({ behavior: 'auto', block: 'start' });
-      return;
-    }
-    requestAnimationFrame(check);
+function enableAOSIfNeeded() {
+  if (!aosSuppressed) {
+    document.body.classList.remove('aos-disabled');
   }
-  requestAnimationFrame(check);
 }
-navLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Close mobile menu
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('active');
 
-  // Remove active from all links, add to clicked
-  navLinks.forEach(l => { l.classList.remove('active'); l.removeAttribute('aria-current'); });
-  this.classList.add('active');
-  this.setAttribute('aria-current', 'page');
-  // Lock highlight briefly so scroll handler doesn't clear it immediately
-  navActiveLock = { hash: this.hash, until: Date.now() + 1500 };
+function suppressAOSUntilManualScroll() {
+  aosSuppressed = true;
+  document.body.classList.add('aos-suppressed');
+  // Also disable during programmatic scrolls
+  document.body.classList.add('aos-disabled');
+}
 
-    // Smooth scroll for navigation
-  if (this.hash !== '') {
-      e.preventDefault();
-      const hash = this.hash;
-      const target = document.querySelector(hash);
-      smoothScrollWithStabilize(target);
+function liftAOSSuppression() {
+  if (aosSuppressed) {
+    aosSuppressed = false;
+    document.body.classList.remove('aos-suppressed');
+    document.body.classList.remove('aos-disabled');
+    // Optional: small timeout in case we are mid-scroll
+    setTimeout(() => {
+      document.body.classList.remove('aos-disabled');
+    }, 50);
+  }
+}
+
+function getHeaderHeight() {
+    if (headerHeightCache !== null) {
+        return headerHeightCache;
     }
-  });
+    const header = document.querySelector('header');
+    headerHeightCache = header ? header.offsetHeight : 60;
+    return headerHeightCache;
+}
+
+function precalculatePositions() {
+    // Pre-calculate all section positions to eliminate delays on first navigation
+    positionCache.clear();
+    headerHeightCache = null; // Reset cache to recalculate
+    const offset = getHeaderHeight();
+    
+    sections.forEach(section => {
+        const position = Math.max(0, section.offsetTop - offset);
+        positionCache.set(section.id, position);
+    });
+    
+    isInitialized = true;
+}
+
+function updatePositionCache() {
+    // Update cache when layout might have changed
+    if (isInitialized) {
+        precalculatePositions();
+    }
+}
+
+function smoothScrollTo(targetId) {
+  const targetElement = document.getElementById(targetId);
+  if (!targetElement) return;
+
+  // Clear any pending timeout, but allow current smooth scroll to continue until new one starts
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
+  }
+  
+  // Ensure positions are pre-calculated to eliminate delay
+  if (!isInitialized) {
+    precalculatePositions();
+  }
+  
+  isScrolling = true;
+
+  // Ensure AOS is disabled during programmatic scroll
+  document.body.classList.add('aos-disabled');
+  document.body.classList.add('aos-suppressed');
+
+  // For initial load, use instant positioning to avoid jerky animation
+  const isInitialLoad = window.pageYOffset === 0 && !hasManualScrolled;
+  
+  // Use cached position if available, otherwise calculate
+  let targetPosition = positionCache.get(targetId);
+  if (targetPosition === undefined) {
+    const offset = getHeaderHeight();
+    targetPosition = Math.max(0, targetElement.offsetTop - offset);
+    positionCache.set(targetId, targetPosition);
+  }
+  
+  if (isInitialLoad) {
+    // Instant positioning for initial load - no animation, no delays
+    window.scrollTo({ top: targetPosition, behavior: 'auto' });
+    
+    // Minimal correction using requestAnimationFrame for smooth execution
+    requestAnimationFrame(() => {
+      const gap = targetElement.getBoundingClientRect().top - getHeaderHeight();
+      if (Math.abs(gap) > 2) {
+        const correction = window.pageYOffset + gap;
+        window.scrollTo({ top: Math.max(0, correction), behavior: 'auto' });
+      }
+      isScrolling = false;
+    });
+  } else {
+    // Always use smooth scroll - let browser handle overlapping animations gracefully
+    // This prevents choppy interruptions while still being responsive
+    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+    
+    // Longer timeout to let smooth scroll complete naturally - reduces choppiness
+    scrollTimeout = setTimeout(() => {
+      const currentTarget = targetElement.getBoundingClientRect().top - getHeaderHeight();
+      
+      // Only correct if there's significant offset (reduce unnecessary corrections)
+      if (Math.abs(currentTarget) > 5) {
+        const snapTarget = Math.max(0, window.pageYOffset + currentTarget);
+        window.scrollTo({ top: snapTarget, behavior: 'smooth' }); // Keep smooth for consistency
+      }
+      
+      isScrolling = false;
+    }, 800); // Longer timeout allows smooth animation to complete naturally
+  }
+}
+
+navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        const hash = this.hash;
+        if (hash.startsWith('#')) {
+            e.preventDefault();
+            
+            // Smart throttling - allow reasonable rapid clicking but prevent excessive spam
+            const now = Date.now();
+            if (now - lastClickTime < clickThrottleDelay) {
+                // Still allow the click but update target - smooth transition to new destination
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = null;
+                }
+            }
+            lastClickTime = now;
+            
+            const targetId = hash.substring(1);
+            
+            // Ensure initialization before any scroll action
+            if (!isInitialized) {
+                precalculatePositions();
+            }
+            
+            // Close mobile menu if open
+            if (hamburger.classList.contains('active')) {
+                toggleMenu();
+            }
+            
+            // ALWAYS suppress AOS during navigation clicks to prevent layout shifts
+            suppressAOSUntilManualScroll();
+            
+            // Call scroll function - browser will handle smooth transition between targets
+            smoothScrollTo(targetId);
+        }
+    });
 });
 
 // Highlight nav on scroll + compact header
 const sections = document.querySelectorAll('section[id]');
 const headerEl = document.querySelector('header');
-window.addEventListener('scroll', () => {
-  let scrollPos = window.scrollY || window.pageYOffset;
-  // Toggle compact header when scrolling
-  if (headerEl) {
-    const isScrolled = scrollPos > 10;
-    if (isScrolled !== headerEl.classList.contains('scrolled')) {
-      headerEl.classList.toggle('scrolled', isScrolled);
-    }
-  }
-  let offset = 120; // adjust for header height
-  let found = false;
 
-  // If user just tapped a nav link, keep it highlighted until we arrive (or timeout)
-  if (navActiveLock) {
-    const { hash, until } = navActiveLock;
-    const targetId = hash ? hash.replace('#','') : '';
-    const targetSection = targetId ? document.getElementById(targetId) : null;
-    if (targetSection) {
-      const top = targetSection.offsetTop - offset;
-      const bottom = top + targetSection.offsetHeight;
-      if (scrollPos >= top && scrollPos < bottom) {
-        // Arrived at target; clear lock and proceed with normal handling
-        navActiveLock = null;
-      }
-    }
-    if (navActiveLock && Date.now() < until) {
-      // Enforce tapped highlight and skip automatic recalculation for now
-      setActiveLinkByHash(hash);
-      return;
-    }
-    // Lock expired; proceed
-    navActiveLock = null;
-  }
-  sections.forEach(section => {
-    const top = section.offsetTop - offset;
-    const bottom = top + section.offsetHeight;
-    if (scrollPos >= top && scrollPos < bottom) {
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        link.removeAttribute('aria-current');
-        if (link.hash === '#' + section.id) {
-          link.classList.add('active');
-          link.setAttribute('aria-current', 'page');
+function updateActiveNav() {
+    let scrollPos = window.scrollY || window.pageYOffset;
+    const offset = getHeaderHeight() + 20; // Add a small buffer
+    let currentSectionId = '';
+
+    sections.forEach(section => {
+        if (scrollPos >= section.offsetTop - offset) {
+            currentSectionId = section.id;
         }
-      });
-      found = true;
+    });
+
+    // Special case for reaching the very bottom of the page
+    if (window.innerHeight + scrollPos >= document.documentElement.scrollHeight - 2) {
+        const lastSection = sections[sections.length - 1];
+        if (lastSection) {
+            currentSectionId = lastSection.id;
+        }
     }
-  });
-  // If no section matched, check if we're at (or near) the bottom, then highlight Portfolio
-  if (!found) {
-    const nearBottom = window.innerHeight + scrollPos >= (document.documentElement.scrollHeight - 2);
-    if (nearBottom) {
-      navLinks.forEach(link => {
-        if (link.hash === '#portfolio') {
-          link.classList.add('active');
-          link.setAttribute('aria-current', 'page');
+
+    navLinks.forEach(link => {
+        const linkHash = link.hash.substring(1);
+        if (linkHash === currentSectionId) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
         } else {
-          link.classList.remove('active');
-          link.removeAttribute('aria-current');
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
         }
-      });
-    }
-    // Otherwise, preserve current active instead of clearing everything to avoid flicker gaps
-  }
-});
+    });
+}
 
-// Initialize nav state and header style on load
-window.dispatchEvent(new Event('scroll'));
+window.addEventListener('scroll', () => {
+    // Toggle compact header when scrolling
+    if (headerEl) {
+        const isScrolled = (window.scrollY || window.pageYOffset) > 10;
+        headerEl.classList.toggle('scrolled', isScrolled);
+    }
+    updateActiveNav();
+});
 
 // Correct hash scroll on initial load (direct link like /#skills)
 window.addEventListener('load', () => {
-  if (location.hash) {
-    const target = document.querySelector(location.hash);
-    if (target) {
-  // slight delay to allow AOS/paint
-  setTimeout(() => smoothScrollWithStabilize(target), 100);
+    if (location.hash) {
+        const targetId = location.hash.substring(1);
+        // On direct hash load, suppress AOS so first view doesn't animate/shift
+        suppressAOSUntilManualScroll();
+        
+        // Wait for all content to load, then position instantly (no animation)
+        setTimeout(() => {
+            smoothScrollTo(targetId);
+        }, 150); // Reduced delay for faster positioning
     }
-  }
+    // Initial nav highlight
+    updateActiveNav();
 });
+
+// Detect manual scrolling to lift suppression
+function markManualScroll() {
+  if (!hasManualScrolled) {
+    hasManualScrolled = true;
+    liftAOSSuppression();
+    // Remove listeners after first manual scroll
+    window.removeEventListener('wheel', onWheel, { passive: true });
+    window.removeEventListener('touchstart', onTouchStart, { passive: true });
+    window.removeEventListener('keydown', onKeydown, true);
+  }
+}
+
+function onWheel() { markManualScroll(); }
+function onTouchStart() { markManualScroll(); }
+function onKeydown(e) {
+  // Keys that typically cause scrolling
+  const keys = ['ArrowUp','ArrowDown','PageUp','PageDown','Home','End','Space'];
+  if (keys.includes(e.key)) markManualScroll();
+}
+
+window.addEventListener('wheel', onWheel, { passive: true });
+window.addEventListener('touchstart', onTouchStart, { passive: true });
+window.addEventListener('keydown', onKeydown, true);
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', function(e) {
@@ -550,5 +662,33 @@ if (typingElement) {
         img.style.display = 'none';
       }
     }
+  });
+})();
+
+// Initialize smooth navigation system
+(function initializeNavigation() {
+  // Pre-calculate positions as soon as DOM is ready to eliminate delays
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(precalculatePositions, 0); // Async to avoid blocking
+    });
+  } else {
+    setTimeout(precalculatePositions, 0); // Async to avoid blocking
+  }
+  
+  // Update position cache when layout changes
+  window.addEventListener('resize', () => {
+    clearTimeout(scrollTimeout);
+    setTimeout(updatePositionCache, 100); // Debounce resize events
+  });
+  
+  // Re-calculate after images load (could affect layout)
+  window.addEventListener('load', () => {
+    setTimeout(updatePositionCache, 100);
+  });
+  
+  // Update cache when orientation changes on mobile
+  window.addEventListener('orientationchange', () => {
+    setTimeout(updatePositionCache, 200);
   });
 })();
