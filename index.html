@@ -123,11 +123,12 @@
                 <a href="#main-content" class="skip-link" data-i18n="skip">Lewati ke konten utama</a>
     <header>
         <a href="#home" class="logo">Hifaliz</a>
-                <div class="hamburger-menu" id="hamburger" role="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false" tabindex="0">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <button class="hamburger-menu" id="hamburger" type="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="sr-only">Menu</span>
+        </button>
                 <nav id="nav-menu" aria-label="Navigasi utama">
             <a href="#home" class="active" data-i18n="nav.home">Home</a>
             <a href="#about" data-i18n="nav.about">Tentang</a>
@@ -137,7 +138,7 @@
                         <a href="service" target="_blank" rel="noopener noreferrer" data-i18n="nav.service">Jasa</a>
             <!-- Theme switch: desktop (right of nav) and mobile (bottom of menu) -->
             <div class="nav-theme-toggle" aria-label="Theme switch container">
-                <label for="theme-toggle-input" class="switch-label" data-i18n="theme.darkMode">🌙 Mode Gelap</label>
+                <label for="theme-toggle-input" class="switch-label" data-i18n="theme.darkMode">Mode Gelap</label>
                 <label class="switch" title="Dark mode">
                     <input type="checkbox" id="theme-toggle-input" class="theme-toggle-input" data-theme-toggle aria-label="Toggle dark mode">
                     <span class="slider"></span>

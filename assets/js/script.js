@@ -1,23 +1,65 @@
 // script.js
-// Hamburger Menu (click & keyboard, ARIA expanded)
+// Enhanced Hamburger Menu with better accessibility and focus management
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
+let menuFocusableElements = null;
 
 function toggleMenu() {
+  const wasExpanded = hamburger.classList.contains('active');
+  
   hamburger.classList.toggle('active');
   navMenu.classList.toggle('active');
-  const expanded = hamburger.classList.contains('active');
-  hamburger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-  // When menu opens, refresh highlight based on current scroll position
-  if (expanded) {
+  
+  const isExpanded = hamburger.classList.contains('active');
+  hamburger.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+  
+  // Enhanced focus management
+  if (isExpanded) {
+    // Menu is opening - allow background scrolling
+    
+    // Get all focusable elements in the menu
+    menuFocusableElements = navMenu.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    
+    // Focus first menu item for better keyboard navigation
+    if (menuFocusableElements.length > 0) {
+      setTimeout(() => menuFocusableElements[0].focus(), 100);
+    }
+    
+    // Add escape key listener
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    // Refresh highlight based on current scroll position
     window.dispatchEvent(new Event('scroll'));
+  } else {
+    // Menu is closing
+    hamburger.focus(); // Return focus to hamburger button
+    document.removeEventListener('keydown', handleEscapeKey);
   }
 }
 
+function handleEscapeKey(e) {
+  if (e.key === 'Escape' && hamburger.classList.contains('active')) {
+    e.preventDefault();
+    toggleMenu();
+  }
+}
+
+// Enhanced keyboard navigation
 hamburger.addEventListener('click', toggleMenu);
 hamburger.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
+    toggleMenu();
+  }
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (hamburger.classList.contains('active') && 
+      !navMenu.contains(e.target) && 
+      !hamburger.contains(e.target)) {
     toggleMenu();
   }
 });
@@ -419,7 +461,7 @@ if (typingElement) {
   'nav.experience': 'Pengalaman',
   'nav.portfolio': 'Portofolio',
   'nav.service': 'Jasa',
-      'theme.darkMode': '🌙 Mode Gelap',
+  'theme.darkMode': 'Mode Gelap',
       'hero.name': 'Muhammad Hanif Al-Azis',
       'hero.im': 'Saya ',
       'hero.desc': 'Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.',
@@ -486,7 +528,7 @@ if (typingElement) {
   'nav.experience': 'Experience',
   'nav.portfolio': 'Portfolio',
   'nav.service': 'Service',
-      'theme.darkMode': '🌙 Dark Mode',
+  'theme.darkMode': 'Dark Mode',
       'hero.name': 'Muhammad Hanif Al-Azis',
       'hero.im': "I'm ",
       'hero.desc': 'Detail-oriented professional with experience in data analysis, financial reporting, and digital marketing. Currently working as a Data Cleansing Engineer focused on delivering clean, accurate, and structured data to support digital transformation and data-driven decision making.',
@@ -591,10 +633,8 @@ if (typingElement) {
       return window.innerWidth <= 900;
     }
 
-    // Toggle dropdown (only on desktop)
+    // Toggle dropdown (works on both desktop and mobile)
     langCurrent.addEventListener('click', (e) => {
-      if (isMobile()) return; // Don't toggle on mobile
-      
       e.stopPropagation();
       const isOpen = langDropdown.classList.contains('active');
       langDropdown.classList.toggle('active');
@@ -608,11 +648,9 @@ if (typingElement) {
         const lang = option.dataset.lang;
         applyLanguage(lang);
         
-        // Only close dropdown on desktop
-        if (!isMobile()) {
-          langDropdown.classList.remove('active');
-          langCurrent.setAttribute('aria-expanded', 'false');
-        }
+        // Close dropdown on both desktop and mobile
+        langDropdown.classList.remove('active');
+        langCurrent.setAttribute('aria-expanded', 'false');
       });
     });
 
