@@ -332,6 +332,16 @@ nav a {
 }
 html[data-theme='light'] .switch-label { color: #0f172a; }
 
+/* Add moon icon globally so it appears on desktop and mobile */
+.switch-label::before {
+    content: '🌙';
+    display: inline-block;
+    width: 1.2em; /* Reserve consistent space */
+    text-align: center;
+    opacity: 0.9;
+    margin-right: 0.6rem; /* Space after icon so it doesn't feel cramped */
+}
+
 /* iOS-like switch */
 .switch {
     position: relative;
@@ -1537,14 +1547,7 @@ html[data-theme='light'] .footer-socials a:hover {
         gap: 0.6rem;
     }
 
-    /* Add moon icon with fixed width to avoid left-edge drift from emoji metrics */
-    .switch-label::before {
-        content: '🌙';
-        display: inline-block;
-        width: 1.2em; /* Reserve consistent space */
-        text-align: center;
-        opacity: 0.9;
-    }
+    /* Icon pseudo-element now defined globally above */
     
     .lang-option .flag-icon {
         width: 20px;
