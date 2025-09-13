@@ -90,6 +90,17 @@
           if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
             const tok = evt.data.split('authorization:github:')[1] || '';
             if (tok) {
+              // Fallback injection: store token in common keys Decap/Netlify CMS check, then reload once
+              try {
+                const payload = JSON.stringify({ token: tok, provider: 'github' });
+                localStorage.setItem('decap-cms-auth', payload);
+                localStorage.setItem('netlify-cms.user', payload);
+                localStorage.setItem('netlify-cms-auth', tok);
+                console.log('[ADMIN][fallback] stored token in localStorage and will reload to let CMS pick it up');
+                setTimeout(() => window.location.reload(), 150);
+              } catch(e) {
+                console.warn('[ADMIN][fallback] failed to write token to localStorage', e);
+              }
               const repo = 'hanifalazis/hanifalazis.github.io';
               const headers = { 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github.v3+json' };
               // 1) Who am I?
