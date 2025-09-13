@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
         <link rel="stylesheet" href="assets/css/style.css?v=2024">
+        <link rel="stylesheet" href="assets/css/projects.css?v=2024">
         <!-- Tailwind config must be defined BEFORE loading the CDN script -->
             <script>
                 window.tailwind = window.tailwind || {};
@@ -328,8 +329,32 @@
 
     <!-- Portofolio -->
     <section id="portfolio" data-aos="fade-up">
-    <h2 data-i18n="portfolio.title">Portofolio (Projects)</h2>
-        <div class="portfolio-list">
+        <h2 data-i18n="portfolio.title">Portofolio (Projects)</h2>
+        
+        <!-- Portfolio Filters -->
+        <div class="portfolio-filters">
+            <!-- Filters will be generated dynamically by JavaScript -->
+        </div>
+        
+        <!-- Portfolio Carousel Container -->
+        <div class="portfolio-container">
+            <div class="portfolio-carousel">
+                <!-- Projects will be loaded dynamically by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Carousel Navigation -->
+        <div class="carousel-nav">
+            <button class="carousel-prev" aria-label="Previous projects">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="carousel-next" aria-label="Next projects">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Legacy Portfolio List (hidden by default, fallback) -->
+        <div class="portfolio-list" style="display: none;">
             <div class="project">
                 <h3 data-i18n="portfolio.p1.title">📊 Aplikasi Akuntansi berbasis Google Spreadsheet</h3>
                 <p data-i18n="portfolio.p1.d1">Fitur: Jurnal Kas, Jurnal Penjualan & Pembelian, Laporan Aset, Inventory, Laba Rugi, Neraca.</p>
@@ -363,6 +388,7 @@
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="assets/js/script.js?v=2024"></script>
+    <script src="assets/js/projects.js?v=2024"></script>
     
     <!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "27aa49e234084b38a10408ed7321975f"}'></script>

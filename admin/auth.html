@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authorization</title>
+</head>
+<body>
+    <script>
+        // Handle GitHub OAuth callback
+        if (window.opener) {
+            window.opener.postMessage({
+                type: 'authorization_github',
+                token: new URLSearchParams(window.location.search).get('code') || 
+                       new URLSearchParams(window.location.hash.substring(1)).get('access_token')
+            }, window.location.origin);
+            window.close();
+        }
+    </script>
+</body>
+</html>
