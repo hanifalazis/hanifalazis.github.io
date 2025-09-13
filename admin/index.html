@@ -62,18 +62,13 @@
   </script>
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <!-- Note: For GitHub backend with implicit OAuth, ensure admin/auth.html is set as callback URL in your GitHub OAuth App -->
   
   <script>
     // Initialize Decap CMS with inline config to avoid YAML fetch issues
     window.addEventListener('load', function() {
       const config = {
         backend: {
-          name: 'github',
-          repo: 'hanifalazis/hanifalazis.github.io',
-          branch: 'main',
-          auth_type: 'implicit',
-          app_id: 'Ov23liByUAJR8RrZUu2B'
+          name: 'test-repo'
         },
         publish_mode: 'simple',
         media_folder: 'assets/images/projects',
