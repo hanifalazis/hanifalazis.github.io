@@ -11,19 +11,27 @@
                 if (window.opener) {
                     window.opener.postMessage(msg, window.location.origin);
                     window.close();
+                } else {
+                    // If no opener, redirect to admin with token in URL
+                    const params = new URLSearchParams();
+                    if (msg.token) params.set('token', msg.token);
+                    window.location.href = '/admin/#' + params.toString();
                 }
             }
 
-            // Extract access_token from hash or code from query
+            // Extract access_token from hash or code from query  
             const hash = new URLSearchParams(window.location.hash.substring(1));
             const query = new URLSearchParams(window.location.search);
             const accessToken = hash.get('access_token');
             const token = accessToken || query.get('code');
 
+            console.log('Auth callback - token found:', !!token, 'hash:', window.location.hash, 'search:', window.location.search);
+
             if (token) {
                 send({ type: 'authorization:github', token });
             } else {
-                // Fallback legacy message type
+                // Debug: log the full URL for troubleshooting
+                console.error('No token found in callback URL:', window.location.href);
                 send({ type: 'authorization_github', token: null });
             }
         })();
