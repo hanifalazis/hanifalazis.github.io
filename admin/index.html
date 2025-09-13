@@ -85,6 +85,22 @@
         try {
           const preview = typeof evt.data === 'string' ? (evt.data.length > 60 ? evt.data.slice(0, 60) + '…' : evt.data) : JSON.stringify(evt.data);
           console.log('[ADMIN] postMessage received:', { origin: evt.origin, type: typeof evt.data, dataPreview: preview });
+          // If we received the Decap OAuth message, probe GitHub API with the token to validate scopes/access
+          if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
+            const tok = evt.data.split('authorization:github:')[1] || '';
+            if (tok) {
+              const repo = 'hanifalazis/hanifalazis.github.io';
+              const headers = { 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github.v3+json' };
+              // 1) Who am I?
+              fetch('https://api.github.com/user', { headers }).then(r => r.json().then(j => console.log('[ADMIN][probe] /user', r.status, j))).catch(e => console.warn('[ADMIN][probe] /user error', e));
+              // 2) Check repo access
+              fetch('https://api.github.com/repos/' + repo, { headers }).then(r => r.json().then(j => console.log('[ADMIN][probe] /repos', r.status, j && (j.full_name || j.message)))).catch(e => console.warn('[ADMIN][probe] /repos error', e));
+              // 3) Try listing contents of _projects on main
+              fetch('https://api.github.com/repos/' + repo + '/contents/_projects?ref=main', { headers })
+                .then(r => r.json().then(j => console.log('[ADMIN][probe] contents _projects', r.status, Array.isArray(j) ? j.length + ' items' : j && j.message)))
+                .catch(e => console.warn('[ADMIN][probe] contents error', e));
+            }
+          }
         } catch (e) {
           console.warn('[ADMIN] Failed to inspect postMessage payload:', e);
         }

@@ -44,11 +44,9 @@ export async function onRequest(context) {
         var message = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
         if (window.opener) {
           // Use '*' for broad compatibility; CMS validates origin internally
-          // Primary: string format Decap listens for
           window.opener.postMessage(message, '*');
-          // Secondary: object shape that some older examples use
-          try { window.opener.postMessage({ type: 'authorization', provider: 'github', token: tok }, '*'); } catch(e) {}
-          try { window.close(); } catch(e) {}
+          // Give the parent a moment to handle the message before closing
+          setTimeout(function(){ try { window.close(); } catch(e) {} }, 100);
         } else {
           // Fallback: navigate back to admin with token in hash
           var p = new URLSearchParams();
