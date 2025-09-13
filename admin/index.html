@@ -90,18 +90,15 @@
           if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
             const tok = evt.data.split('authorization:github:')[1] || '';
             if (tok) {
-              // Fallback injection: store token and force skip login screen
+              // Store token in localStorage only, no reload
               try {
                 const payload = JSON.stringify({ token: tok, provider: 'github' });
                 localStorage.setItem('decap-cms-auth', payload);
                 localStorage.setItem('netlify-cms.user', payload);
                 localStorage.setItem('netlify-cms-auth', tok);
-                // Also set a flag to bypass login screen
-                localStorage.setItem('decap-cms-authenticated', 'true');
-                console.log('[ADMIN][fallback] stored token and auth flag, will reload to bypass login');
-                setTimeout(() => window.location.reload(), 200);
+                console.log('[ADMIN] stored token in localStorage, letting post-init handler manage auth');
               } catch(e) {
-                console.warn('[ADMIN][fallback] failed to write token to localStorage', e);
+                console.warn('[ADMIN] failed to write token to localStorage', e);
               }
               const repo = 'hanifalazis/hanifalazis.github.io';
               const headers = { 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github.v3+json' };
@@ -170,31 +167,38 @@
               console.error('[CMS error]', err);
             });
           }
-          // If a token was stored previously (fallback path), inject it directly into Decap's auth store
+          // Try to force CMS to use stored token by simulating the auth event
           setTimeout(() => {
             try {
               const stored = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
               if (stored) {
                 const parsed = JSON.parse(stored);
                 const tok = parsed && (parsed.token || parsed.access_token);
-                if (tok && window.CMS && window.CMS.getBackend) {
-                  console.log('[ADMIN] found stored token; injecting directly into CMS backend');
-                  // Direct injection into CMS backend auth store
-                  const backend = window.CMS.getBackend();
-                  if (backend && backend.authenticate) {
-                    backend.authenticate({ token: tok, provider: 'github' });
-                    console.log('[ADMIN] successfully authenticated with backend');
-                    // Force a page refresh to reload with authenticated state
-                    setTimeout(() => window.location.reload(), 100);
-                  }
-                } else if (tok) {
-                  console.log('[ADMIN] CMS backend not ready, storing for next load');
+                if (tok) {
+                  console.log('[ADMIN] found stored token; simulating auth event for CMS');
+                  // Try multiple message formats that Decap might recognize
+                  window.postMessage({
+                    type: 'authorization',
+                    provider: 'github',
+                    token: tok
+                  }, window.location.origin);
+                  
+                  // Also try the string format
+                  window.postMessage('authorization:github:' + tok, window.location.origin);
+                  
+                  // Try triggering a custom event
+                  const authEvent = new CustomEvent('decap-cms-auth', {
+                    detail: { token: tok, provider: 'github' }
+                  });
+                  window.dispatchEvent(authEvent);
+                  
+                  console.log('[ADMIN] sent multiple auth signals to CMS');
                 }
               }
             } catch(e) {
-              console.warn('[ADMIN] failed to inject token into backend', e);
+              console.warn('[ADMIN] failed to send auth signals', e);
             }
-          }, 500);
+          }, 1000);
         } catch (e) {
           console.warn('[ADMIN] Failed to attach CMS error listener:', e);
         }
