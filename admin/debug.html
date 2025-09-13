@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Decap Admin Debug</title>
+    <style>
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 16px; }
+      pre { background:#f6f8fa; padding: 12px; border-radius: 6px; overflow:auto; }
+      .row { display:flex; gap:12px; flex-wrap: wrap; margin-bottom: 12px; }
+      button { padding: 8px 12px; border-radius: 6px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+      input[type="text"] { width: 420px; padding:8px; }
+      .ok { color: #1a7f37; }
+      .err { color: #b3261e; }
+    </style>
+  </head>
+  <body>
+    <h1>Decap Admin Debug</h1>
+
+    <div class="row">
+      <div>
+        <div>origin: <strong id="origin"></strong></div>
+        <div>referrer: <strong id="ref"></strong></div>
+      </div>
+    </div>
+
+    <h2>1) Read /admin/config.yml</h2>
+    <div class="row">
+      <button id="btnConfig">Fetch config.yml</button>
+    </div>
+    <pre id="configOut">(not loaded)</pre>
+
+    <h2>2) Open OAuth popup</h2>
+    <div class="row">
+      <button id="btnOAuth">Open /api/decap/auth</button>
+      <button id="btnClear">Clear stored auth</button>
+    </div>
+
+    <h2>3) Messages from popup</h2>
+    <pre id="msgOut">(no messages yet)</pre>
+
+    <h2>4) Token tools</h2>
+    <div class="row">
+      <input id="tokenIn" type="text" placeholder="paste GitHub token to test (optional)" />
+      <button id="btnSave">Save token to localStorage</button>
+      <button id="btnProbe">Probe GitHub API (/user, repo, contents)</button>
+    </div>
+    <pre id="probeOut">(no probes yet)</pre>
+
+    <script>
+      const el = (id) => document.getElementById(id);
+      el('origin').textContent = location.origin;
+      el('ref').textContent = document.referrer || '(none)';
+
+      document.addEventListener('click', (e) => {
+        const id = e.target && e.target.id;
+        if (id === 'btnConfig') fetchConfig();
+        if (id === 'btnOAuth') openOAuth();
+        if (id === 'btnClear') clearAuth();
+        if (id === 'btnSave') saveToken();
+        if (id === 'btnProbe') probe();
+      });
+
+      async function fetchConfig(){
+        try {
+          const r = await fetch('/admin/config.yml', { cache: 'no-store' });
+          const t = await r.text();
+          el('configOut').textContent = t;
+        } catch (e) {
+          el('configOut').textContent = 'Error: ' + e;
+        }
+      }
+
+      function openOAuth(){
+        const state = 'debug-' + Date.now();
+        window.open('/api/decap/auth?state=' + encodeURIComponent(state), 'oauth', 'width=600,height=720');
+      }
+
+      function clearAuth(){
+        ['decap-cms.user','decap-cms-auth','netlify-cms.user','netlify-cms-auth','cms-reloaded'].forEach(k => localStorage.removeItem(k));
+        el('probeOut').textContent = 'Cleared auth keys in localStorage.';
+      }
+
+      function saveToken(){
+        const tok = el('tokenIn').value.trim();
+        if (!tok) { alert('Paste a token first'); return; }
+        const payload = JSON.stringify({ token: tok, provider: 'github' });
+        localStorage.setItem('decap-cms.user', payload);
+        localStorage.setItem('decap-cms-auth', payload);
+        localStorage.setItem('netlify-cms.user', payload);
+        localStorage.setItem('netlify-cms-auth', tok);
+        el('probeOut').textContent = 'Saved token to localStorage keys.';
+      }
+
+      async function probe(){
+        el('probeOut').textContent = '(probing...)';
+        const raw = localStorage.getItem('decap-cms.user') || localStorage.getItem('netlify-cms.user');
+        let tokIn = el('tokenIn').value.trim();
+        let tok = tokIn || '';
+        try { if (!tok && raw) tok = (JSON.parse(raw).token || JSON.parse(raw).access_token || ''); } catch {}
+        if (!tok) { el('probeOut').textContent = 'No token found'; return; }
+        const headers = { 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github.v3+json' };
+        const repo = 'hanifalazis/hanifalazis.github.io';
+        try {
+          const u = await fetch('https://api.github.com/user', { headers });
+          const uj = await u.json();
+          const r = await fetch('https://api.github.com/repos/' + repo, { headers });
+          const rj = await r.json();
+          const c = await fetch('https://api.github.com/repos/' + repo + '/contents/_projects?ref=main', { headers });
+          const cj = await c.json();
+          el('probeOut').textContent = [
+            '/user ' + u.status + ' ' + (uj.login || uj.message),
+            '/repos ' + r.status + ' ' + (rj.full_name || rj.message),
+            '/contents ' + c.status + ' ' + (Array.isArray(cj) ? (cj.length + ' items') : cj.message)
+          ].join('\n');
+        } catch(e) {
+          el('probeOut').textContent = 'Probe error: ' + e;
+        }
+      }
+
+      window.addEventListener('message', (evt) => {
+        try {
+          const preview = typeof evt.data === 'string' ? evt.data : JSON.stringify(evt.data);
+          const line = `[${new Date().toISOString()}] from ${evt.origin} -> ${preview}`;
+          const prev = el('msgOut').textContent || '';
+          el('msgOut').textContent = (prev ? prev + '\n' : '') + line;
+
+          if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
+            const tok = evt.data.split('authorization:github:')[1] || '';
+            if (tok) {
+              const payload = JSON.stringify({ token: tok, provider: 'github' });
+              localStorage.setItem('decap-cms.user', payload);
+              localStorage.setItem('decap-cms-auth', payload);
+              localStorage.setItem('netlify-cms.user', payload);
+              localStorage.setItem('netlify-cms-auth', tok);
+            }
+          }
+          if (typeof evt.data === 'object' && evt.data && evt.data.type === 'authorization' && evt.data.provider === 'github') {
+            const tok = evt.data.token || '';
+            if (tok) {
+              const payload = JSON.stringify({ token: tok, provider: 'github' });
+              localStorage.setItem('decap-cms.user', payload);
+              localStorage.setItem('decap-cms-auth', payload);
+              localStorage.setItem('netlify-cms.user', payload);
+              localStorage.setItem('netlify-cms-auth', tok);
+            }
+          }
+        } catch (e) {
+          const prev = el('msgOut').textContent || '';
+          el('msgOut').textContent = (prev ? prev + '\n' : '') + 'message handler error: ' + e;
+        }
+      });
+    </script>
+  </body>
+</html>
