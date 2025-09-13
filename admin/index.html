@@ -167,7 +167,8 @@
               console.error('[CMS error]', err);
             });
           }
-          // Try to force CMS to use stored token by simulating the auth event
+          
+          // Force bypass login screen by directly manipulating CMS state
           setTimeout(() => {
             try {
               const stored = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
@@ -175,30 +176,56 @@
                 const parsed = JSON.parse(stored);
                 const tok = parsed && (parsed.token || parsed.access_token);
                 if (tok) {
-                  console.log('[ADMIN] found stored token; simulating auth event for CMS');
-                  // Try multiple message formats that Decap might recognize
-                  window.postMessage({
-                    type: 'authorization',
-                    provider: 'github',
-                    token: tok
-                  }, window.location.origin);
+                  console.log('[ADMIN] forcing CMS authentication bypass');
                   
-                  // Also try the string format
-                  window.postMessage('authorization:github:' + tok, window.location.origin);
-                  
-                  // Try triggering a custom event
-                  const authEvent = new CustomEvent('decap-cms-auth', {
-                    detail: { token: tok, provider: 'github' }
-                  });
-                  window.dispatchEvent(authEvent);
-                  
-                  console.log('[ADMIN] sent multiple auth signals to CMS');
+                  // Try to find and click login bypass or force authenticated state
+                  const loginButton = document.querySelector('button[type="button"]');
+                  if (loginButton && loginButton.textContent.includes('Login')) {
+                    console.log('[ADMIN] attempting to override login button');
+                    // Override the login process
+                    loginButton.style.display = 'none';
+                    
+                    // Try to trigger successful auth state
+                    if (window.CMS && window.CMS.getBackend) {
+                      try {
+                        const backend = window.CMS.getBackend();
+                        if (backend) {
+                          // Force set authenticated state
+                          if (backend.authStore) {
+                            backend.authStore.user = { token: tok, provider: 'github' };
+                          }
+                          if (backend.user) {
+                            backend.user = { token: tok, provider: 'github' };
+                          }
+                          console.log('[ADMIN] set backend auth state directly');
+                          
+                          // Force reload CMS interface
+                          setTimeout(() => {
+                            if (window.CMS.renderApp) {
+                              window.CMS.renderApp();
+                            }
+                          }, 100);
+                        }
+                      } catch(backendErr) {
+                        console.warn('[ADMIN] backend manipulation failed:', backendErr);
+                      }
+                    }
+                    
+                    // Hide login screen, show main content
+                    const loginScreen = document.querySelector('[data-testid="login-screen"]') || 
+                                       document.querySelector('.login-screen') ||
+                                       document.querySelector('[class*="login"]');
+                    if (loginScreen) {
+                      loginScreen.style.display = 'none';
+                      console.log('[ADMIN] hidden login screen');
+                    }
+                  }
                 }
               }
             } catch(e) {
-              console.warn('[ADMIN] failed to send auth signals', e);
+              console.warn('[ADMIN] failed to force auth bypass', e);
             }
-          }, 1000);
+          }, 2000);
         } catch (e) {
           console.warn('[ADMIN] Failed to attach CMS error listener:', e);
         }
