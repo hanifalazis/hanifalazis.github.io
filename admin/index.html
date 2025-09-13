@@ -67,6 +67,15 @@
     // Initialize Decap CMS with inline config to avoid YAML fetch issues
     window.addEventListener('load', function() {
       const origin = window.location.origin;
+      // Debug: listen for auth postMessage events from the OAuth popup
+      window.addEventListener('message', function(evt) {
+        try {
+          const preview = typeof evt.data === 'string' ? (evt.data.length > 60 ? evt.data.slice(0, 60) + '…' : evt.data) : JSON.stringify(evt.data);
+          console.log('[ADMIN] postMessage received:', { origin: evt.origin, type: typeof evt.data, dataPreview: preview });
+        } catch (e) {
+          console.warn('[ADMIN] Failed to inspect postMessage payload:', e);
+        }
+      });
       const config = {
         backend: {
           name: 'github',
@@ -111,6 +120,16 @@
       
       if (window.CMS && typeof window.CMS.init === 'function') {
         window.CMS.init({ config });
+        try {
+          // Extra diagnostics: surface CMS errors in console
+          if (window.CMS && typeof window.CMS.on === 'function') {
+            window.CMS.on('error', (err) => {
+              console.error('[CMS error]', err);
+            });
+          }
+        } catch (e) {
+          console.warn('[ADMIN] Failed to attach CMS error listener:', e);
+        }
       } else {
         console.error('CMS not loaded or init function not available');
       }

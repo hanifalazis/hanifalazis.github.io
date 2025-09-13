@@ -14,19 +14,28 @@ export async function onRequest(context) {
     return new Response('Missing GITHUB_CLIENT_ID/SECRET', { status: 500 });
   }
 
-  const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: clientId,
-      client_secret: clientSecret,
-      code,
-      redirect_uri: `${origin}/api/decap/callback`
-    })
-  });
-
-  const data = await tokenRes.json();
-  const token = data.access_token;
+  let token = '';
+  let errorInfo = null;
+  try {
+    const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code,
+        redirect_uri: `${origin}/api/decap/callback`
+      })
+    });
+    const data = await tokenRes.json();
+    if (!tokenRes.ok || !data.access_token) {
+      errorInfo = { status: tokenRes.status, data };
+    } else {
+      token = data.access_token || '';
+    }
+  } catch (e) {
+    errorInfo = { message: e && e.message ? e.message : String(e) };
+  }
 
   const html = `<!DOCTYPE html><html><body><script>
     (function(){
@@ -35,7 +44,10 @@ export async function onRequest(context) {
         var message = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
         if (window.opener) {
           // Use '*' for broad compatibility; CMS validates origin internally
+          // Primary: string format Decap listens for
           window.opener.postMessage(message, '*');
+          // Secondary: object shape that some older examples use
+          try { window.opener.postMessage({ type: 'authorization', provider: 'github', token: tok }, '*'); } catch(e) {}
           try { window.close(); } catch(e) {}
         } else {
           // Fallback: navigate back to admin with token in hash
@@ -45,6 +57,10 @@ export async function onRequest(context) {
         }
       }
       var token = ${JSON.stringify(token || '')};
+      var err = ${JSON.stringify(errorInfo)};
+      if (!token && err) {
+        console.error('[Decap OAuth callback] Token exchange failed:', err);
+      }
       sendToken(token);
     })();
   <\/script></body></html>`;

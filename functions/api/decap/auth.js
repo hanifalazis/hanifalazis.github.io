@@ -9,7 +9,8 @@ export async function onRequest(context) {
   }
 
   const redirectUri = `${origin}/api/decap/callback`;
-  const scope = 'repo';
+  // Permissions: for public repos only, 'public_repo' is sufficient; include 'user:email' for some CMS backends that request email
+  const scope = 'public_repo user:email';
 
   const ghAuthorize = new URL('https://github.com/login/oauth/authorize');
   ghAuthorize.searchParams.set('client_id', clientId);
