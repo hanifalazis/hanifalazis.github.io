@@ -64,6 +64,19 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
+    // Canonicalize admin origin to custom domain to match OAuth callback
+    (function enforceCanonical(){
+      try {
+        var expectedHost = 'hifaliz.com';
+        if (location.hostname !== expectedHost) {
+          // Redirect admin to the canonical domain
+          var target = 'https://' + expectedHost + '/admin' + location.hash;
+          console.info('[ADMIN] Redirecting to canonical domain for OAuth consistency:', target);
+          location.replace(target);
+          return; // avoid initializing CMS on wrong origin
+        }
+      } catch(e) { /* ignore */ }
+    })();
     // Initialize Decap CMS with inline config to avoid YAML fetch issues
     window.addEventListener('load', function() {
       const origin = window.location.origin;
