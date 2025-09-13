@@ -56,11 +56,60 @@
     </div>
   </div>
 
+  <!-- Force manual init to avoid config path/caching issues -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <!-- Note: For GitHub backend with implicit OAuth, ensure admin/auth.html is set as callback URL in your GitHub OAuth App -->
   
   <script>
+    // Initialize Decap CMS with inline config to avoid YAML fetch issues
+    window.addEventListener('load', function() {
+      const config = {
+        backend: {
+          name: 'github',
+          repo: 'hanifalazis/hanifalazis.github.io',
+          branch: 'main',
+          auth_type: 'implicit',
+          app_id: 'Ov23lie6ISrmPg0rcxvj'
+        },
+        publish_mode: 'simple',
+        media_folder: 'assets/images/projects',
+        public_folder: '/assets/images/projects',
+        collections: [
+          {
+            name: 'projects',
+            label: 'Projects',
+            folder: '_projects',
+            create: true,
+            slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+            format: 'frontmatter',
+            fields: [
+              { label: 'Title', name: 'title', widget: 'string' },
+              { label: 'Date', name: 'date', widget: 'datetime' },
+              { label: 'Image', name: 'image', widget: 'image', required: false },
+              { label: 'Category', name: 'category', widget: 'select', options: [
+                'Data Analysis', 'Dashboard', 'Web Development', 'Mobile App', 'Desktop App', 'Machine Learning', 'Other'
+              ] },
+              { label: 'Description', name: 'description', widget: 'text' },
+              { label: 'Tech Stack', name: 'tech_stack', widget: 'list' },
+              { label: 'Project Link', name: 'link', widget: 'string', required: false },
+              { label: 'GitHub', name: 'github', widget: 'string', required: false },
+              { label: 'Status', name: 'status', widget: 'select', options: ['Completed', 'In Progress', 'Planned'], default: 'Completed' },
+              { label: 'Featured', name: 'featured', widget: 'boolean', default: false },
+              { label: 'i18n Key (optional)', name: 'i18n_key', widget: 'string', required: false },
+              { label: 'Body', name: 'body', widget: 'markdown' }
+            ]
+          }
+        ]
+      };
+      if (window.CMS && typeof window.CMS.init === 'function') {
+        window.CMS.init({ config });
+      }
+    });
+
     // Hide loading screen after CMS loads
     window.addEventListener('load', function() {
       setTimeout(() => {
