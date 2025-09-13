@@ -90,14 +90,14 @@
           if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
             const tok = evt.data.split('authorization:github:')[1] || '';
             if (tok) {
-              // Fallback injection: store token in common keys Decap/Netlify CMS check, then reload once
+              // Fallback injection: store token in common keys Decap/Netlify CMS check
               try {
                 const payload = JSON.stringify({ token: tok, provider: 'github' });
                 localStorage.setItem('decap-cms-auth', payload);
                 localStorage.setItem('netlify-cms.user', payload);
                 localStorage.setItem('netlify-cms-auth', tok);
                 console.log('[ADMIN][fallback] stored token in localStorage and will reload to let CMS pick it up');
-                setTimeout(() => window.location.reload(), 150);
+                // Removed auto-reload since our post-init token repost handles this case
               } catch(e) {
                 console.warn('[ADMIN][fallback] failed to write token to localStorage', e);
               }
