@@ -90,14 +90,16 @@
           if (typeof evt.data === 'string' && evt.data.indexOf('authorization:github:') === 0) {
             const tok = evt.data.split('authorization:github:')[1] || '';
             if (tok) {
-              // Fallback injection: store token in common keys Decap/Netlify CMS check
+              // Fallback injection: store token and force skip login screen
               try {
                 const payload = JSON.stringify({ token: tok, provider: 'github' });
                 localStorage.setItem('decap-cms-auth', payload);
                 localStorage.setItem('netlify-cms.user', payload);
                 localStorage.setItem('netlify-cms-auth', tok);
-                console.log('[ADMIN][fallback] stored token in localStorage and will reload to let CMS pick it up');
-                // Removed auto-reload since our post-init token repost handles this case
+                // Also set a flag to bypass login screen
+                localStorage.setItem('decap-cms-authenticated', 'true');
+                console.log('[ADMIN][fallback] stored token and auth flag, will reload to bypass login');
+                setTimeout(() => window.location.reload(), 200);
               } catch(e) {
                 console.warn('[ADMIN][fallback] failed to write token to localStorage', e);
               }
@@ -168,23 +170,31 @@
               console.error('[CMS error]', err);
             });
           }
-          // If a token was stored previously (fallback path), post it back to Decap to finalize login
+          // If a token was stored previously (fallback path), inject it directly into Decap's auth store
           setTimeout(() => {
             try {
               const stored = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
               if (stored) {
                 const parsed = JSON.parse(stored);
                 const tok = parsed && (parsed.token || parsed.access_token);
-                if (tok) {
-                  console.log('[ADMIN] found stored token; posting to Decap listener');
-                  // Post the exact format Decap listens for
-                  window.postMessage('authorization:github:' + tok, window.location.origin);
+                if (tok && window.CMS && window.CMS.getBackend) {
+                  console.log('[ADMIN] found stored token; injecting directly into CMS backend');
+                  // Direct injection into CMS backend auth store
+                  const backend = window.CMS.getBackend();
+                  if (backend && backend.authenticate) {
+                    backend.authenticate({ token: tok, provider: 'github' });
+                    console.log('[ADMIN] successfully authenticated with backend');
+                    // Force a page refresh to reload with authenticated state
+                    setTimeout(() => window.location.reload(), 100);
+                  }
+                } else if (tok) {
+                  console.log('[ADMIN] CMS backend not ready, storing for next load');
                 }
               }
             } catch(e) {
-              console.warn('[ADMIN] failed to post stored token', e);
+              console.warn('[ADMIN] failed to inject token into backend', e);
             }
-          }, 200);
+          }, 500);
         } catch (e) {
           console.warn('[ADMIN] Failed to attach CMS error listener:', e);
         }
