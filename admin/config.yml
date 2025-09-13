@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: hanifalazis/hanifalazis.github.io
+  branch: main
+  base_url: https://hifaliz.com
+  auth_endpoint: /api/decap/auth
+
+publish_mode: simple
+media_folder: assets/images/projects
+public_folder: /assets/images/projects
+
+collections:
+  - name: projects
+    label: Projects
+    folder: _projects
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime }
+      - { label: Image, name: image, widget: image, required: false }
+      - { label: Category, name: category, widget: select, options: [Data Analysis, Dashboard, Web Development, Mobile App, Desktop App, Machine Learning, Other] }
+      - { label: Description, name: description, widget: text }
+      - { label: Tech Stack, name: tech_stack, widget: list }
+      - { label: Project Link, name: link, widget: string, required: false }
+      - { label: GitHub, name: github, widget: string, required: false }
+      - { label: Status, name: status, widget: select, options: [Completed, In Progress, Planned], default: Completed }
+      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: i18n Key (optional), name: i18n_key, widget: string, required: false }
+      - { label: Body, name: body, widget: markdown }
