@@ -168,6 +168,23 @@
               console.error('[CMS error]', err);
             });
           }
+          // If a token was stored previously (fallback path), post it back to Decap to finalize login
+          setTimeout(() => {
+            try {
+              const stored = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
+              if (stored) {
+                const parsed = JSON.parse(stored);
+                const tok = parsed && (parsed.token || parsed.access_token);
+                if (tok) {
+                  console.log('[ADMIN] found stored token; posting to Decap listener');
+                  // Post the exact format Decap listens for
+                  window.postMessage('authorization:github:' + tok, window.location.origin);
+                }
+              }
+            } catch(e) {
+              console.warn('[ADMIN] failed to post stored token', e);
+            }
+          }, 200);
         } catch (e) {
           console.warn('[ADMIN] Failed to attach CMS error listener:', e);
         }
