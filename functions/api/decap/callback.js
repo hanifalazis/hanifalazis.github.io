@@ -2,6 +2,7 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const origin = `${url.protocol}//${url.host}`;
+  const state = url.searchParams.get('state') || '';
 
   const code = url.searchParams.get('code');
   if (!code) {
@@ -42,7 +43,7 @@ export async function onRequest(context) {
       function sendToken(tok){
         // Decap CMS listens for either a string 'authorization:github:<token>' or an object message
         var strMessage = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
-        var objMessage = { type: 'authorization', provider: 'github', token: tok || null };
+        var objMessage = { type: 'authorization', provider: 'github', token: tok || null, state: ${JSON.stringify(state)} };
         if (window.opener) {
           try {
             var origin = document.referrer || (location.origin);

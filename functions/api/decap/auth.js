@@ -8,8 +8,9 @@ export async function onRequest(context) {
     return new Response('Missing GITHUB_CLIENT_ID env var', { status: 500 });
   }
 
-  // Our admin config uses base_url: `${origin}/api/decap` and auth_endpoint: 'auth'
+  // Build redirect_uri and propagate optional state param from the CMS
   const redirectUri = `${origin}/api/decap/callback`;
+  const incomingState = new URL(request.url).searchParams.get('state') || '';
   // Permissions: broaden to full 'repo' + 'user:email' to ensure write access while we finalize
   const scope = 'repo user:email';
 
@@ -17,6 +18,7 @@ export async function onRequest(context) {
   ghAuthorize.searchParams.set('client_id', clientId);
   ghAuthorize.searchParams.set('redirect_uri', redirectUri);
   ghAuthorize.searchParams.set('scope', scope);
+  if (incomingState) ghAuthorize.searchParams.set('state', incomingState);
 
   return Response.redirect(ghAuthorize.toString(), 302);
 }
