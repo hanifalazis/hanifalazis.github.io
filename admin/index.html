@@ -66,13 +66,15 @@
   <script>
     // Initialize Decap CMS with inline config to avoid YAML fetch issues
     window.addEventListener('load', function() {
+      const origin = window.location.origin;
       const config = {
         backend: {
           name: 'github',
           repo: 'hanifalazis/hanifalazis.github.io',
           branch: 'main',
-          auth_type: 'implicit',
-          app_id: 'Ov23liByUAJR8RrZUu2B'
+          base_url: origin,            // Cloudflare Pages Functions base
+          auth_endpoint: '/api/decap/auth',     // redirects to GitHub authorize
+          cms_label_prefix: 'Decap'
         },
         publish_mode: 'simple',
         media_folder: 'assets/images/projects',
