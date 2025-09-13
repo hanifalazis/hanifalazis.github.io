@@ -430,8 +430,13 @@ html[data-theme='light'] .project-image {
         font-size: 1.3rem;
     }
     
+    /* Make mobile images bigger and symmetric */
     .card-image {
-        height: 180px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+    .card-image img {
+        object-fit: contain; /* don't crop image on mobile */
     }
     
     .card-content {
@@ -462,7 +467,7 @@ html[data-theme='light'] .project-image {
     }
     
     .card-image {
-        height: 160px;
+        height: auto; /* keep 16:9 ratio from previous rule */
     }
     
     .filter-btn {
@@ -475,6 +480,14 @@ html[data-theme='light'] .project-image {
 @media (max-width: 768px) {
     .project {
         padding: 1.5rem;
+    }
+    /* Legacy list: match carousel behavior */
+    .project-image {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+    .project-image img {
+        object-fit: contain; /* don't crop image on mobile */
     }
     
     .project-meta {

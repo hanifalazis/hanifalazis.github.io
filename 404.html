@@ -267,6 +267,40 @@
         html[data-theme='light'] .theme-toggle:hover {
             background: rgba(0, 0, 0, 0.1);
         }
+
+        /* Language toggle for 404 */
+        .lang-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 8rem; /* leave space for theme toggle */
+            display: flex;
+            gap: .6rem;
+            z-index: 1000;
+        }
+        .lang-toggle button {
+            padding: .6rem 1rem;
+            font-size: 1.3rem;
+            border-radius: .6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+        .lang-toggle button:hover { transform: translateY(-1px); }
+        .lang-toggle button.active {
+            background: linear-gradient(135deg, #4a9eff 0%, #2a5da8 100%);
+            border-color: transparent;
+        }
+        html[data-theme='light'] .lang-toggle button {
+            background: rgba(0,0,0,.05);
+            border-color: rgba(0,0,0,.1);
+            color: #0f172a;
+        }
+        html[data-theme='light'] .lang-toggle button.active {
+            background: #2a5da8;
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -275,6 +309,12 @@
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <i class="fas fa-moon" id="themeIcon"></i>
     </button>
+
+    <!-- Language Toggle (ID/EN) -->
+    <div class="lang-toggle" id="langToggle" aria-label="Toggle language">
+        <button type="button" data-lang="id">ID</button>
+        <button type="button" data-lang="en">EN</button>
+    </div>
 
     <main class="error-page">
         <!-- Floating Elements -->
@@ -292,8 +332,8 @@
 
         <div class="error-container">
             <div class="error-number">404</div>
-            <h1 class="error-title">Halaman Tidak Ditemukan</h1>
-            <p class="error-description">
+            <h1 class="error-title" data-i18n="404.title">Halaman Tidak Ditemukan</h1>
+            <p class="error-description" data-i18n="404.desc">
                 Maaf, halaman yang Anda cari tidak dapat ditemukan. 
                 Mungkin halaman telah dipindahkan, dihapus, atau URL yang Anda masukkan salah.
             </p>
@@ -301,17 +341,57 @@
             <div class="error-actions">
                 <a href="/" class="btn btn-primary">
                     <i class="fas fa-home"></i>
-                    Kembali ke Beranda
+                    <span data-i18n="404.home">Kembali ke Beranda</span>
                 </a>
                 <button onclick="history.back()" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
-                    Halaman Sebelumnya
+                    <span data-i18n="404.back">Halaman Sebelumnya</span>
                 </button>
             </div>
         </div>
     </main>
 
     <script>
+        // Simple i18n for 404 page (sync with site localStorage key 'lang')
+        const i18n404 = {
+            id: {
+                '404.title': 'Halaman Tidak Ditemukan',
+                '404.desc': 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman telah dipindahkan, dihapus, atau URL yang Anda masukkan salah.',
+                '404.home': 'Kembali ke Beranda',
+                '404.back': 'Halaman Sebelumnya',
+                '404.titleTag': '404 - Halaman Tidak Ditemukan | Muhammad Hanif Al Azis',
+                '404.confirm': 'Halaman tidak ditemukan. Apakah Anda ingin kembali ke beranda?'
+            },
+            en: {
+                '404.title': 'Page Not Found',
+                '404.desc': "Sorry, the page you're looking for cannot be found. It may have been moved, deleted, or the URL you entered is incorrect.",
+                '404.home': 'Back to Home',
+                '404.back': 'Previous Page',
+                '404.titleTag': '404 - Page Not Found | Muhammad Hanif Al Azis',
+                '404.confirm': 'Page not found. Would you like to return to the homepage?'
+            }
+        };
+
+        function getCurrentLang404() {
+            try { const s = localStorage.getItem('lang'); if (s) return s; } catch {}
+            return ((navigator.language || 'id').toLowerCase().startsWith('en') ? 'en' : 'id');
+        }
+
+        function applyLanguage404(lang) {
+            const dict = i18n404[lang] || i18n404.id;
+            document.querySelectorAll('[data-i18n]').forEach(node => {
+                const key = node.getAttribute('data-i18n');
+                if (dict[key] !== undefined) node.textContent = dict[key];
+            });
+            document.title = dict['404.titleTag'] || document.title;
+            try { localStorage.setItem('lang', lang); } catch {}
+
+            // Toggle active state on 404 language buttons
+            document.querySelectorAll('#langToggle button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+        }
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
@@ -339,6 +419,19 @@
             }
         }
 
+        // Initialize language for 404
+        const initialLang404 = getCurrentLang404();
+        applyLanguage404(initialLang404);
+
+        // 404 Language toggle handlers
+        const langToggle = document.getElementById('langToggle');
+        langToggle.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-lang]');
+            if (!btn) return;
+            const lang = btn.dataset.lang;
+            applyLanguage404(lang);
+        });
+
         // Add some interactivity - particle effect on mouse move
         document.addEventListener('mousemove', (e) => {
             const floatingElements = document.querySelectorAll('.floating-element');
@@ -363,7 +456,9 @@
 
         // Auto redirect after 30 seconds (optional)
         setTimeout(() => {
-            if (confirm('Halaman tidak ditemukan. Apakah Anda ingin kembali ke beranda?')) {
+            const lang = getCurrentLang404();
+            const msg = (i18n404[lang] || i18n404.id)['404.confirm'];
+            if (confirm(msg)) {
                 window.location.href = '/';
             }
         }, 30000);

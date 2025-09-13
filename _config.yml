@@ -1,0 +1,18 @@
+title: Hanif Al Azis Portfolio
+description: Personal portfolio website
+url: "https://hifaliz.com"
+
+# Enable Jekyll on GitHub Pages and define the projects collection
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name
+
+markdown: kramdown
+theme: null
+plugins: []
+
+exclude:
+  - node_modules
+  - vendor
+  - README.md

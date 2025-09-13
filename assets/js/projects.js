@@ -203,9 +203,13 @@ class ProjectManager {
         }
 
         // Reset position and update dot indicators
-        this.translateX = 0;
-        this.currentSlide = 0;
-        portfolioContainer.style.transform = `translateX(0px)`;
+    this.currentSlide = 0;
+    // Position the carousel at the start of the middle set for seamless infinite effect
+    const step = this.getStepPx();
+    const basePosition = sortedProjects.length; // start of middle set
+    this.translateX = step ? -(basePosition * step) : 0;
+    portfolioContainer.style.transition = 'none';
+    portfolioContainer.style.transform = `translateX(${this.translateX}px)`;
         this.renderDotIndicators(sortedProjects.length);
 
         // Apply current language to newly created nodes
@@ -320,30 +324,27 @@ class ProjectManager {
         if (!carousel) return;
 
         this.isTransitioning = true;
-        const cardWidth = this.getCardWidth();
-        const cardsPerView = this.getCardsPerView();
         const originalProjects = this.getCurrentProjects();
-        
-        // Calculate position: start from second set (index originalProjects.length) + current slide
+        // Determine the exact step size based on actual rendered card width + CSS gap
+        const step = this.getStepPx();
+        if (!step) {
+            this.isTransitioning = false;
+            return;
+        }
+
+        // Calculate position: always target middle set (index originalProjects.length) + current slide
         const basePosition = originalProjects.length;
         const targetPosition = basePosition + this.currentSlide;
-        this.translateX = -targetPosition * (cardWidth + 20); // 20px gap
-        
+        this.translateX = -targetPosition * step;
+
         carousel.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
         carousel.style.transform = `translateX(${this.translateX}px)`;
-        
+
         // Update dot indicators
         this.updateDotIndicators();
-        
-        // Check if we need to reset position (when we're at the end of third set)
+
+        // End transition lock after animation
         setTimeout(() => {
-            if (targetPosition >= originalProjects.length * 2) {
-                // Reset to equivalent position in second set without animation
-                const resetPosition = basePosition + this.currentSlide;
-                this.translateX = -resetPosition * (cardWidth + 20);
-                carousel.style.transition = 'none';
-                carousel.style.transform = `translateX(${this.translateX}px)`;
-            }
             this.isTransitioning = false;
         }, 400);
     }
@@ -366,6 +367,23 @@ class ProjectManager {
         const cardsPerView = this.getCardsPerView();
         const gap = 20; // Gap between cards
         return (containerWidth - (gap * (cardsPerView - 1))) / cardsPerView;
+    }
+
+    // Measure the exact step size between cards (card width + actual gap in pixels)
+    getStepPx() {
+        const carousel = document.querySelector('.portfolio-carousel');
+        if (!carousel) return 0;
+        const cards = carousel.querySelectorAll('.carousel-card');
+        if (cards.length >= 2) {
+            // offsetLeft difference accounts for card width + gap precisely
+            const step = cards[1].offsetLeft - cards[0].offsetLeft;
+            return Math.max(0, Math.round(step));
+        } else if (cards.length === 1) {
+            const cs = getComputedStyle(carousel);
+            const gapPx = parseFloat(cs.columnGap || cs.gap || '0') || 0;
+            return Math.round(cards[0].offsetWidth + gapPx);
+        }
+        return 0;
     }
 
     renderDotIndicators(totalProjects) {

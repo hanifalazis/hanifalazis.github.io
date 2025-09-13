@@ -12,7 +12,6 @@ tech_stack:
   - "Seaborn"
   - "Jupyter Notebook"
 link: "https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024"
-github: "https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024"
 status: "Completed"
 featured: true
 ---

@@ -5,15 +5,28 @@
 </head>
 <body>
     <script>
-        // Handle GitHub OAuth callback
-        if (window.opener) {
-            window.opener.postMessage({
-                type: 'authorization_github',
-                token: new URLSearchParams(window.location.search).get('code') || 
-                       new URLSearchParams(window.location.hash.substring(1)).get('access_token')
-            }, window.location.origin);
-            window.close();
-        }
+        // Handle GitHub OAuth callback for Decap CMS (implicit flow)
+        (function() {
+            function send(msg) {
+                if (window.opener) {
+                    window.opener.postMessage(msg, window.location.origin);
+                    window.close();
+                }
+            }
+
+            // Extract access_token from hash or code from query
+            const hash = new URLSearchParams(window.location.hash.substring(1));
+            const query = new URLSearchParams(window.location.search);
+            const accessToken = hash.get('access_token');
+            const token = accessToken || query.get('code');
+
+            if (token) {
+                send({ type: 'authorization:github', token });
+            } else {
+                // Fallback legacy message type
+                send({ type: 'authorization_github', token: null });
+            }
+        })();
     </script>
 </body>
 </html>

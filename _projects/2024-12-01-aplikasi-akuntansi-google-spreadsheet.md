@@ -14,7 +14,6 @@ tech_stack:
   - "FILTER"
   - "CHOOSECOLUMN"
 link: "https://docs.google.com/spreadsheets/d/19gcBJWEpWHnxFLaINBM3fFnQVFF4HSfbXfmzvMIjUEw/edit?usp=sharing"
-github: ""
 status: "Completed"
 featured: true
 ---
