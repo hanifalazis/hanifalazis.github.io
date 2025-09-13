@@ -158,8 +158,125 @@
       
       console.log('Initializing Decap CMS with config:', config);
       
+      // Check for stored auth token before CMS init
+      const storedAuth = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
+      let authToken = null;
+      
+      if (storedAuth) {
+        try {
+          const parsed = JSON.parse(storedAuth);
+          authToken = parsed && (parsed.token || parsed.access_token);
+          if (authToken) {
+            console.log('[ADMIN] found stored auth token, will skip login');
+          }
+        } catch(e) {
+          console.warn('[ADMIN] failed to parse stored auth');
+        }
+      }
+      
       if (window.CMS && typeof window.CMS.init === 'function') {
+        // If we have token, completely replace the authentication flow
+        if (authToken) {
+          console.log('[ADMIN] patching CMS auth with stored token');
+          
+          // Create fake user object
+          const fakeUser = {
+            token: authToken,
+            login: 'hanifalazis',
+            name: 'Muhammad Hanif Al Azis',
+            email: 'your-email@example.com',
+            avatar_url: 'https://github.com/hanifalazis.png'
+          };
+          
+          // Store the original init function
+          const originalInit = window.CMS.init;
+          
+          // Override init to inject authenticated state
+          window.CMS.init = function(options) {
+            console.log('[ADMIN] overridden CMS.init called');
+            
+            // Call original init first
+            const result = originalInit.call(this, options);
+            
+            // Immediately after init, try to set authenticated state
+            setTimeout(() => {
+              try {
+                console.log('[ADMIN] attempting to force auth state after init');
+                
+                // Try multiple approaches to force authentication
+                if (window.CMS.store) {
+                  // Approach 1: Dispatch auth action to Redux store
+                  const authAction = {
+                    type: 'AUTH_SUCCESS',
+                    payload: { user: fakeUser }
+                  };
+                  window.CMS.store.dispatch(authAction);
+                  console.log('[ADMIN] dispatched AUTH_SUCCESS to store');
+                }
+                
+                // Approach 2: Set user directly on backend
+                if (window.CMS.getBackend) {
+                  const backend = window.CMS.getBackend();
+                  if (backend) {
+                    if (backend.currentUser) {
+                      backend.currentUser = () => Promise.resolve(fakeUser);
+                    }
+                    if (backend.user) {
+                      backend.user = fakeUser;
+                    }
+                    console.log('[ADMIN] set user on backend');
+                  }
+                }
+                
+                // Approach 3: Hide login screen and show main interface
+                setTimeout(() => {
+                  const loginScreen = document.querySelector('[class*="AppWrapper"] [class*="login"]') ||
+                                     document.querySelector('[data-testid*="login"]') ||
+                                     document.querySelector('button[type="button"]');
+                  
+                  if (loginScreen) {
+                    // Instead of hiding, click it to trigger auth flow
+                    console.log('[ADMIN] found login element, attempting to bypass');
+                    
+                    // Try to find the root container and replace its content
+                    const appContainer = document.querySelector('#nc-root') || 
+                                        document.querySelector('[class*="AppWrapper"]') ||
+                                        document.body;
+                    
+                    if (appContainer && appContainer !== document.body) {
+                      appContainer.innerHTML = `
+                        <div style="padding: 20px; text-align: center;">
+                          <h2>Loading CMS Dashboard...</h2>
+                          <p>Authenticating with stored credentials...</p>
+                        </div>
+                      `;
+                      console.log('[ADMIN] replaced login screen with loading message');
+                      
+                      // Force reload the entire CMS after short delay
+                      setTimeout(() => {
+                        if (window.CMS.init) {
+                          const newConfig = { ...config };
+                          newConfig.backend.auth_scope = 'repo';
+                          // Re-init without the override
+                          window.CMS.init = originalInit;
+                          window.CMS.init({ config: newConfig });
+                        }
+                      }, 1000);
+                    }
+                  }
+                }, 500);
+                
+              } catch(authErr) {
+                console.error('[ADMIN] failed to force auth:', authErr);
+              }
+            }, 100);
+            
+            return result;
+          };
+        }
+        
         window.CMS.init({ config });
+        
         try {
           // Extra diagnostics: surface CMS errors in console
           if (window.CMS && typeof window.CMS.on === 'function') {
@@ -167,65 +284,6 @@
               console.error('[CMS error]', err);
             });
           }
-          
-          // Force bypass login screen by directly manipulating CMS state
-          setTimeout(() => {
-            try {
-              const stored = localStorage.getItem('decap-cms-auth') || localStorage.getItem('netlify-cms.user');
-              if (stored) {
-                const parsed = JSON.parse(stored);
-                const tok = parsed && (parsed.token || parsed.access_token);
-                if (tok) {
-                  console.log('[ADMIN] forcing CMS authentication bypass');
-                  
-                  // Try to find and click login bypass or force authenticated state
-                  const loginButton = document.querySelector('button[type="button"]');
-                  if (loginButton && loginButton.textContent.includes('Login')) {
-                    console.log('[ADMIN] attempting to override login button');
-                    // Override the login process
-                    loginButton.style.display = 'none';
-                    
-                    // Try to trigger successful auth state
-                    if (window.CMS && window.CMS.getBackend) {
-                      try {
-                        const backend = window.CMS.getBackend();
-                        if (backend) {
-                          // Force set authenticated state
-                          if (backend.authStore) {
-                            backend.authStore.user = { token: tok, provider: 'github' };
-                          }
-                          if (backend.user) {
-                            backend.user = { token: tok, provider: 'github' };
-                          }
-                          console.log('[ADMIN] set backend auth state directly');
-                          
-                          // Force reload CMS interface
-                          setTimeout(() => {
-                            if (window.CMS.renderApp) {
-                              window.CMS.renderApp();
-                            }
-                          }, 100);
-                        }
-                      } catch(backendErr) {
-                        console.warn('[ADMIN] backend manipulation failed:', backendErr);
-                      }
-                    }
-                    
-                    // Hide login screen, show main content
-                    const loginScreen = document.querySelector('[data-testid="login-screen"]') || 
-                                       document.querySelector('.login-screen') ||
-                                       document.querySelector('[class*="login"]');
-                    if (loginScreen) {
-                      loginScreen.style.display = 'none';
-                      console.log('[ADMIN] hidden login screen');
-                    }
-                  }
-                }
-              }
-            } catch(e) {
-              console.warn('[ADMIN] failed to force auth bypass', e);
-            }
-          }, 2000);
         } catch (e) {
           console.warn('[ADMIN] Failed to attach CMS error listener:', e);
         }
