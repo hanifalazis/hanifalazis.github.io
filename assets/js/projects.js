@@ -5,14 +5,22 @@ class ProjectManager {
         this.currentSlide = 0;
         this.activeFilter = 'All';
         this.filteredProjects = [];
+        this.autoSlideInterval = null;
+        this.autoSlideDelay = 4000; // 4 seconds
+        this.isUserInteracting = false;
+        this.translateX = 0;
+        this.cardWidth = 0;
+        this.isTransitioning = false;
         this.init();
     }
 
     async init() {
         await this.loadProjects();
+        this.normalizeProjects();
         this.setupFilters();
         this.renderProjects();
         this.setupCarousel();
+        this.startAutoSlide();
     }
 
     async loadProjects() {
@@ -38,7 +46,7 @@ class ProjectManager {
                 id: 1,
                 title: "Aplikasi Akuntansi berbasis Google Spreadsheet",
                 description: "Aplikasi akuntansi lengkap dengan fitur jurnal kas, penjualan, pembelian, laporan aset, inventory, laba rugi, dan neraca menggunakan Google Spreadsheet.",
-                image: "/assets/images/projects/accounting-app.jpg",
+                image: "/assets/images/projects/accounting-app.png",
                 tech_stack: ["Google Spreadsheet", "INDEX MATCH", "SUMIFS", "QUERY", "UNIQUE", "FILTER", "CHOOSECOLUMN"],
                 link: "https://docs.google.com/spreadsheets/d/19gcBJWEpWHnxFLaINBM3fFnQVFF4HSfbXfmzvMIjUEw/edit?usp=sharing",
                 category: "Data Analysis",
@@ -50,10 +58,9 @@ class ProjectManager {
                 id: 2,
                 title: "Analisis Data Python – Amazon Best Sellers (Valentine 2024)",
                 description: "Analisis tren produk terlaris Amazon untuk Valentine 2024 menggunakan Python dengan visualisasi data yang komprehensif menggunakan Pandas dan Matplotlib.",
-                image: "/assets/images/projects/amazon-analysis.jpg",
+                image: "/assets/images/projects/amazon-analysis.png",
                 tech_stack: ["Python", "Pandas", "Matplotlib", "Seaborn", "Jupyter Notebook"],
                 link: "https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024",
-                github: "https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024",
                 category: "Data Analysis", 
                 date: "2024-11-15",
                 featured: true,
@@ -61,68 +68,114 @@ class ProjectManager {
             },
             {
                 id: 3,
-                title: "Portfolio Website dengan CMS Integration",
-                description: "Website portfolio responsive dengan sistem manajemen konten menggunakan Decap CMS dan GitHub Pages untuk auto-deployment.",
-                image: "/assets/images/projects/portfolio-cms.jpg",
-                tech_stack: ["HTML", "CSS", "JavaScript", "Decap CMS", "GitHub Pages"],
-                link: "https://hifaliz.com",
-                github: "https://github.com/hanifalazis/hanifalazis.github.io",
-                category: "Web Development",
+                title: "Dashboard Consumer Complaints CFPB",
+                description: "Dashboard interaktif untuk visualisasi data keluhan konsumen CFPB menggunakan Decap CMS dan Google Looker Studio.",
+                image: "/assets/images/projects/dashboard-cfpb.jpg",
+                tech_stack: ["Google Looker Studio"],
+                link: "https://lookerstudio.google.com/s/nRGtBzuZ5eo",
+                category: "Dashboard",
                 date: "2024-09-13",
                 featured: true
             },
             {
                 id: 4,
-                title: "Data Visualization Dashboard",
-                description: "Interactive dashboard untuk visualisasi data menggunakan D3.js dan Chart.js dengan fitur filtering dan real-time updates.",
-                image: "/assets/images/projects/data-viz.jpg",
-                tech_stack: ["D3.js", "Chart.js", "JavaScript", "CSS Grid"],
-                link: "#",
-                category: "Data Analysis",
+                title: "Demographics and Member Distribution Dashboard",
+                description: "Dashboard interaktif untuk visualisasi demografi dan distribusi anggota menggunakan Google Looker Studio.",
+                image: "/assets/images/projects/dashboard-member.jpg",
+                tech_stack: ["Google Looker Studio"],
+                link: "https://lookerstudio.google.com/s/nIGl8VBmpWs",
+                category: "Dashboard",
                 date: "2024-08-20",
                 featured: true
             }
         ];
     }
 
+    // Ensure each project has a stable category_key for i18n and filtering
+    normalizeProjects() {
+        const mapCategoryToKey = (cat) => {
+            if (!cat) return 'other';
+            const c = String(cat).toLowerCase();
+            if (c.includes('data') && c.includes('analysis')) return 'dataAnalysis';
+            if (c.includes('dashboard')) return 'dashboard';
+            // Indonesian fallbacks
+            if (c.includes('analisis')) return 'dataAnalysis';
+            return c
+                .replace(/[^a-z0-9]+/g, ' ') // keep alnum and spaces
+                .trim()
+                .split(' ')
+                .map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))
+                .join('') || 'other';
+        };
+
+        this.projects = (this.projects || []).map(p => ({
+            ...p,
+            category_key: p.category_key || mapCategoryToKey(p.category),
+        }));
+    }
+
+    getCurrentLang() {
+        try {
+            const saved = localStorage.getItem('lang');
+            if (saved) return saved;
+        } catch {}
+        return ((navigator.language || 'id').toLowerCase().startsWith('en') ? 'en' : 'id');
+    }
+
     setupFilters() {
-        // Get unique categories from projects
-        const categories = ['All', ...new Set(this.projects.map(project => project.category))];
+        // Get unique category keys from projects
+        const catKeys = ['all', ...new Set(this.projects.map(project => project.category_key))];
         const filterContainer = document.querySelector('.portfolio-filters');
         
         if (!filterContainer) return;
 
         filterContainer.innerHTML = '';
-        
-        categories.forEach(category => {
+
+        catKeys.forEach(key => {
             const filterBtn = document.createElement('button');
-            filterBtn.className = `filter-btn ${category === 'All' ? 'active' : ''}`;
-            filterBtn.textContent = category;
-            filterBtn.addEventListener('click', () => this.filterProjects(category));
+            filterBtn.className = `filter-btn ${key === 'all' ? 'active' : ''}`;
+            filterBtn.dataset.categoryKey = key;
+            // Use i18n key for label
+            if (key === 'all') {
+                filterBtn.setAttribute('data-i18n', 'portfolio.filter.all');
+                filterBtn.textContent = 'All';
+            } else {
+                filterBtn.setAttribute('data-i18n', `portfolio.category.${key}`);
+                filterBtn.textContent = key;
+            }
+            filterBtn.addEventListener('click', () => this.filterProjects(key));
             filterContainer.appendChild(filterBtn);
         });
+
+        // Apply current language to newly created nodes
+        if (window.applyLanguage) {
+            window.applyLanguage(this.getCurrentLang());
+        }
     }
 
-    filterProjects(category) {
-        this.activeFilter = category;
+    filterProjects(categoryKey) {
+        this.activeFilter = categoryKey;
         
         // Update active filter button
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active');
-            if (btn.textContent === category) {
+            if (btn.dataset.categoryKey === categoryKey) {
                 btn.classList.add('active');
             }
         });
 
         // Filter projects
-        this.filteredProjects = category === 'All' 
+        this.filteredProjects = categoryKey === 'all' 
             ? this.projects.filter(project => project.featured)
-            : this.projects.filter(project => project.featured && project.category === category);
+            : this.projects.filter(project => project.featured && project.category_key === categoryKey);
 
         // Reset carousel position
         this.currentSlide = 0;
         this.renderProjects();
-        this.updateCarousel();
+        
+        // Restart auto-slide for new filtered content
+        this.isUserInteracting = false;
+        this.startAutoSlide();
     }
 
     renderProjects() {
@@ -140,13 +193,25 @@ class ProjectManager {
         // Clear existing content
         portfolioContainer.innerHTML = '';
 
-        sortedProjects.forEach(project => {
-            const projectElement = this.createCarouselCard(project);
-            portfolioContainer.appendChild(projectElement);
-        });
+        // Create infinite carousel by duplicating cards
+        const totalSets = 3; // Show original + 2 duplicates for smooth infinite scroll
+        for (let set = 0; set < totalSets; set++) {
+            sortedProjects.forEach(project => {
+                const projectElement = this.createCarouselCard(project);
+                portfolioContainer.appendChild(projectElement);
+            });
+        }
 
-        // Update navigation visibility
-        this.updateNavigationVisibility();
+        // Reset position and update dot indicators
+        this.translateX = 0;
+        this.currentSlide = 0;
+        portfolioContainer.style.transform = `translateX(0px)`;
+        this.renderDotIndicators(sortedProjects.length);
+
+        // Apply current language to newly created nodes
+        if (window.applyLanguage) {
+            window.applyLanguage(this.getCurrentLang());
+        }
     }
 
     createCarouselCard(project) {
@@ -160,7 +225,7 @@ class ProjectManager {
             <div class="card-image">
                 <img src="${imageUrl}" alt="${project.title}" loading="lazy" onerror="this.src='/img/main.jpg'">
                 <div class="card-overlay">
-                    <div class="card-category">${project.category}</div>
+                    <div class="card-category" data-i18n="portfolio.category.${project.category_key}">${project.category}</div>
                     ${project.link ? `<a href="${project.link}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="View ${project.title}"><i class="fa-solid fa-external-link"></i></a>` : ''}
                 </div>
             </div>
@@ -174,16 +239,11 @@ class ProjectManager {
     }
 
     setupCarousel() {
+        // Remove old arrow navigation buttons
         const prevBtn = document.querySelector('.carousel-prev');
         const nextBtn = document.querySelector('.carousel-next');
-
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => this.prevSlide());
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => this.nextSlide());
-        }
+        if (prevBtn) prevBtn.remove();
+        if (nextBtn) nextBtn.remove();
 
         // Touch/swipe support
         const carousel = document.querySelector('.portfolio-carousel');
@@ -208,6 +268,7 @@ class ProjectManager {
                 const diff = startX - endX;
 
                 if (Math.abs(diff) > 50) {
+                    this.handleUserInteraction();
                     if (diff > 0) {
                         this.nextSlide();
                     } else {
@@ -217,37 +278,74 @@ class ProjectManager {
 
                 isDragging = false;
             });
+
+            // Pause auto-slide on hover
+            carousel.addEventListener('mouseenter', () => {
+                this.pauseAutoSlide();
+            });
+
+            carousel.addEventListener('mouseleave', () => {
+                if (!this.isUserInteracting) {
+                    this.startAutoSlide();
+                }
+            });
         }
     }
 
     nextSlide() {
-        const totalProjects = this.getCurrentProjects().length;
-        const cardsPerView = this.getCardsPerView();
-        const maxSlide = Math.max(0, totalProjects - cardsPerView);
-
-        if (this.currentSlide < maxSlide) {
-            this.currentSlide++;
-            this.updateCarousel();
-        }
+        if (this.isTransitioning) return;
+        
+        const originalProjects = this.getCurrentProjects();
+        this.currentSlide = (this.currentSlide + 1) % originalProjects.length;
+        this.updateInfiniteCarousel();
     }
 
     prevSlide() {
-        if (this.currentSlide > 0) {
-            this.currentSlide--;
-            this.updateCarousel();
-        }
+        if (this.isTransitioning) return;
+        
+        const originalProjects = this.getCurrentProjects();
+        this.currentSlide = this.currentSlide === 0 ? originalProjects.length - 1 : this.currentSlide - 1;
+        this.updateInfiniteCarousel();
     }
 
-    updateCarousel() {
+    goToSlide(index) {
+        if (this.isTransitioning) return;
+        
+        this.currentSlide = index;
+        this.updateInfiniteCarousel();
+    }
+
+    updateInfiniteCarousel() {
         const carousel = document.querySelector('.portfolio-carousel');
         if (!carousel) return;
 
+        this.isTransitioning = true;
         const cardWidth = this.getCardWidth();
-        const translateX = -this.currentSlide * cardWidth;
+        const cardsPerView = this.getCardsPerView();
+        const originalProjects = this.getCurrentProjects();
         
-        carousel.style.transform = `translateX(${translateX}px)`;
+        // Calculate position: start from second set (index originalProjects.length) + current slide
+        const basePosition = originalProjects.length;
+        const targetPosition = basePosition + this.currentSlide;
+        this.translateX = -targetPosition * (cardWidth + 20); // 20px gap
         
-        this.updateNavigationVisibility();
+        carousel.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        carousel.style.transform = `translateX(${this.translateX}px)`;
+        
+        // Update dot indicators
+        this.updateDotIndicators();
+        
+        // Check if we need to reset position (when we're at the end of third set)
+        setTimeout(() => {
+            if (targetPosition >= originalProjects.length * 2) {
+                // Reset to equivalent position in second set without animation
+                const resetPosition = basePosition + this.currentSlide;
+                this.translateX = -resetPosition * (cardWidth + 20);
+                carousel.style.transition = 'none';
+                carousel.style.transform = `translateX(${this.translateX}px)`;
+            }
+            this.isTransitioning = false;
+        }, 400);
     }
 
     getCurrentProjects() {
@@ -270,19 +368,57 @@ class ProjectManager {
         return (containerWidth - (gap * (cardsPerView - 1))) / cardsPerView;
     }
 
-    updateNavigationVisibility() {
-        const prevBtn = document.querySelector('.carousel-prev');
-        const nextBtn = document.querySelector('.carousel-next');
-        const totalProjects = this.getCurrentProjects().length;
-        const cardsPerView = this.getCardsPerView();
+    renderDotIndicators(totalProjects) {
+        const navContainer = document.querySelector('.carousel-nav');
+        if (!navContainer) return;
 
-        if (prevBtn) {
-            prevBtn.style.display = this.currentSlide > 0 ? 'flex' : 'none';
+        navContainer.innerHTML = '';
+        
+        for (let i = 0; i < totalProjects; i++) {
+            const dot = document.createElement('button');
+            dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => {
+                this.handleUserInteraction();
+                this.goToSlide(i);
+            });
+            navContainer.appendChild(dot);
         }
+    }
 
-        if (nextBtn) {
-            nextBtn.style.display = this.currentSlide < Math.max(0, totalProjects - cardsPerView) ? 'flex' : 'none';
+    updateDotIndicators() {
+        const dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentSlide);
+        });
+    }
+
+    // Auto-slide methods
+    startAutoSlide() {
+        this.pauseAutoSlide(); // Clear any existing interval
+        this.autoSlideInterval = setInterval(() => {
+            if (!this.isUserInteracting) {
+                this.nextSlide();
+            }
+        }, this.autoSlideDelay);
+    }
+
+    pauseAutoSlide() {
+        if (this.autoSlideInterval) {
+            clearInterval(this.autoSlideInterval);
+            this.autoSlideInterval = null;
         }
+    }
+
+    handleUserInteraction() {
+        this.isUserInteracting = true;
+        this.pauseAutoSlide();
+        
+        // Resume auto-slide after 10 seconds of no interaction
+        setTimeout(() => {
+            this.isUserInteracting = false;
+            this.startAutoSlide();
+        }, 10000);
     }
 
     // Method to add new project (called by CMS)
@@ -309,6 +445,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // Handle window resize
 window.addEventListener('resize', () => {
     if (window.projectManager) {
-        window.projectManager.updateCarousel();
+        window.projectManager.updateInfiniteCarousel();
+    }
+});
+
+// Handle page visibility (pause auto-slide when tab is not active)
+document.addEventListener('visibilitychange', () => {
+    if (window.projectManager) {
+        if (document.hidden) {
+            window.projectManager.pauseAutoSlide();
+        } else if (!window.projectManager.isUserInteracting) {
+            window.projectManager.startAutoSlide();
+        }
     }
 });
