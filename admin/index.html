@@ -73,7 +73,9 @@
           repo: 'hanifalazis/hanifalazis.github.io',
           branch: 'main',
           auth_type: 'implicit',
-          app_id: 'Ov23liByUAJR8RrZUu2B'
+          app_id: 'Ov23liByUAJR8RrZUu2B',
+          base_url: 'https://api.github.com',
+          auth_endpoint: 'https://github.com/login/oauth/authorize'
         },
         publish_mode: 'simple',
         media_folder: 'assets/images/projects',
@@ -105,8 +107,13 @@
           }
         ]
       };
+      
+      console.log('Initializing Decap CMS with config:', config);
+      
       if (window.CMS && typeof window.CMS.init === 'function') {
         window.CMS.init({ config });
+      } else {
+        console.error('CMS not loaded or init function not available');
       }
     });
 
