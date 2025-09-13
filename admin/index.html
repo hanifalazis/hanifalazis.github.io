@@ -121,8 +121,9 @@
           name: 'github',
           repo: 'hanifalazis/hanifalazis.github.io',
           branch: 'main',
-          base_url: origin,            // Cloudflare Pages Functions base
-          auth_endpoint: '/api/decap/auth',     // redirects to GitHub authorize
+          // Point base_url to the functions prefix, and set a relative auth endpoint
+          base_url: origin + '/api/decap',
+          auth_endpoint: 'auth',     // will resolve to `${base_url}/auth`
           cms_label_prefix: 'Decap'
         },
         publish_mode: 'simple',

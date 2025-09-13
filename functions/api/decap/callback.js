@@ -40,13 +40,24 @@ export async function onRequest(context) {
   const html = `<!DOCTYPE html><html><body><script>
     (function(){
       function sendToken(tok){
-        // Decap CMS expects a postMessage in the form 'authorization:github:<token>'
-        var message = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
+        // Decap CMS listens for either a string 'authorization:github:<token>' or an object message
+        var strMessage = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
+        var objMessage = { type: 'authorization', provider: 'github', token: tok || null };
         if (window.opener) {
-          // Use '*' for broad compatibility; CMS validates origin internally
-          window.opener.postMessage(message, '*');
+          try {
+            var origin = document.referrer || (location.origin);
+            // Prefer strict origin when possible
+            window.opener.postMessage(objMessage, origin);
+          } catch(_) {
+            // Fallback to wildcard if strict origin not available
+            window.opener.postMessage(objMessage, '*');
+          }
+          // Also send string format for compatibility
+          try {
+            window.opener.postMessage(strMessage, '*');
+          } catch(_) {}
           // Give the parent a moment to handle the message before closing
-          setTimeout(function(){ try { window.close(); } catch(e) {} }, 100);
+          setTimeout(function(){ try { window.close(); } catch(e) {} }, 150);
         } else {
           // Fallback: navigate back to admin with token in hash
           var p = new URLSearchParams();

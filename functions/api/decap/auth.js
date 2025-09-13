@@ -8,6 +8,7 @@ export async function onRequest(context) {
     return new Response('Missing GITHUB_CLIENT_ID env var', { status: 500 });
   }
 
+  // Our admin config uses base_url: `${origin}/api/decap` and auth_endpoint: 'auth'
   const redirectUri = `${origin}/api/decap/callback`;
   // Permissions: broaden to full 'repo' + 'user:email' to ensure write access while we finalize
   const scope = 'repo user:email';
