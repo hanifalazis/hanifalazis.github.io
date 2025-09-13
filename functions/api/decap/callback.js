@@ -30,23 +30,22 @@ export async function onRequest(context) {
 
   const html = `<!DOCTYPE html><html><body><script>
     (function(){
-      function send(msg){
-        if (window.opener){
-          window.opener.postMessage(msg, '${origin}');
-          window.close();
+      function sendToken(tok){
+        // Decap CMS expects a postMessage in the form 'authorization:github:<token>'
+        var message = tok ? ('authorization:github:' + tok) : 'authorization:github:null';
+        if (window.opener) {
+          // Use '*' for broad compatibility; CMS validates origin internally
+          window.opener.postMessage(message, '*');
+          try { window.close(); } catch(e) {}
         } else {
-          // Fallback: navigate back to admin with token
+          // Fallback: navigate back to admin with token in hash
           var p = new URLSearchParams();
-          if (msg.token) p.set('token', msg.token);
+          if (tok) p.set('token', tok);
           window.location.href = '/admin/#' + p.toString();
         }
       }
       var token = ${JSON.stringify(token || '')};
-      if (token) {
-        send({ type: 'authorization:github', token: token });
-      } else {
-        send({ type: 'authorization_github', token: null });
-      }
+      sendToken(token);
     })();
   <\/script></body></html>`;
 

@@ -27,12 +27,16 @@
 
             console.log('Auth callback - token found:', !!token, 'hash:', window.location.hash, 'search:', window.location.search);
 
-            if (token) {
-                send({ type: 'authorization:github', token });
+            // Decap listens for a string message 'authorization:github:<token>'
+            const payload = token ? `authorization:github:${token}` : 'authorization:github:null';
+            if (window.opener) {
+                window.opener.postMessage(payload, '*');
+                try { window.close(); } catch(e) {}
             } else {
-                // Debug: log the full URL for troubleshooting
-                console.error('No token found in callback URL:', window.location.href);
-                send({ type: 'authorization_github', token: null });
+                console.error('No window.opener; redirecting back to admin');
+                const params = new URLSearchParams();
+                if (token) params.set('token', token);
+                window.location.href = '/admin/#' + params.toString();
             }
         })();
     </script>
