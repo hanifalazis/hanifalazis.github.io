@@ -256,8 +256,13 @@ navLinks.forEach(link => {
             // ALWAYS suppress AOS during navigation clicks to prevent layout shifts
             suppressAOSUntilManualScroll();
             
-            // Call scroll function - browser will handle smooth transition between targets
-            smoothScrollTo(targetId);
+      // Call scroll function - browser will handle smooth transition between targets
+      smoothScrollTo(targetId);
+
+      // Keep URL clean when navigating to Home: remove any existing hash
+      if (targetId === 'home' && location.hash) {
+        history.replaceState(null, '', '/');
+      }
         }
     });
 });
@@ -513,6 +518,9 @@ if (typingElement) {
   'nav.portfolio': 'Portofolio',
   'nav.service': 'Jasa',
   'theme.darkMode': 'Mode Gelap',
+    // Back to Top (titles/aria)
+    'backToTop.title': 'Kembali ke atas',
+    'backToTop.aria': 'Kembali ke atas',
       'hero.name': 'Muhammad Hanif Al Azis',
       'hero.im': 'Saya ',
       'hero.desc': 'Profesional yang berorientasi detail dengan pengalaman di analisis data, pelaporan keuangan, dan pemasaran digital. Saat ini bekerja sebagai Data Cleansing Engineer dan berfokus pada penyediaan data yang bersih, akurat, serta terstruktur untuk mendukung transformasi digital dan pengambilan keputusan berbasis data.',
@@ -587,6 +595,9 @@ if (typingElement) {
   'nav.portfolio': 'Portfolio',
   'nav.service': 'Service',
   'theme.darkMode': 'Dark Mode',
+    // Back to Top (titles/aria)
+    'backToTop.title': 'Back to top',
+    'backToTop.aria': 'Back to top',
       'hero.name': 'Muhammad Hanif Al Azis',
       'hero.im': "I'm ",
       'hero.desc': 'Detail-oriented professional with experience in data analysis, financial reporting, and digital marketing. Currently working as a Data Cleansing Engineer focused on delivering clean, accurate, and structured data to support digital transformation and data-driven decision making.',
@@ -660,6 +671,20 @@ if (typingElement) {
       const key = node.getAttribute('data-i18n');
       if (dict[key] !== undefined) {
         node.textContent = dict[key];
+      }
+    });
+    // Translate title attributes
+    document.querySelectorAll('[data-i18n-title]').forEach(node => {
+      const key = node.getAttribute('data-i18n-title');
+      if (dict[key] !== undefined) {
+        node.setAttribute('title', dict[key]);
+      }
+    });
+    // Translate aria-label attributes
+    document.querySelectorAll('[data-i18n-aria]').forEach(node => {
+      const key = node.getAttribute('data-i18n-aria');
+      if (dict[key] !== undefined) {
+        node.setAttribute('aria-label', dict[key]);
       }
     });
     

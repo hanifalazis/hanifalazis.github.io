@@ -1,89 +1,84 @@
-# Portfolio Website - Muhammad Hanif Al-Azis
+# Portfolio Website — Muhammad Hanif Al-Azis
 
-🚀 **Portfolio website untuk Data Cleansing Engineer & Business Intelligence Specialist**
+Website portofolio untuk Data Cleansing Engineer & Business Intelligence Specialist dengan dark mode, i18n (ID/EN), projects carousel, dan polish UX seperti Back‑to‑Top, smooth scroll, serta aura foto profil.
 
-## 🤖 100% AI-Generated Website
+## 🤖 100% AI-Developed (GitHub Copilot Agent)
 
-**Website ini dibuat 100% oleh AI (GitHub Copilot)** tanpa coding manual sama sekali! Mulai dari:
-- ✨ Design & Layout
-- 📱 Responsive Mobile Navigation  
-- 🎨 Styling & CSS Animations
-- ⚡ JavaScript Interactions
-- 📊 Business Intelligence Service Landing Page
-- 🔗 Cross-page Navigation & Integration
+Proyek ini dikembangkan 100% oleh AI (GitHub Copilot Agent) tanpa coding manual. Seluruh struktur, HTML, CSS, dan JavaScript—termasuk fitur navigasi, i18n, dark mode, Back‑to‑Top, carousel projects, dan animasi—dibuat secara otomatis oleh agen AI.
 
-## 📋 Fitur Utama
+## ✨ Fitur Utama
 
-### Main Portfolio (`index.html`)
-- **Responsive Design** dengan hamburger navigation
-- **Hero Section** dengan typing animation
-- **About Section** dengan profile dan skills
-- **Portfolio Showcase** dengan project highlights
-- **Services Section** terintegrasi dengan service landing page
-- **Contact Information** dengan social links
+- Navigasi halus & URL bersih
+	- Klik logo/“Home” pada root akan scroll halus ke atas tanpa menambah `#home` di URL.
+	- Smooth scroll antar section dan highlight nav aktif saat scroll.
+- Back‑to‑Top arrow (brand blue)
+	- Muncul/hilang halus, hover/press feedback, glow lembut di dark mode, hormati prefers‑reduced‑motion.
+- Tema gelap/terang dengan toggle
+	- Mengikuti preferensi sistem; bisa override dan tersimpan di `localStorage`.
+- i18n bilingual (ID/EN)
+	- Menggunakan `data-i18n`, `data-i18n-title`, `data-i18n-aria`. Toggle bahasa memperbarui teks, title, dan aria-label.
+- Projects carousel (auto‑slide + filter)
+	- Memuat dari `/api/projects.json` bila tersedia; fallback ke data statis di `assets/js/projects.js`.
+	- Filter kategori dengan label i18n; infinite carousel, swipe di mobile, auto‑slide pause saat interaksi.
+- Animasi & visual polish
+	- AOS untuk animasi on‑scroll; “aura memancar” looping pada foto profil; typing effect pada hero.
+- Aksesibilitas
+	- Skip link, ARIA, `focus-visible`, sembunyikan dari tab order saat tidak terlihat, dukungan reduced motion.
 
-### Service Landing Page (`service/jasa.html`)
-- **Business Intelligence Services** - Complete B2B conversion funnel
-- **Problems & Solutions** - Pain points dan value proposition
-- **Process Overview** - Step-by-step methodology
-- **Pricing Packages** - Transparent pricing structure
-- **Portfolio & Case Studies** - Real client examples
-- **FAQ Section** - Common questions answered
-- **Contact & CTA** - Multiple conversion points
+## 🧩 Teknologi
 
-## 🛠️ Teknologi
+- HTML + CSS kustom (+ Tailwind via CDN, dengan safelist di `index.html`)
+- JavaScript vanilla (tanpa bundler)
+- AOS (Animate On Scroll) & Font Awesome
+- Google Fonts (Poppins)
+- Analytics: Google Analytics (gtag) + Cloudflare Web Analytics
+- Struktur Jekyll (folder `_projects`, `_layouts`, `_data`) kompatibel GitHub Pages
 
-- **HTML5** - Semantic markup
-- **CSS3** - Modern responsive design dengan Flexbox/Grid
-- **JavaScript (Vanilla)** - Interactive elements & animations
-- **Font Awesome** - Professional icons
-- **Google Fonts** - Typography (Poppins)
-- **Responsive Design** - Mobile-first approach
+## 📂 Struktur Penting
 
-## 📱 Responsive Features
+- `index.html` — Halaman utama, Tailwind CDN config + safelist, gaya Back‑to‑Top, dan inisiasi tema.
+- `assets/js/script.js` — Navigasi, smooth scroll, Back‑to‑Top, AOS, i18n, tema, UX utils.
+- `assets/js/projects.js` — Manajer Projects: load JSON/fallback, filter, carousel, auto‑slide.
+- `assets/css/style.css` — Gaya global; animasi aura foto profil (`.home-img` dengan `@keyframes aura-ring`).
+- `service/index.html` — Landing page layanan BI (proses, pricing, demo dashboard, dsb.).
+- `_projects/` — Sumber konten project (untuk Jekyll); tidak otomatis dipakai di homepage kecuali dibuatkan JSON.
 
-- **Hamburger Menu** untuk mobile navigation
-- **Flexible Grid Layout** yang adapt dengan screen size
-- **Touch-friendly Buttons** dan interactive elements
-- **Optimized Images** untuk loading speed
-- **Cross-device Compatibility**
+## 🛠️ Konfigurasi & Kustomisasi
 
-## 🎯 Conversion Optimization
+- Warna brand: `index.html` → blok `tailwind.config` → `colors.primary` dan `primary.light`.
+- Back‑to‑Top: `index.html` → style `#back-to-top` (warna, transisi, dark‑mode glow).
+- Aura foto profil: `assets/css/style.css` → `.home-img` + `@keyframes aura-ring`/`aura-ring-light`.
+- Terjemahan (i18n): `assets/js/script.js` → objek `translations` (kunci `id`/`en`). Gunakan `data-i18n`, `data-i18n-title`, `data-i18n-aria` pada elemen.
 
-Landing page dirancang khusus untuk B2B conversion dengan:
-1. **Hero Section** - Clear value proposition
-2. **Problems** - Identify pain points
-3. **Solutions** - Present clear solutions  
-4. **Process** - Build trust dengan methodology
-5. **Pricing** - Transparent pricing untuk decision making
-6. **FAQ** - Address objections
-7. **Portfolio** - Social proof dengan case studies
-8. **About** - Personal credibility
-9. **Contact** - Multiple CTA points
+## 📦 Data Projects di Homepage
 
-## 🚀 Live Demo
+Homepage mencoba fetch `/api/projects.json`. Jika tidak ada, otomatis pakai fallback di `assets/js/projects.js`.
 
-- **Main Portfolio**: [hanifalazis.github.io](https://hanifalazis.github.io)
-- **BI Services**: [hanifalazis.github.io/service/jasa.html](https://hanifalazis.github.io/service/jasa.html)
+Opsi sumber data:
+- Cepat (fallback): sunting array `this.projects` di `loadFallbackProjects()`.
+- Dinamis (opsional): sediakan file statis `/api/projects.json` dengan struktur array proyek yang sama (judul, deskripsi, gambar, link, kategori, tanggal, dll). Jika memakai Jekyll, Anda bisa membuat template JSON dari `_projects/`.
 
-## 📊 Performance
+## ▶️ Menjalankan Lokal
 
-- ⚡ Fast loading dengan optimized assets
-- 📱 Mobile-friendly responsive design
-- 🔍 SEO-optimized structure
-- ♿ Accessible navigation & interactions
+Tanpa build step — cukup buka `index.html` langsung. Disarankan VS Code + ekstensi Live Server untuk auto‑reload.
 
-## 🤖 AI Development Process
+Opsional (Jekyll), untuk memanfaatkan `_projects` pada halaman lain:
 
-Seluruh website ini dikembangkan melalui:
-1. **AI-Generated Code** - 100% HTML, CSS, JavaScript dari AI
-2. **Responsive Design** - Mobile-first approach
-3. **Content Strategy** - B2B conversion optimization
-4. **Cross-page Integration** - Seamless user journey
-5. **Performance Optimization** - Fast loading & smooth interactions
+```powershell
+# Prasyarat: Ruby + Bundler
+bundle install
+bundle exec jekyll serve --livereload
+# Akses di http://127.0.0.1:4000
+```
 
----
+## 🔎 Catatan & Known Issues
 
-**Dibuat dengan ❤️ oleh AI (GitHub Copilot) untuk Muhammad Hanif Al-Azis**
+- Jika `/api/projects.json` tidak ditemukan, itu normal — fallback akan dipakai.
+- Perubahan warna ikon Back‑to‑Top kadang tertahan cache; lakukan hard refresh bila perlu.
+- Tailwind CDN dengan safelist: jika menambah utility class dinamis baru, tambahkan ke `safelist` di `index.html`.
 
-*Membuktikan bahwa AI dapat membuat website profesional yang conversion-ready!*
+## 📜 Lisensi
+
+Konten dan kode sumber untuk keperluan portofolio pribadi. Silakan gunakan sebagai referensi; untuk penggunaan ulang penuh, mintalah izin terlebih dahulu.
+
+— 100% dikembangkan oleh AI (GitHub Copilot Agent)
