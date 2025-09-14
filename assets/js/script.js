@@ -66,6 +66,28 @@ document.addEventListener('click', (e) => {
 
 // Close mobile menu when clicking on a nav link
 const navLinks = document.querySelectorAll('nav a');
+// Handle logo click: keep URL clean (no /#home)
+const logoLink = document.querySelector('a.logo');
+if (logoLink) {
+  logoLink.addEventListener('click', (e) => {
+    // If we are already on the root page, avoid reload and avoid adding #home
+    const isRoot = location.pathname === '/' || location.pathname.endsWith('/index.html');
+    if (isRoot) {
+      e.preventDefault();
+      if (hamburger.classList.contains('active')) {
+        toggleMenu();
+      }
+      // ensure animations don't jump while scrolling to top
+      suppressAOSUntilManualScroll();
+      smoothScrollTo('home');
+      // Remove any existing hash without reloading
+      if (location.hash) {
+        history.replaceState(null, '', '/');
+      }
+    }
+    // If not on root (e.g., /service/), let the default href="/" navigate normally
+  });
+}
 
 // Track whether the user has performed a manual scroll
 let hasManualScrolled = false;
@@ -282,6 +304,20 @@ window.addEventListener('scroll', () => {
         headerEl.classList.toggle('scrolled', isScrolled);
     }
     updateActiveNav();
+  // Show/hide Back-to-Top button
+  const btt = document.getElementById('back-to-top');
+  if (btt) {
+    const show = (window.scrollY || window.pageYOffset) > 300;
+    if (show) {
+      btt.classList.add('btt-visible');
+      btt.removeAttribute('aria-hidden');
+      btt.removeAttribute('tabindex');
+    } else {
+      btt.classList.remove('btt-visible');
+      btt.setAttribute('aria-hidden', 'true');
+      btt.setAttribute('tabindex', '-1');
+    }
+  }
 });
 
 // Correct hash scroll on initial load (direct link like /#skills)
@@ -298,6 +334,21 @@ window.addEventListener('load', () => {
     }
     // Initial nav highlight
     updateActiveNav();
+    // Back-to-Top wiring
+    const btt = document.getElementById('back-to-top');
+    if (btt) {
+      // Ensure initial state hidden (no flash)
+      btt.classList.remove('btt-visible');
+      btt.setAttribute('aria-hidden', 'true');
+      btt.setAttribute('tabindex', '-1');
+      btt.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Keep URL clean, no hash
+        suppressAOSUntilManualScroll();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (location.hash) history.replaceState(null, '', '/');
+      });
+    }
 });
 
 // Detect manual scrolling to lift suppression

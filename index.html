@@ -45,7 +45,10 @@
                     safelist: [
                         'fixed','right-4','bottom-4','rounded-full','p-3','p-4','md:p-5','shadow-lg','border','border-white/10',
                         'bg-white/80','text-gray-800','hover:scale-105','transition','dark:bg-gray-800/90','dark:text-white','dark:border-white/10',
-                        'z-[1100]','text-xl','md:text-2xl','hidden'
+                        'z-[1100]','text-xl','md:text-2xl','hidden',
+                        'bg-primary','text-white','hover:bg-primary-light','border-primary/20','!text-white',
+                        'bg-white','text-primary','border-primary/30','dark:bg-gray-900',
+                        'right-6','bottom-10','md:right-8','md:bottom-10','text-3xl','md:text-4xl','p-5'
                     ],
                     theme: {
                         extend: {
@@ -58,6 +61,65 @@
             </script>
         <!-- Tailwind CSS CDN (for rapid theming) -->
         <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Back-to-Top icon color guard + animations -->
+        <style>
+            /* Back-to-Top: blue arrow only + smooth show/hide + interactions */
+            #back-to-top {
+                color: #2a5da8 !important;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !IMPORTANT;
+                /* Animation state (hidden by default) */
+                opacity: 0;
+                transform: translateY(12px) scale(0.96);
+                pointer-events: none;
+                transition: opacity .28s ease, transform .28s ease;
+                will-change: transform, opacity;
+            }
+            #back-to-top.btt-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                pointer-events: auto;
+            }
+            /* Icon color and slight stroke to thicken */
+            #back-to-top i {
+                color: #2a5da8 !important;
+                -webkit-text-stroke: 0.6px #2a5da8;
+            }
+            /* Hover/pressed effects */
+            #back-to-top:hover { transform: translateY(0) scale(1.08); }
+            #back-to-top:hover, #back-to-top:hover i { color: #3f78d1 !important; }
+            #back-to-top:active { transform: translateY(1px) scale(0.94); }
+            #back-to-top:focus-visible { outline: 3px solid rgba(42,93,168,0.35); outline-offset: 4px; border-radius: 9999px; }
+            
+            /* Dark mode: make the arrow glow (neon-like) so it's clearly visible */
+            html.dark #back-to-top,
+            html.dark #back-to-top i { color: #3f78d1 !important; }
+            html.dark #back-to-top i {
+                /* Softer, subtler glow for dark mode */
+                text-shadow:
+                    0 0 3px rgba(63,120,209,0.55),
+                    0 0 8px rgba(63,120,209,0.35);
+                filter: drop-shadow(0 0 1px rgba(63,120,209,0.30));
+            }
+            /* Stronger glow on hover/focus for feedback */
+            html.dark #back-to-top:hover i,
+            html.dark #back-to-top:focus-visible i {
+                /* Slightly stronger than base, but still gentle */
+                text-shadow:
+                    0 0 5px rgba(63,120,209,0.75),
+                    0 0 12px rgba(63,120,209,0.50);
+                filter: drop-shadow(0 0 2px rgba(63,120,209,0.45));
+            }
+            /* Larger tap target on touch devices */
+            /* Larger tap target on touch devices */
+            @media (pointer: coarse) { #back-to-top { padding: 14px !important; } }
+            /* Respect Reduced Motion */
+            @media (prefers-reduced-motion: reduce) {
+                #back-to-top { transition: none; transform: none; }
+                #back-to-top.btt-visible { transform: none; }
+            }
+        </style>
         <!-- App Icons -->
     <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/assets/icons/favicon-192.png" sizes="192x192" type="image/png">
@@ -123,7 +185,7 @@
 <body>
                 <a href="#main-content" class="skip-link" data-i18n="skip">Lewati ke konten utama</a>
     <header>
-        <a href="#home" class="logo">Hifaliz</a>
+        <a href="/" class="logo">Hifaliz</a>
         <button class="hamburger-menu" id="hamburger" type="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -389,6 +451,11 @@
     <script src="assets/js/script.js?v=2024"></script>
     <script src="assets/js/projects.js?v=2024"></script>
     
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed right-6 bottom-10 md:right-8 md:bottom-10 p-4 md:p-5 transition z-[1100] text-3xl md:text-4xl text-primary" aria-label="Kembali ke atas" title="Kembali ke atas" data-i18n-title="backToTop.title" data-i18n-aria="backToTop.aria" aria-hidden="true" tabindex="-1">
+        <i class="fa-solid fa-arrow-up !text-primary" aria-hidden="true"></i>
+    </button>
+
     <!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "27aa49e234084b38a10408ed7321975f"}'></script>
     <!-- End Cloudflare Web Analytics -->
