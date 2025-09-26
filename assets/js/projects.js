@@ -67,6 +67,17 @@ class ProjectManager {
                 i18n_key: "portfolio.p2"
             },
             {
+                id: 5,
+                title: "Dashboard Analisis Tingkat Pengangguran di Indonesia",
+                description: "Dashboard interaktif untuk analisis Tingkat Pengangguran Terbuka (TPT) di Indonesia, menampilkan tren waktu, perbandingan wilayah, dan demografi.",
+                image: "/assets/images/projects/Analisis-TPT-Indonesia.jpg",
+                tech_stack: ["Google Looker Studio"],
+                link: "https://lookerstudio.google.com/s/g8O4PwuMQlw",
+                category: "Dashboard",
+                date: "2024-10-05",
+                featured: true
+            },
+            {
                 id: 3,
                 title: "Dashboard Consumer Complaints CFPB",
                 description: "Dashboard interaktif untuk visualisasi data keluhan konsumen CFPB menggunakan Decap CMS dan Google Looker Studio.",
