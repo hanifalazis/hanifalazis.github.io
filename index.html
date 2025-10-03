@@ -188,18 +188,18 @@
                 <a href="#main-content" class="skip-link" data-i18n="skip">Lewati ke konten utama</a>
     <header>
         <a href="/" class="logo">Hifaliz</a>
-        <button class="hamburger-menu" id="hamburger" type="button" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false">
+        <button class="hamburger-menu" id="hamburger" type="button" data-i18n-aria="nav.toggle" aria-label="Toggle navigasi" aria-controls="nav-menu" aria-expanded="false">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
-            <span class="sr-only">Menu</span>
+            <span class="sr-only" data-i18n="nav.menu">Menu</span>
         </button>
-                <nav id="nav-menu" aria-label="Navigasi utama">
-            <a href="#home" class="active" data-i18n="nav.home">Home</a>
+                <nav id="nav-menu" data-i18n-aria="nav.ariaMain" aria-label="Navigasi utama">
             <a href="#about" data-i18n="nav.about">Tentang</a>
-            <a href="#skills" data-i18n="nav.skills">Keahlian</a>
             <a href="#experience" data-i18n="nav.experience">Pengalaman</a>
             <a href="#portfolio" data-i18n="nav.portfolio">Portofolio</a>
+            <a href="#skills" data-i18n="nav.skills">Keahlian</a>
+            <a href="#footer" data-i18n="nav.contact">Kontak</a>
             <!-- Theme switch: desktop (right of nav) and mobile (bottom of menu) -->
             <div class="nav-theme-toggle" aria-label="Theme switch container">
                 <label for="theme-toggle-input" class="switch-label" data-i18n="theme.darkMode">Mode Gelap</label>
@@ -208,7 +208,7 @@
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="lang-dropdown" role="group" aria-label="Language selector">
+            <div class="lang-dropdown" role="group" data-i18n-aria="lang.selector" aria-label="Language selector">
                 <button type="button" class="lang-current" id="lang-current" aria-expanded="false" aria-haspopup="true">
                     <img src="assets/icons/flag-id.svg" alt="Indonesia" class="flag-icon">
                     <span class="lang-text">ID</span>
@@ -255,79 +255,6 @@
     <p data-i18n="about.p2">Keahlian utama saya meliputi data cleansing, data analysis, visualisasi data, serta optimalisasi proses bisnis. Saya menguasai Python, SQL (MySQL & PostgreSQL), dan berbagai tools analitik modern seperti Power BI, Tableau, Looker Studio, serta DBeaver untuk eksplorasi dan manajemen database.</p>
     <p data-i18n="about.p3">Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.</p>
     </section>
-
-    
-
-        <!-- Keahlian (Tech Stack chips) -->
-        <section id="skills" data-aos="fade-up">
-            <h2 data-i18n="skills.techTitle">My Tech Stack</h2>
-            <div class="stack-grid" role="list">
-                <!-- Programming -->
-                <div class="stack-chip" role="listitem" aria-label="Python">
-                    <img class="stack-icon si-img" src="assets/icons/python-svgrepo-com (1).svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>Python</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="Pandas">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/pandas" data-src-dark="https://cdn.simpleicons.org/pandas/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>Pandas</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="NumPy">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/numpy" data-src-dark="https://cdn.simpleicons.org/numpy/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>NumPy</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="Matplotlib">
-                    <img class="stack-icon si-img no-dark-filter" data-src-light="assets/icons/matplotlib.svg" data-src-dark="assets/icons/matplotlib.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
-                    <span>Matplotlib</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="SQL">
-                    <img class="stack-icon si-img" src="assets/icons/database-svgrepo-com.svg" data-src-light="assets/icons/database-svgrepo-com.svg" data-src-dark="assets/icons/database-1-svgrepo-com.svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>SQL</span>
-                </div>
-
-                <!-- Databases & Tools -->
-                <div class="stack-chip" role="listitem" aria-label="MySQL">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/mysql" data-src-dark="https://cdn.simpleicons.org/mysql/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>MySQL</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="PostgreSQL">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/postgresql" data-src-dark="https://cdn.simpleicons.org/postgresql/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>PostgreSQL</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="DBeaver">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/dbeaver" data-src-dark="https://cdn.simpleicons.org/dbeaver/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>DBeaver</span>
-                </div>
-
-                <!-- Visualization & BI -->
-                <div class="stack-chip" role="listitem" aria-label="Power BI">
-                    <img class="stack-icon si-img" data-src-light="assets/icons/Power-BI.svg" data-src-dark="assets/icons/powerbi-svgrepo-com.svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>Power BI</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="Tableau">
-                    <img class="stack-icon si-img" src="assets/icons/tableau-icon-svgrepo-com.svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>Tableau</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="Looker Studio">
-                    <img class="stack-icon si-img" src="assets/icons/looker-icon-svgrepo-com.svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>Looker Studio</span>
-                </div>
-
-                <!-- Spreadsheet -->
-                <div class="stack-chip" role="listitem" aria-label="Spreadsheet">
-                    <img class="stack-icon si-img" src="assets/icons/brand-microsoft-excel-svgrepo-com.svg" width="22" height="22" alt="" loading="lazy" decoding="async">
-                    <span>Spreadsheet</span>
-                </div>
-                <!-- Cloud & DW -->
-                <div class="stack-chip" role="listitem" aria-label="BigQuery">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/googlebigquery" data-src-dark="https://cdn.simpleicons.org/googlebigquery/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>BigQuery</span>
-                </div>
-                <div class="stack-chip" role="listitem" aria-label="Google Cloud Storage">
-                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/googlecloud" data-src-dark="https://cdn.simpleicons.org/googlecloud/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
-                    <span>Google Cloud Storage</span>
-                </div>
-            </div>
-        </section>
 
     <!-- Pengalaman Kerja -->
     <section id="experience" data-aos="fade-up">
@@ -400,10 +327,10 @@
         
         <!-- Carousel Navigation -->
         <div class="carousel-nav">
-            <button class="carousel-prev" aria-label="Previous projects">
+            <button class="carousel-prev" data-i18n-aria="carousel.prev" aria-label="Previous projects">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button class="carousel-next" aria-label="Next projects">
+            <button class="carousel-next" data-i18n-aria="carousel.next" aria-label="Next projects">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
         </div>
@@ -426,7 +353,78 @@
     </section>
     </main>
 
-    <footer class="site-footer">
+        <!-- Keahlian (Tech Stack chips) -->
+        <section id="skills" data-aos="fade-up">
+            <h2 data-i18n="skills.techTitle">My Tech Stack</h2>
+            <div class="stack-grid" role="list">
+                <!-- Programming -->
+                <div class="stack-chip" role="listitem" aria-label="Python">
+                    <img class="stack-icon si-img" src="assets/icons/python-svgrepo-com (1).svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Python</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="Pandas">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/pandas" data-src-dark="https://cdn.simpleicons.org/pandas/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>Pandas</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="NumPy">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/numpy" data-src-dark="https://cdn.simpleicons.org/numpy/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>NumPy</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="Matplotlib">
+                    <img class="stack-icon si-img no-dark-filter" data-src-light="assets/icons/matplotlib.svg" data-src-dark="assets/icons/matplotlib.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Matplotlib</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="SQL">
+                    <img class="stack-icon si-img" src="assets/icons/database-svgrepo-com.svg" data-src-light="assets/icons/database-svgrepo-com.svg" data-src-dark="assets/icons/database-1-svgrepo-com.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>SQL</span>
+                </div>
+
+                <!-- Databases & Tools -->
+                <div class="stack-chip" role="listitem" aria-label="MySQL">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/mysql" data-src-dark="https://cdn.simpleicons.org/mysql/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>MySQL</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="PostgreSQL">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/postgresql" data-src-dark="https://cdn.simpleicons.org/postgresql/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>PostgreSQL</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="DBeaver">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/dbeaver" data-src-dark="https://cdn.simpleicons.org/dbeaver/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>DBeaver</span>
+                </div>
+
+                <!-- Visualization & BI -->
+                <div class="stack-chip" role="listitem" aria-label="Power BI">
+                    <img class="stack-icon si-img" data-src-light="assets/icons/Power-BI.svg" data-src-dark="assets/icons/powerbi-svgrepo-com.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Power BI</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="Tableau">
+                    <img class="stack-icon si-img" src="assets/icons/tableau-icon-svgrepo-com.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Tableau</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="Looker Studio">
+                    <img class="stack-icon si-img" src="assets/icons/looker-icon-svgrepo-com.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Looker Studio</span>
+                </div>
+
+                <!-- Spreadsheet -->
+                <div class="stack-chip" role="listitem" aria-label="Spreadsheet">
+                    <img class="stack-icon si-img" src="assets/icons/brand-microsoft-excel-svgrepo-com.svg" width="26" height="26" alt="" loading="lazy" decoding="async">
+                    <span>Spreadsheet</span>
+                </div>
+                <!-- Cloud & DW -->
+                <div class="stack-chip" role="listitem" aria-label="BigQuery">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/googlebigquery" data-src-dark="https://cdn.simpleicons.org/googlebigquery/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>BigQuery</span>
+                </div>
+                <div class="stack-chip" role="listitem" aria-label="Google Cloud Storage">
+                    <img class="stack-icon si-img" data-src-light="https://cdn.simpleicons.org/googlecloud" data-src-dark="https://cdn.simpleicons.org/googlecloud/ffffff" alt="" width="26" height="26" loading="lazy" decoding="async">
+                    <span>Google Cloud Storage</span>
+                </div>
+            </div>
+        </section>
+
+    <footer id="footer" class="site-footer">
         <div class="footer-content">
             <h3 data-i18n="footer.title">Tertarik untuk Bekerja Sama?</h3>
             <p data-i18n="footer.desc">Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:</p>
@@ -435,11 +433,16 @@
                 <a href="tel:+6281280534553" class="footer-link"><i class="fa-solid fa-phone"></i> <span data-i18n="footer.phone">0812-8053-4553</span></a>
             </div>
             <div class="footer-socials">
+                <a href="https://wa.me/6281280534553" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="https://linkedin.com/in/hanifalazis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                 <a href="https://github.com/hanifalazis" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
             </div>
         </div>
     </footer>
+    <!-- Bottom copyright -->
+    <div class="footer-bottom">
+        Muhammad Hanif Al Azis Portfolio © 2025
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="assets/js/script.js?v=2024"></script>

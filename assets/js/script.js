@@ -268,7 +268,7 @@ navLinks.forEach(link => {
 });
 
 // Highlight nav on scroll + compact header
-const sections = document.querySelectorAll('section[id]');
+const sections = document.querySelectorAll('section[id], footer[id]');
 const headerEl = document.querySelector('header');
 
 function updateActiveNav() {
@@ -397,40 +397,64 @@ AOS.init({
   disable: prefersReducedMotion
 });
 
-// Typing effect for hero tagline
-const typingElement = document.querySelector('.typing-dynamic');
-if (typingElement) {
-  const words = [
-    'Data Enthusiast',
-    'Data Cleansing Engineer',
-    'Data Analyst'
-  ];
+// Typing effect for hero tagline (i18n-aware)
+(function initTyping(){
+  const typingElement = document.querySelector('.typing-dynamic');
+  if (!typingElement) return;
+
+  let words = ['Data Enthusiast','Data Cleansing Engineer','Data Analyst'];
   let wordIndex = 0;
   let charIndex = 0;
   let isDeleting = false;
-  let currentWord = '';
+  let rafId = null;
+  let timerId = null;
 
-  function type() {
-    currentWord = words[wordIndex];
-    if (isDeleting) {
-      typingElement.textContent = currentWord.substring(0, charIndex--);
-    } else {
-      typingElement.textContent = currentWord.substring(0, charIndex++);
-    }
+  function clearTimers(){
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    if (timerId) { clearTimeout(timerId); timerId = null; }
+  }
 
-    if (!isDeleting && charIndex === currentWord.length + 1) {
-      isDeleting = true;
-      setTimeout(type, 1200);
-    } else if (isDeleting && charIndex === 0) {
+  function setWordsFromDict(dict){
+    const arr = dict && Array.isArray(dict['hero.words']) ? dict['hero.words'] : null;
+    if (arr && arr.length) {
+      words = arr;
+      wordIndex = 0;
+      charIndex = 0;
       isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      setTimeout(type, 400);
-    } else {
-      setTimeout(type, isDeleting ? 60 : 100);
+      typingElement.textContent = '';
     }
   }
-  type();
-}
+
+  function step(){
+    const currentWord = words[wordIndex];
+    typingElement.textContent = isDeleting
+      ? currentWord.substring(0, Math.max(0, --charIndex))
+      : currentWord.substring(0, Math.min(currentWord.length, ++charIndex));
+
+    if (!isDeleting && charIndex === currentWord.length) {
+      timerId = setTimeout(() => { isDeleting = true; rafId = requestAnimationFrame(step); }, 800);
+      return;
+    }
+    if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      timerId = setTimeout(() => { rafId = requestAnimationFrame(step); }, 300);
+      return;
+    }
+    timerId = setTimeout(() => { rafId = requestAnimationFrame(step); }, isDeleting ? 55 : 95);
+  }
+
+  // If i18n is ready, use its dict
+  if (window.__i18n && window.__i18n.currentDict) {
+    setWordsFromDict(window.__i18n.currentDict);
+  }
+  // Listen for language changes
+  window.addEventListener('i18n:changed', (e) => {
+    setWordsFromDict(e.detail.dict);
+  });
+
+  rafId = requestAnimationFrame(step);
+})();
 
 // Theme toggle logic (switch-style inside nav)
 (function() {
@@ -506,13 +530,14 @@ if (typingElement) {
   });
 })();
 
-// Basic i18n implementation
+// Basic i18n implementation (external JSON with inline fallback)
 (function() {
   const translations = {
     id: {
   'skip': 'Lewati ke konten utama',
   'nav.home': 'Home',
   'nav.about': 'Tentang',
+  'nav.contact': 'Kontak',
   'nav.skills': 'Keahlian',
   'nav.experience': 'Pengalaman',
   'nav.portfolio': 'Portofolio',
@@ -582,15 +607,18 @@ if (typingElement) {
   'portfolio.p3.d1': 'Dashboard interaktif untuk visualisasi data keluhan konsumen CFPB menggunakan Decap CMS dan Google Looker Studio.',
   'portfolio.p4.title': 'Demographics and Member Distribution Dashboard',
   'portfolio.p4.d1': 'Dashboard interaktif untuk visualisasi demografi dan distribusi anggota menggunakan Google Looker Studio.',
+  'portfolio.p5.title': 'Dashboard Analisis Tingkat Pengangguran di Indonesia',
+  'portfolio.p5.d1': 'Dashboard interaktif untuk analisis Tingkat Pengangguran Terbuka (TPT) di Indonesia, menampilkan tren waktu, perbandingan wilayah, dan demografi.',
       'footer.title': 'Tertarik untuk Bekerja Sama?',
       'footer.desc': 'Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:',
       'footer.email': 'hanif@hifaliz.com',
       'footer.phone': '0812-8053-4553'
     },
-    en: {
+  en: {
   'skip': 'Skip to main content',
   'nav.home': 'Home',
   'nav.about': 'About',
+  'nav.contact': 'Contact',
   'nav.skills': 'Skills',
   'nav.experience': 'Experience',
   'nav.portfolio': 'Portfolio',
@@ -660,6 +688,8 @@ if (typingElement) {
   'portfolio.p3.d1': 'Interactive dashboard to visualize CFPB consumer complaints using Decap CMS and Google Looker Studio.',
   'portfolio.p4.title': 'Demographics and Member Distribution Dashboard',
   'portfolio.p4.d1': 'Interactive dashboard for visualizing demographics and member distribution using Google Looker Studio.',
+  'portfolio.p5.title': 'Indonesia Unemployment Rate Analysis Dashboard',
+  'portfolio.p5.d1': 'Interactive dashboard analyzing Indonesia’s Open Unemployment Rate (TPT), showing time trends, regional comparisons, and demographics.',
       'footer.title': 'Interested in Working Together?',
       'footer.desc': "I'm always open to discussions, projects, or new opportunities. Reach me via:",
       'footer.email': 'hanif@hifaliz.com',
@@ -667,8 +697,28 @@ if (typingElement) {
     }
   };
 
-  function applyLanguage(lang) {
-    const dict = translations[lang] || translations.id;
+  // Cache for externally loaded dictionaries
+  const externalDicts = { id: null, en: null };
+
+  async function loadExternalDict(lang) {
+    try {
+      if (externalDicts[lang]) return externalDicts[lang];
+      const res = await fetch(`/assets/i18n/${lang}.json`, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('i18n fetch failed');
+      const data = await res.json();
+      externalDicts[lang] = data;
+      return data;
+    } catch (e) {
+      // Fallback to inline translations
+      externalDicts[lang] = translations[lang] || translations.id;
+      return externalDicts[lang];
+    }
+  }
+
+  async function applyLanguage(lang) {
+    const dict = await loadExternalDict(lang);
+    // Update <html lang>
+    try { document.documentElement.setAttribute('lang', lang); } catch {}
     document.querySelectorAll('[data-i18n]').forEach(node => {
       const key = node.getAttribute('data-i18n');
       if (dict[key] !== undefined) {
@@ -707,6 +757,11 @@ if (typingElement) {
     });
     
     try { localStorage.setItem('lang', lang); } catch {}
+    // Expose current dict and dispatch change event for listeners (e.g., typing)
+    window.__i18n = window.__i18n || {};
+    window.__i18n.currentLang = lang;
+    window.__i18n.currentDict = dict;
+    window.dispatchEvent(new CustomEvent('i18n:changed', { detail: { lang, dict } }));
   }
 
   // Expose to global so dynamic sections can re-apply translations
@@ -738,10 +793,10 @@ if (typingElement) {
 
     // Handle option selection
     document.querySelectorAll('.lang-option').forEach(option => {
-      option.addEventListener('click', (e) => {
+      option.addEventListener('click', async (e) => {
         e.stopPropagation();
         const lang = option.dataset.lang;
-        applyLanguage(lang);
+        await applyLanguage(lang);
         
         // Close dropdown on both desktop and mobile
         langDropdown.classList.remove('active');

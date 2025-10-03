@@ -21,6 +21,11 @@ class ProjectManager {
         this.renderProjects();
         this.setupCarousel();
         this.startAutoSlide();
+        // Update dynamic labels when language changes
+        window.addEventListener('i18n:changed', (e) => {
+            const dict = e && e.detail ? e.detail.dict : null;
+            this.updateI18nLabels(dict);
+        });
     }
 
     async loadProjects() {
@@ -37,6 +42,22 @@ class ProjectManager {
             console.log('Loading fallback projects...');
             this.loadFallbackProjects();
         }
+    }
+
+    updateI18nLabels(dict) {
+        const d = dict || (window.__i18n && window.__i18n.currentDict) || null;
+        // Update dot aria labels
+        const dotPrefix = d && d['carousel.goToSlidePrefix'] ? d['carousel.goToSlidePrefix'] : 'Go to slide';
+        const dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, idx) => {
+            dot.setAttribute('aria-label', `${dotPrefix} ${idx + 1}`);
+        });
+        // Update card-link aria labels
+        const viewPrefix = d && d['portfolio.viewPrefix'] ? d['portfolio.viewPrefix'] : 'View';
+        document.querySelectorAll('.carousel-card .card-link').forEach(a => {
+            const title = a.closest('.carousel-card')?.querySelector('.card-title')?.textContent?.trim() || '';
+            a.setAttribute('aria-label', `${viewPrefix} ${title}`);
+        });
     }
 
     loadFallbackProjects() {
@@ -75,7 +96,8 @@ class ProjectManager {
                 link: "https://lookerstudio.google.com/s/g8O4PwuMQlw",
                 category: "Dashboard",
                 date: "2024-10-05",
-                featured: true
+                featured: true,
+                i18n_key: "portfolio.p5"
             },
             {
                 id: 3,
@@ -86,7 +108,8 @@ class ProjectManager {
                 link: "https://lookerstudio.google.com/s/nRGtBzuZ5eo",
                 category: "Dashboard",
                 date: "2024-09-13",
-                featured: true
+                featured: true,
+                i18n_key: "portfolio.p3"
             },
             {
                 id: 4,
@@ -97,7 +120,8 @@ class ProjectManager {
                 link: "https://lookerstudio.google.com/s/nIGl8VBmpWs",
                 category: "Dashboard",
                 date: "2024-08-20",
-                featured: true
+                featured: true,
+                i18n_key: "portfolio.p4"
             }
         ];
     }
@@ -236,12 +260,15 @@ class ProjectManager {
         // Fallback image if project image not available
         const imageUrl = project.image || '/assets/images/projects/default-project.jpg';
 
+        const dict = (window.__i18n && window.__i18n.currentDict) ? window.__i18n.currentDict : null;
+        const viewPrefix = dict && dict['portfolio.viewPrefix'] ? dict['portfolio.viewPrefix'] : 'View';
+
         cardDiv.innerHTML = `
             <div class="card-image">
                 <img src="${imageUrl}" alt="${project.title}" loading="lazy" onerror="this.src='/img/main.jpg'">
                 <div class="card-overlay">
                     <div class="card-category" data-i18n="portfolio.category.${project.category_key}">${project.category}</div>
-                    ${project.link ? `<a href="${project.link}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="View ${project.title}"><i class="fa-solid fa-external-link"></i></a>` : ''}
+                    ${project.link ? `<a href="${project.link}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="${viewPrefix} ${project.title}"><i class="fa-solid fa-external-link"></i></a>` : ''}
                 </div>
             </div>
             <div class="card-content">
@@ -402,11 +429,12 @@ class ProjectManager {
         if (!navContainer) return;
 
         navContainer.innerHTML = '';
-        
+        const dict = (window.__i18n && window.__i18n.currentDict) ? window.__i18n.currentDict : null;
+        const prefix = dict && dict['carousel.goToSlidePrefix'] ? dict['carousel.goToSlidePrefix'] : 'Go to slide';
         for (let i = 0; i < totalProjects; i++) {
             const dot = document.createElement('button');
             dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.setAttribute('aria-label', `${prefix} ${i + 1}`);
             dot.addEventListener('click', () => {
                 this.handleUserInteraction();
                 this.goToSlide(i);
