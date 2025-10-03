@@ -460,6 +460,53 @@ AOS.init({
 (function() {
   const html = document.documentElement;
   const toggles = () => document.querySelectorAll('[data-theme-toggle]');
+  const transitionOverlay = document.querySelector('.theme-transition');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const transitionDuration = 2500; // ms; keep in sync with CSS animations
+  let transitionCleanupTimer = null;
+
+  function clearTransitionTimer() {
+    if (transitionCleanupTimer) {
+      clearTimeout(transitionCleanupTimer);
+      transitionCleanupTimer = null;
+    }
+  }
+
+  function stopThemeTransition() {
+    clearTransitionTimer();
+    if (transitionOverlay) {
+      transitionOverlay.classList.remove('is-active', 'to-dark', 'to-light');
+    }
+  }
+
+  function playThemeTransition(targetMode) {
+    if (!transitionOverlay || reducedMotionQuery.matches) {
+      return;
+    }
+
+    clearTransitionTimer();
+    transitionOverlay.classList.remove('is-active', 'to-dark', 'to-light');
+
+    // Force reflow so the animation restarts on successive toggles
+    void transitionOverlay.offsetWidth; // eslint-disable-line no-unused-expressions
+
+    const stateClass = targetMode === 'dark' ? 'to-dark' : 'to-light';
+    transitionOverlay.classList.add('is-active', stateClass);
+
+    transitionCleanupTimer = window.setTimeout(() => {
+      transitionOverlay.classList.remove('is-active', stateClass);
+      transitionCleanupTimer = null;
+    }, transitionDuration);
+  }
+
+  const handleReducedMotionChange = (event) => {
+    if (event.matches) {
+      stopThemeTransition();
+    }
+  };
+
+  reducedMotionQuery.addEventListener?.('change', handleReducedMotionChange);
+  reducedMotionQuery.addListener?.(handleReducedMotionChange);
 
   // Swap themed assets (e.g., Power BI icon) based on current mode
   function updateThemedAssets(mode) {
@@ -490,6 +537,7 @@ AOS.init({
   }
 
   function applyMode(mode, persist) {
+    playThemeTransition(mode);
     if (mode === 'dark') {
       html.classList.add('dark');
       html.setAttribute('data-theme', 'dark');
