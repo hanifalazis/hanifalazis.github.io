@@ -2004,3 +2004,85 @@ section:last-of-type {
 body {
     padding-bottom: 0;
 }
+
+/* Tech Stack chips (new) */
+.stack-grid {
+    display: flex;              /* variable-width chips */
+    flex-wrap: wrap;            /* wrap into multiple rows */
+    gap: 1.2rem;                /* consistent spaces between chips */
+    margin-top: 2.4rem;
+    align-items: flex-start;
+    justify-content: center;    /* center chips across each row */
+}
+
+.stack-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.2rem 1.6rem; /* slightly larger for clarity */
+    border-radius: 12px;
+    background: rgba(42, 93, 168, 0.12);
+    border: 1px solid rgba(42, 93, 168, 0.25);
+    color: #e5e7eb;
+    font-weight: 600;
+    font-size: clamp(1.6rem, 1.55rem + 0.25vw, 1.85rem);
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+}
+
+.stack-chip:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(42,93,168,0.25);
+    background: rgba(42, 93, 168, 0.18);
+    border-color: rgba(63,120,209,0.55);
+}
+
+.stack-chip .stack-icon { width: 26px; height: 26px; flex: 0 0 26px; }
+/* Make inline fallback badges match icon size */
+.stack-chip .si { margin-right: 0.6rem; }
+.stack-chip .si-icon { width: 26px; height: 26px; }
+
+/* Light theme for chips */
+html[data-theme='light'] .stack-chip {
+    background: rgba(15, 23, 42, 0.06);
+    border-color: rgba(15,23,42,0.12);
+    color: #0f172a;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+html[data-theme='light'] .stack-chip:hover {
+    background: rgba(42,93,168,0.12);
+    border-color: rgba(42,93,168,0.35);
+}
+
+/* Dark-mode hover: white background so colored logos don't clash */
+html[data-theme='dark'] .stack-chip:hover,
+html[data-theme='dark'] .stack-chip:focus-visible {
+    /* Match light-mode hover tone */
+    background: rgba(42,93,168,0.12);
+    border-color: rgba(42,93,168,0.35);
+    box-shadow: 0 10px 26px rgba(42,93,168,0.28);
+}
+/* Reveal original brand colors for images on dark hover */
+/* Reveal light-variant image for brand icons on dark hover */
+html[data-theme='dark'] .stack-chip:hover .si-img,
+html[data-theme='dark'] .stack-chip:focus-visible .si-img { filter: none; }
+/* Intensify inline badge on dark hover */
+html[data-theme='dark'] .stack-chip:hover .si-bg,
+html[data-theme='dark'] .stack-chip:focus-visible .si-bg { fill: rgba(42,93,168,0.95); }
+html[data-theme='dark'] .stack-chip:hover .si-text,
+html[data-theme='dark'] .stack-chip:focus-visible .si-text { fill: #ffffff; }
+
+/* Exception: keep certain brand icons colored even in dark (no inversion) */
+html[data-theme='dark'] img.no-dark-filter { filter: none !important; }
+
+/* Responsive sizing so chips don't get too small */
+@media (max-width: 900px) {
+  .stack-chip { padding: 1rem 1.3rem; }
+}
+
+@media (max-width: 600px) {
+    .stack-grid { gap: 1rem; }
+  .stack-chip { justify-content: center; }
+}
+/* On extra small screens, allow natural wrapping without forced columns */

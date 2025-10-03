@@ -532,6 +532,7 @@ if (typingElement) {
       'about.p2': 'Keahlian utama saya meliputi data cleansing, data analysis, visualisasi data, serta optimalisasi proses bisnis. Saya menguasai Python, SQL (MySQL & PostgreSQL), dan berbagai tools analitik modern seperti Power BI, Tableau, Looker Studio, serta DBeaver untuk eksplorasi dan manajemen database.',
       'about.p3': 'Saya terbiasa bekerja sama dengan tim lintas fungsi untuk menyusun laporan, membuat dashboard, dan memberikan insight yang mendukung keputusan strategis berbasis data.',
       'skills.title': 'Keahlian',
+  'skills.techTitle': 'My Tech Stack',
       'skills.dataTools': 'Alat Analisis Data',
       'skills.programming': 'Pemrograman',
       'skills.soft': 'Soft Skills',
@@ -609,6 +610,7 @@ if (typingElement) {
       'about.p2': 'My core skills include data cleansing, data analysis, data visualization, and business process optimization. I use Python, SQL (MySQL & PostgreSQL), and modern analytics tools like Power BI, Tableau, Looker Studio, and DBeaver for exploration and database management.',
       'about.p3': 'I often collaborate with cross-functional teams to prepare reports, build dashboards, and deliver insights that support data-driven strategic decisions.',
       'skills.title': 'Skills',
+  'skills.techTitle': 'My Tech Stack',
       'skills.dataTools': 'Data Analysis Tools',
       'skills.programming': 'Programming',
       'skills.soft': 'Soft Skills',
@@ -822,4 +824,43 @@ if (typingElement) {
   window.addEventListener('orientationchange', () => {
     setTimeout(updatePositionCache, 200);
   });
+})();
+
+// Dark-mode chip hover: temporarily use light-variant icon
+(function enableDarkHoverLightVariant(){
+  const html = document.documentElement;
+  const isDark = () => (html.getAttribute('data-theme') === 'dark' || html.classList.contains('dark'));
+
+  function attachHoverHandlers(root){
+    root.querySelectorAll('.stack-chip').forEach(chip => {
+  const img = chip.querySelector('img.si-img[data-src-light][data-src-dark]');
+      if (!img) return; // only for icons with both variants
+  if (img.classList.contains('no-dark-filter')) return; // respect exception (e.g., Matplotlib)
+      const toLight = () => {
+        if (!isDark()) return;
+        const lightSrc = img.getAttribute('data-src-light');
+        if (lightSrc && img.getAttribute('src') !== lightSrc) {
+          img.dataset.prevHoverSrc = img.getAttribute('src') || '';
+          img.setAttribute('src', lightSrc);
+        }
+      };
+      const toDark = () => {
+        if (!isDark()) return;
+        const darkSrc = img.getAttribute('data-src-dark') || img.dataset.prevHoverSrc;
+        if (darkSrc && img.getAttribute('src') !== darkSrc) {
+          img.setAttribute('src', darkSrc);
+        }
+      };
+      chip.addEventListener('mouseenter', toLight);
+      chip.addEventListener('mouseleave', toDark);
+      chip.addEventListener('focusin', toLight);
+      chip.addEventListener('focusout', toDark);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => attachHoverHandlers(document));
+  } else {
+    attachHoverHandlers(document);
+  }
 })();
