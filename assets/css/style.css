@@ -63,6 +63,9 @@
         transition: none !important;
         scroll-behavior: auto !important;
     }
+    .cursor-trail {
+        display: none !important;
+    }
 }
 
 /* Focus-visible styling for keyboard users */
@@ -72,6 +75,187 @@
 }
 html[data-theme='light'] :focus-visible {
     outline-color: #2a5da8;
+}
+
+/* Custom Arrow Pointer Cursor (Tailwind-style) */
+body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+/* Interactive elements with pointer cursor */
+a,
+button,
+.filter-btn,
+.project-card,
+.theme-toggle,
+.nav-link,
+.lang-toggle,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+[role="button"],
+[onclick] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+/* Light theme cursor */
+html[data-theme='light'] body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+html[data-theme='light'] a,
+html[data-theme='light'] button,
+html[data-theme='light'] .filter-btn,
+html[data-theme='light'] .project-card,
+html[data-theme='light'] .theme-toggle,
+html[data-theme='light'] .nav-link,
+html[data-theme='light'] .lang-toggle,
+html[data-theme='light'] input[type="submit"],
+html[data-theme='light'] input[type="button"],
+html[data-theme='light'] input[type="reset"],
+html[data-theme='light'] input[type="checkbox"],
+html[data-theme='light'] input[type="radio"],
+html[data-theme='light'] select,
+html[data-theme='light'] [role="button"],
+html[data-theme='light'] [onclick] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer;
+}
+
+/* Subtle hover scale effect */
+a:hover,
+button:hover,
+.filter-btn:hover,
+.theme-toggle:hover,
+.lang-toggle:hover {
+    transform: scale(1.02);
+}
+
+/* Active state (when clicking) */
+a:active,
+button:active,
+.filter-btn:active,
+.theme-toggle:active,
+.lang-toggle:active {
+    transform: scale(0.98);
+}
+
+/* Text cursor for selectable text and inputs (Tailwind cursor-text) */
+p,
+h1, h2, h3, h4, h5, h6,
+span,
+div,
+li,
+input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+textarea,
+[contenteditable="true"] {
+    cursor: text;
+}
+
+/* Override text cursor for non-selectable elements */
+.no-select,
+.theme-toggle,
+.hamburger,
+nav,
+header,
+footer {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+html[data-theme='light'] .no-select,
+html[data-theme='light'] .theme-toggle,
+html[data-theme='light'] .hamburger,
+html[data-theme='light'] nav,
+html[data-theme='light'] header,
+html[data-theme='light'] footer {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+/* Disabled cursor (Tailwind cursor-not-allowed) */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Cursor Trail Animation */
+.cursor-trail {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(63, 120, 209, 0.6), transparent);
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    animation: trail-fade 0.6s ease-out forwards;
+}
+
+@keyframes trail-fade {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+}
+
+/* Light theme cursor trail colors */
+html[data-theme='light'] .cursor-trail {
+    background: radial-gradient(circle, rgba(42, 93, 168, 0.6), transparent);
+}
+
+/* Disable cursor trail and scale effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .cursor-trail {
+        display: none;
+    }
+    
+    a:hover,
+    button:hover,
+    .filter-btn:hover,
+    .theme-toggle:hover,
+    .lang-toggle:hover {
+        transform: none;
+    }
+}
+
+/* Disable animations when reduced motion is preferred */
+@media (prefers-reduced-motion: reduce) {
+    .cursor-trail {
+        display: none;
+    }
+    
+    a,
+    button,
+    .filter-btn,
+    .project-card,
+    .theme-toggle,
+    .nav-link,
+    .lang-toggle {
+        transition: none !important;
+    }
+    
+    a:hover,
+    button:hover,
+    .filter-btn:hover,
+    .theme-toggle:hover,
+    .lang-toggle:hover,
+    a:active,
+    button:active,
+    .filter-btn:active,
+    .theme-toggle:active,
+    .lang-toggle:active {
+        transform: none !important;
+    }
 }
 
 /* Base Reset and Global Styles */
@@ -1819,7 +2003,7 @@ html[data-theme='light'] .footer-socials a:hover {
         background: rgba(10, 10, 10, 0.98);
         backdrop-filter: blur(20px);
         flex-direction: column;
-        padding: 2rem 0 2rem 5%; /* Add left padding for left alignment */
+        padding: 2rem 0; /* No side padding on container */
         border-top: 1px solid rgba(42, 93, 168, 0.2);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
@@ -1836,18 +2020,27 @@ html[data-theme='light'] .footer-socials a:hover {
     }
     
     nav a {
-        margin: 0.5rem 0;
-        font-size: 1.6rem;
-        padding: 1rem 5% 1rem 5%; /* Full width padding for better coverage */
+        margin: 0.5rem 0 !important; /* Force consistent margin */
+        font-size: 1.6rem !important; /* Force consistent font size */
+        padding: 1rem 0 1rem 5% !important; /* Force fixed left padding - same as lang-current */
         border-radius: 0;
         text-align: left; /* Left align navigation text */
-        transition: background-color 0.3s ease; /* Only animate background color */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
         border-bottom: 1px solid rgba(42, 93, 168, 0.1);
+        border-left: none; /* No border to prevent any shift */
         display: block;
-        width: calc(100% + 10%); /* Extend full width */
-        margin-left: -5%; /* Offset to fill container */
+        width: 100%; /* Full width without calc */
+        margin-left: 0 !important; /* Force no offset - override header.scrolled */
         box-sizing: border-box;
         position: relative;
+    }
+    
+    /* Override header.scrolled styles for mobile nav items */
+    header.scrolled nav a {
+        margin: 0.5rem 0 !important; /* Keep mobile nav margin unchanged */
+        margin-left: 0 !important; /* Keep mobile nav at same position */
+        padding: 1rem 0 1rem 5% !important; /* Keep mobile nav padding unchanged */
+        font-size: 1.6rem !important; /* Keep mobile nav font size unchanged */
     }
     
     nav a:hover,
@@ -1862,9 +2055,10 @@ html[data-theme='light'] .footer-socials a:hover {
         display: flex;
         justify-content: flex-start; /* Left align */
         align-items: center;
-        padding: 1rem 5%; /* Match navigation padding */
-        margin: 0.5rem 0; /* Match nav item margin */; /* Match navigation width */
-    margin-left: -7%; /* Match navigation offset */
+        padding: 1rem 0 1rem 5%; /* Match nav item padding */
+        margin: 0.5rem 0; /* Match nav item margin */
+        margin-left: 0; /* No offset */
+        width: 100%;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(42, 93, 168, 0.1); /* Same separator as nav items */
         gap: 0.8rem;
@@ -1876,7 +2070,7 @@ html[data-theme='light'] .footer-socials a:hover {
         align-items: center;
         gap: 0.6rem;
         font-size: 1.6rem;
-        padding: 1rem 5% 1rem 5%; /* Match nav item padding */
+        padding: 1rem 0 1rem 5%; /* Match nav item padding - consistent left alignment */
         background: transparent; /* Plain background */
         border: none; /* No border */
         cursor: pointer;
@@ -1884,8 +2078,9 @@ html[data-theme='light'] .footer-socials a:hover {
         width: 100%;
         color: inherit;
         text-align: left;
-        margin-left: 0%;
+        margin-left: 0;
         border-bottom: 1px solid rgba(42, 93, 168, 0.1); /* Match nav separator */
+        transform: none !important; /* Force no transform */
     }
     
     .lang-current:hover {
@@ -1948,13 +2143,13 @@ html[data-theme='light'] .footer-socials a:hover {
         display: flex;
         justify-content: flex-start; /* Left align */
         align-items: center;
-        padding: 1rem 0% 1rem 0%; /* Match navigation padding */
+        padding: 1rem 0 1rem 0; /* Match navigation padding */
         margin: 0.5rem 0; /* Match nav item margin */
+        margin-left: 0;
         gap: 0.8rem;
         border-top: 1px solid rgba(42, 93, 168, 0.1);
         border-bottom: 1px solid rgba(42, 93, 168, 0.1); /* Match nav separator */
-        width: calc(100% + 10%); /* Match navigation width */
-        margin-left: -5%; /* Match navigation offset */
+        width: 100%; /* Full width without calc */
         box-sizing: border-box;
     }
     .switch-label { 
@@ -1990,8 +2185,7 @@ html[data-theme='light'] .footer-socials a:hover {
     nav a[aria-current="page"] {
         background: rgba(42, 93, 168, 0.2);
         color: #2a5da8;
-        transform: translateX(10px);
-        box-shadow: inset 4px 0 0 #2a5da8;
+        /* No border changes - keep position stable like lang-current */
     }
 
     html[data-theme='light'] nav a:hover,
@@ -1999,7 +2193,7 @@ html[data-theme='light'] .footer-socials a:hover {
     html[data-theme='light'] nav a[aria-current="page"] {
         background: rgba(42, 93, 168, 0.1);
         color: #2a5da8;
-        box-shadow: inset 4px 0 0 #2a5da8;
+        /* No border changes - keep position stable like lang-current */
     }
     
     section {

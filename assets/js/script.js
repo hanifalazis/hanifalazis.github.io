@@ -1,4 +1,63 @@
 // script.js
+
+// ===== CURSOR TRAIL EFFECT (Standard Cursor) =====
+(function initCursorTrail() {
+  // Check if device supports hover (skip on touch devices)
+  const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  if (!hasHover || prefersReducedMotion) {
+    return; // Don't initialize cursor trail on touch devices or when reduced motion is preferred
+  }
+  
+  // Cursor trail effect - positioned at the back of the cursor (tail)
+  let lastTrailTime = 0;
+  const trailDelay = 30; // milliseconds between trail particles
+  
+  // Track previous mouse positions for trail offset
+  let prevMouseX = 0;
+  let prevMouseY = 0;
+  
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastTrailTime < trailDelay) return;
+    lastTrailTime = now;
+    
+    // Calculate direction vector from current to previous position
+    const deltaX = e.clientX - prevMouseX;
+    const deltaY = e.clientY - prevMouseY;
+    
+    // Calculate distance
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    // Normalize and create offset (trail appears behind cursor)
+    const offsetDistance = 12; // pixels behind the cursor
+    let offsetX = 0;
+    let offsetY = 0;
+    
+    if (distance > 0) {
+      offsetX = -(deltaX / distance) * offsetDistance;
+      offsetY = -(deltaY / distance) * offsetDistance;
+    }
+    
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = (e.clientX + offsetX) + 'px';
+    trail.style.top = (e.clientY + offsetY) + 'px';
+    document.body.appendChild(trail);
+    
+    // Update previous position
+    prevMouseX = e.clientX;
+    prevMouseY = e.clientY;
+    
+    // Remove trail after animation
+    setTimeout(() => {
+      trail.remove();
+    }, 600);
+  });
+})();
+
+// ===== HAMBURGER MENU =====
 // Enhanced Hamburger Menu with better accessibility and focus management
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
