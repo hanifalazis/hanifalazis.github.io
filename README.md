@@ -5,7 +5,7 @@
 Website portofolio modern untuk Data Cleansing Engineer & Business Intelligence Specialist dengan animasi tema interaktif, custom cursor trail, i18n (ID/EN), projects carousel, dan pengalaman pengguna yang smooth & accessible.Website portofolio modern untuk Data Cleansing Engineer & Business Intelligence Specialist dengan animasi tema interaktif, custom cursor trail, i18n (ID/EN), projects carousel, dan pengalaman pengguna yang smooth & accessible.
 
 
-
+un
 ## 🤖 100% AI-Developed (GitHub Copilot Agent)## 🤖 100% AI-Developed (GitHub Copilot Agent)
 
 

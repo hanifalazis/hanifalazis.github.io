@@ -514,8 +514,31 @@ nav a {
     font-weight: 500;
     padding: 0.5rem 0;
     border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
     position: relative;
+}
+
+/* Animated underline for nav links */
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #2a5da8, transparent);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light theme nav link color */
+html[data-theme='light'] nav a {
+    color: #0f172a;
+}
+
+/* Dark theme underline gradient */
+html[data-theme='dark'] nav a::after {
+    background: linear-gradient(90deg, transparent, #6a9ef6, transparent);
 }
 
 /* Theme switch container inside nav */
@@ -931,26 +954,34 @@ html[data-theme='light'] .slider:before { background: #fff; }
     }
 }
 
-nav a:hover,
+/* Hover state - expand underline */
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Active/current state - full underline + color change */
 nav a.active,
 nav a[aria-current="page"] {
     color: #2a5da8;
-    border-bottom: 2px solid #2a5da8;
 }
 
-nav a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(42, 93, 168, 0.1), transparent);
-    transition: width 0.3s ease;
-}
-
-nav a:hover::before {
+nav a.active::after,
+nav a[aria-current="page"]::after {
     width: 100%;
+}
+
+/* Light theme active color */
+html[data-theme='light'] nav a:hover,
+html[data-theme='light'] nav a.active,
+html[data-theme='light'] nav a[aria-current="page"] {
+    color: #2a5da8;
+}
+
+/* Dark theme active color - brighter for visibility */
+html[data-theme='dark'] nav a:hover,
+html[data-theme='dark'] nav a.active,
+html[data-theme='dark'] nav a[aria-current="page"] {
+    color: #6a9ef6;
 }
 
 /* Hamburger Menu */
@@ -1404,6 +1435,45 @@ html[data-theme='light'] .home-img { animation-name: aura-ring-light; }
     border-color: #2a5da8;
     color: #2a5da8;
     transform: translateY(-3px);
+}
+
+/* Dark mode button styles for better contrast */
+html[data-theme='dark'] .btn.primary {
+    background: linear-gradient(135deg, #3f78d1 0%, #5a8ee6 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(63, 120, 209, 0.5);
+}
+
+html[data-theme='dark'] .btn.primary:hover {
+    background: linear-gradient(135deg, #4f88e0 0%, #6a9ef6 100%);
+    box-shadow: 0 15px 35px rgba(63, 120, 209, 0.7);
+}
+
+html[data-theme='dark'] .btn.secondary {
+    background: transparent;
+    color: #6a9ef6;
+    border: 2px solid #3f78d1;
+}
+
+html[data-theme='dark'] .btn.secondary:hover {
+    background: #3f78d1;
+    color: #ffffff;
+    border-color: #3f78d1;
+    box-shadow: 0 15px 35px rgba(63, 120, 209, 0.5);
+}
+
+html[data-theme='dark'] .btn.tertiary {
+    background: rgba(63, 120, 209, 0.15);
+    color: #e5e7eb;
+    border: 2px solid rgba(63, 120, 209, 0.3);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+html[data-theme='dark'] .btn.tertiary:hover {
+    background: rgba(63, 120, 209, 0.25);
+    border-color: #3f78d1;
+    color: #6a9ef6;
 }
 
 .cta-buttons {
