@@ -81,6 +81,18 @@ function toggleMenu() {
       'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
     );
     
+    // Staggered animation for menu items
+    const navLinks = navMenu.querySelectorAll('a, .nav-theme-toggle, .lang-dropdown');
+    navLinks.forEach((link, index) => {
+      link.style.opacity = '0';
+      link.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        link.style.opacity = '1';
+        link.style.transform = 'translateX(0)';
+      }, 50 + (index * 50)); // Stagger delay
+    });
+    
     // Focus first menu item for better keyboard navigation
     if (menuFocusableElements.length > 0) {
       setTimeout(() => menuFocusableElements[0].focus(), 100);
@@ -92,7 +104,14 @@ function toggleMenu() {
     // Refresh highlight based on current scroll position
     window.dispatchEvent(new Event('scroll'));
   } else {
-    // Menu is closing
+    // Menu is closing - quick fade out
+    const navLinks = navMenu.querySelectorAll('a, .nav-theme-toggle, .lang-dropdown');
+    navLinks.forEach((link) => {
+      link.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+      link.style.opacity = '0';
+      link.style.transform = 'translateX(-10px)';
+    });
+    
     hamburger.focus(); // Return focus to hamburger button
     document.removeEventListener('keydown', handleEscapeKey);
   }
