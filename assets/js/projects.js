@@ -20,7 +20,10 @@ class ProjectManager {
         this.setupFilters();
         this.renderProjects();
         this.setupCarousel();
-        this.startAutoSlide();
+        // Start auto-slide after a small delay to ensure rendering is complete
+        setTimeout(() => {
+            this.startAutoSlide();
+        }, 100);
         // Update dynamic labels when language changes
         window.addEventListener('i18n:changed', (e) => {
             const dict = e && e.detail ? e.detail.dict : null;
@@ -210,7 +213,9 @@ class ProjectManager {
         
         // Restart auto-slide for new filtered content
         this.isUserInteracting = false;
-        this.startAutoSlide();
+        setTimeout(() => {
+            this.startAutoSlide();
+        }, 100);
     }
 
     renderProjects() {
@@ -229,8 +234,9 @@ class ProjectManager {
         portfolioContainer.innerHTML = '';
 
         // Create infinite carousel by duplicating cards
-        const totalSets = 3; // Show original + 2 duplicates for smooth infinite scroll
-        for (let set = 0; set < totalSets; set++) {
+        // Duplicate enough times so the animation can loop seamlessly
+        const duplicateCount = 10; // Enough duplicates for smooth infinite scroll
+        for (let i = 0; i < duplicateCount; i++) {
             sortedProjects.forEach(project => {
                 const projectElement = this.createCarouselCard(project);
                 portfolioContainer.appendChild(projectElement);
@@ -239,12 +245,9 @@ class ProjectManager {
 
         // Reset position and update dot indicators
     this.currentSlide = 0;
-    // Position the carousel at the start of the middle set for seamless infinite effect
-    const step = this.getStepPx();
-    const basePosition = sortedProjects.length; // start of middle set
-    this.translateX = step ? -(basePosition * step) : 0;
-    portfolioContainer.style.transition = 'none';
-    portfolioContainer.style.transform = `translateX(${this.translateX}px)`;
+    // For smooth auto-scroll, remove any manual transform/transition to let CSS animation work
+    portfolioContainer.style.transition = '';
+    portfolioContainer.style.transform = '';
         this.renderDotIndicators(sortedProjects.length);
 
         // Apply current language to newly created nodes
@@ -267,8 +270,14 @@ class ProjectManager {
             <div class="card-image">
                 <img src="${imageUrl}" alt="${project.title}" loading="lazy" onerror="this.src='/img/main.jpg'">
                 <div class="card-overlay">
-                    <div class="card-category" data-i18n="portfolio.category.${project.category_key}">${project.category}</div>
-                    ${project.link ? `<a href="${project.link}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="${viewPrefix} ${project.title}"><i class="fa-solid fa-external-link"></i></a>` : ''}
+                    <div class="overlay-top">
+                        <div class="card-category" data-i18n="portfolio.category.${project.category_key}">${project.category}</div>
+                        ${project.link ? `<a href="${project.link}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="${viewPrefix} ${project.title}"><i class="fa-solid fa-external-link"></i></a>` : ''}
+                    </div>
+                    <div class="overlay-bottom">
+                        <h3 class="overlay-title" ${project.i18n_key ? `data-i18n="${project.i18n_key}.title"` : ''}>${project.title}</h3>
+                        <p class="overlay-description" ${project.i18n_key ? `data-i18n="${project.i18n_key}.d1"` : ''}>${project.description}</p>
+                    </div>
                 </div>
             </div>
             <div class="card-content">
@@ -281,110 +290,131 @@ class ProjectManager {
     }
 
     setupCarousel() {
-        // Remove old arrow navigation buttons
-        const prevBtn = document.querySelector('.carousel-prev');
-        const nextBtn = document.querySelector('.carousel-next');
-        if (prevBtn) prevBtn.remove();
-        if (nextBtn) nextBtn.remove();
-
-        // Touch/swipe support
-        const carousel = document.querySelector('.portfolio-carousel');
-        if (carousel) {
-            let startX = 0;
-            let isDragging = false;
-
-            carousel.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                isDragging = true;
-            });
-
-            carousel.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-            });
-
-            carousel.addEventListener('touchend', (e) => {
-                if (!isDragging) return;
-                
-                const endX = e.changedTouches[0].clientX;
-                const diff = startX - endX;
-
-                if (Math.abs(diff) > 50) {
-                    this.handleUserInteraction();
-                    if (diff > 0) {
-                        this.nextSlide();
-                    } else {
-                        this.prevSlide();
-                    }
-                }
-
-                isDragging = false;
-            });
-
-            // Pause auto-slide on hover
-            carousel.addEventListener('mouseenter', () => {
-                this.pauseAutoSlide();
-            });
-
-            carousel.addEventListener('mouseleave', () => {
-                if (!this.isUserInteracting) {
-                    this.startAutoSlide();
-                }
-            });
-        }
-    }
-
-    nextSlide() {
-        if (this.isTransitioning) return;
-        
-        const originalProjects = this.getCurrentProjects();
-        this.currentSlide = (this.currentSlide + 1) % originalProjects.length;
-        this.updateInfiniteCarousel();
-    }
-
-    prevSlide() {
-        if (this.isTransitioning) return;
-        
-        const originalProjects = this.getCurrentProjects();
-        this.currentSlide = this.currentSlide === 0 ? originalProjects.length - 1 : this.currentSlide - 1;
-        this.updateInfiniteCarousel();
-    }
-
-    goToSlide(index) {
-        if (this.isTransitioning) return;
-        
-        this.currentSlide = index;
-        this.updateInfiniteCarousel();
-    }
-
-    updateInfiniteCarousel() {
         const carousel = document.querySelector('.portfolio-carousel');
         if (!carousel) return;
 
-        this.isTransitioning = true;
-        const originalProjects = this.getCurrentProjects();
-        // Determine the exact step size based on actual rendered card width + CSS gap
-        const step = this.getStepPx();
-        if (!step) {
-            this.isTransitioning = false;
-            return;
-        }
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID = 0;
 
-        // Calculate position: always target middle set (index originalProjects.length) + current slide
-        const basePosition = originalProjects.length;
-        const targetPosition = basePosition + this.currentSlide;
-        this.translateX = -targetPosition * step;
+        // Get current transform value
+        const getTransformValue = () => {
+            const style = window.getComputedStyle(carousel);
+            const matrix = new DOMMatrix(style.transform);
+            return matrix.m41; // translateX value
+        };
 
-        carousel.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-        carousel.style.transform = `translateX(${this.translateX}px)`;
+        // Mouse/Touch event handlers
+        const touchStart = (e) => {
+            // Get position FIRST before any other operations
+            prevTranslate = getTransformValue();
+            
+            isDragging = true;
+            startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            currentTranslate = prevTranslate; // Initialize currentTranslate
+            
+            carousel.classList.add('dragging');
+            this.pauseAutoSlide();
+            this.isUserInteracting = true;
+            animationID = requestAnimationFrame(animation);
+        };
 
-        // Update dot indicators
-        this.updateDotIndicators();
+        const touchMove = (e) => {
+            if (!isDragging) return;
+            
+            const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            const diff = currentPosition - startPos;
+            currentTranslate = prevTranslate + diff;
+        };
 
-        // End transition lock after animation
-        setTimeout(() => {
-            this.isTransitioning = false;
-        }, 400);
+        const touchEnd = () => {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+            
+            carousel.classList.remove('dragging');
+            
+            // Keep the current position (already set by animation loop)
+            // No need to set again unless there was actual movement
+            const finalPosition = currentTranslate || prevTranslate;
+            carousel.style.transform = `translateX(${finalPosition}px)`;
+            
+            // Resume auto-slide after delay
+            setTimeout(() => {
+                this.isUserInteracting = false;
+                this.startAutoSlide();
+            }, 2000);
+        };
+
+        const animation = () => {
+            if (isDragging) {
+                carousel.style.transform = `translateX(${currentTranslate}px)`;
+                requestAnimationFrame(animation);
+            }
+        };
+
+        // Mouse events
+        carousel.addEventListener('mousedown', touchStart);
+        carousel.addEventListener('mousemove', touchMove);
+        carousel.addEventListener('mouseup', touchEnd);
+        carousel.addEventListener('mouseleave', () => {
+            if (isDragging) touchEnd();
+        });
+
+        // Touch events
+        carousel.addEventListener('touchstart', touchStart, { passive: true });
+        carousel.addEventListener('touchmove', touchMove, { passive: true });
+        carousel.addEventListener('touchend', touchEnd);
+
+        // Pause auto-slide on hover
+        carousel.addEventListener('mouseenter', () => {
+            this.isUserInteracting = true;
+            this.pauseAutoSlide();
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            if (!isDragging) {
+                this.isUserInteracting = false;
+                setTimeout(() => {
+                    if (!this.isUserInteracting) {
+                        this.startAutoSlide();
+                    }
+                }, 1000);
+            }
+        });
+
+        // Prevent context menu on long press
+        carousel.addEventListener('contextmenu', (e) => {
+            if (isDragging) e.preventDefault();
+        });
+
+        // Prevent default drag behavior on images
+        carousel.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
+        });
+    }
+
+    nextSlide() {
+        // Smooth scroll tidak menggunakan slide manual
+        // User interaction akan pause animation saja
+    }
+
+    prevSlide() {
+        // Smooth scroll tidak menggunakan slide manual
+        // User interaction akan pause animation saja
+    }
+
+    goToSlide(index) {
+        // Smooth scroll tidak menggunakan slide manual
+        // User interaction akan pause animation saja
+    }
+
+    updateInfiniteCarousel() {
+        // Tidak digunakan untuk smooth scroll
+        // CSS animation menangani pergerakan
     }
 
     getCurrentProjects() {
@@ -427,43 +457,72 @@ class ProjectManager {
     renderDotIndicators(totalProjects) {
         const navContainer = document.querySelector('.carousel-nav');
         if (!navContainer) return;
-
+        
+        // Hide dot indicators for smooth continuous scroll
         navContainer.innerHTML = '';
-        const dict = (window.__i18n && window.__i18n.currentDict) ? window.__i18n.currentDict : null;
-        const prefix = dict && dict['carousel.goToSlidePrefix'] ? dict['carousel.goToSlidePrefix'] : 'Go to slide';
-        for (let i = 0; i < totalProjects; i++) {
-            const dot = document.createElement('button');
-            dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-            dot.setAttribute('aria-label', `${prefix} ${i + 1}`);
-            dot.addEventListener('click', () => {
-                this.handleUserInteraction();
-                this.goToSlide(i);
-            });
-            navContainer.appendChild(dot);
-        }
+        navContainer.style.display = 'none';
     }
 
     updateDotIndicators() {
-        const dots = document.querySelectorAll('.carousel-dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentSlide);
-        });
+        // Tidak digunakan untuk smooth continuous scroll
     }
 
-    // Auto-slide methods
+    // Auto-slide methods - Smooth continuous scrolling with requestAnimationFrame
     startAutoSlide() {
-        this.pauseAutoSlide(); // Clear any existing interval
-        this.autoSlideInterval = setInterval(() => {
-            if (!this.isUserInteracting) {
-                this.nextSlide();
+        // Stop any existing animation first
+        this.pauseAutoSlide();
+        
+        const carousel = document.querySelector('.portfolio-carousel');
+        if (!carousel) return;
+        
+        // Remove CSS animation class, we'll use JS animation
+        carousel.classList.remove('auto-scrolling');
+        
+        const speed = 0.5; // pixels per frame (adjust for speed)
+        
+        const animate = () => {
+            // Check if we should stop
+            if (this.isUserInteracting || !carousel || !this.autoSlideInterval) {
+                return;
             }
-        }, this.autoSlideDelay);
+            
+            // Get current position
+            const style = window.getComputedStyle(carousel);
+            const matrix = new DOMMatrix(style.transform);
+            let currentX = matrix.m41;
+            
+            // Move left
+            currentX -= speed;
+            
+            // Calculate reset point (50% of total width for seamless loop)
+            const totalWidth = carousel.scrollWidth;
+            const halfWidth = totalWidth / 2;
+            
+            // Reset to 0 when we reach halfway point
+            if (Math.abs(currentX) >= halfWidth) {
+                currentX = 0;
+            }
+            
+            carousel.style.transform = `translateX(${currentX}px)`;
+            
+            // Continue animation and store the ID
+            this.autoSlideInterval = requestAnimationFrame(animate);
+        };
+        
+        // Start the animation
+        this.autoSlideInterval = requestAnimationFrame(animate);
     }
 
     pauseAutoSlide() {
         if (this.autoSlideInterval) {
-            clearInterval(this.autoSlideInterval);
+            cancelAnimationFrame(this.autoSlideInterval);
             this.autoSlideInterval = null;
+        }
+        
+        const carousel = document.querySelector('.portfolio-carousel');
+        if (carousel) {
+            carousel.classList.remove('auto-scrolling');
+            // Position is already frozen, no need to modify transform
         }
     }
 

@@ -345,6 +345,68 @@ navLinks.forEach(link => {
     });
 });
 
+// Apply smooth scroll to ALL anchor links (including CTA buttons like "Lihat Portofolio")
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    // Skip if already handled by navLinks
+    if (link.closest('nav')) return;
+    
+    link.addEventListener('click', function(e) {
+        const hash = this.hash;
+        if (hash && hash.startsWith('#')) {
+            e.preventDefault();
+            
+            const targetId = hash.substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                // Ensure initialization
+                if (!isInitialized) {
+                    precalculatePositions();
+                }
+                
+                // Suppress AOS during navigation
+                suppressAOSUntilManualScroll();
+                
+                // Use the same smooth scroll function as nav menu
+                smoothScrollTo(targetId);
+                
+                // Don't add hash to URL
+                history.replaceState(null, '', location.pathname + location.search);
+            }
+        }
+    });
+});
+
+// Remove hash from URL whenever it appears (even if user types it manually)
+function removeHashFromUrl() {
+    if (location.hash) {
+        // Get the target element before removing hash
+        const targetId = location.hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        // Remove hash from URL
+        history.replaceState(null, '', location.pathname + location.search);
+        
+        // If there's a valid target, scroll to it smoothly
+        if (targetElement) {
+            if (!isInitialized) {
+                precalculatePositions();
+            }
+            suppressAOSUntilManualScroll();
+            smoothScrollTo(targetId);
+        }
+    }
+}
+
+// Listen for hash changes (manual URL edits, browser back/forward with hash)
+window.addEventListener('hashchange', removeHashFromUrl);
+
+// Remove hash on page load if present
+if (location.hash) {
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(removeHashFromUrl, 0);
+}
+
 // Highlight nav on scroll + compact header
 const sections = document.querySelectorAll('section[id], footer[id]');
 const headerEl = document.querySelector('header');

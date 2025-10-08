@@ -61,54 +61,84 @@ html[data-theme='dark'] .filter-btn.active {
     position: relative;
     overflow: hidden;
     margin-bottom: 2rem;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /* Carousel */
 .portfolio-carousel {
     display: flex;
     gap: 2rem;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
+    cursor: grab;
+    transition: none;
+}
+
+.portfolio-carousel.dragging {
+    cursor: grabbing;
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Smooth continuous auto-scrolling */
+.portfolio-carousel.auto-scrolling {
+    animation: smoothScroll 15s linear infinite;
+    cursor: grab;
+}
+
+.portfolio-carousel.auto-scrolling:hover {
+    animation-play-state: paused;
+}
+
+@keyframes smoothScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 /* Carousel Cards */
 .carousel-card {
     flex: 0 0 auto;
-    width: calc(33.333% - 1.33rem);
+    width: calc(50% - 1rem);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .carousel-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(42, 93, 168, 0.15);
-    border-color: rgba(42, 93, 168, 0.3);
+    box-shadow: 0 20px 40px rgba(42, 93, 168, 0.2);
+    border-color: rgba(42, 93, 168, 0.4);
 }
 
 .card-image {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 300px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
-}
-
-.carousel-card:hover .card-image img {
-    transform: scale(1.1);
+    object-fit: fill;
+    cursor: pointer;
 }
 
 .card-overlay {
@@ -117,10 +147,11 @@ html[data-theme='dark'] .filter-btn.active {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
     display: flex;
+    flex-direction: column;
+    cursor: pointer;
     justify-content: space-between;
-    align-items: flex-start;
     padding: 1rem;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -130,13 +161,28 @@ html[data-theme='dark'] .filter-btn.active {
     opacity: 1;
 }
 
+.overlay-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.overlay-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
 .card-category {
-    background: rgba(42, 93, 168, 0.8);
+    background: rgba(42, 93, 168, 0.9);
     color: #fff;
-    padding: 0.3rem 0.8rem;
+    padding: 0.4rem 0.9rem;
     border-radius: 15px;
     font-size: 1.1rem;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .card-link {
@@ -157,15 +203,33 @@ html[data-theme='dark'] .filter-btn.active {
     transform: scale(1.1);
 }
 
+.overlay-title {
+    display: none;
+}
+
+.overlay-description {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.6;
+    display: -webkit-box;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
 .card-content {
-    padding: 1.5rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
 }
 
 .card-title {
     font-size: 1.6rem;
     font-weight: 600;
     color: #fff;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0;
     line-height: 1.3;
     display: -webkit-box;
     line-clamp: 2;
@@ -175,14 +239,7 @@ html[data-theme='dark'] .filter-btn.active {
 }
 
 .card-description {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
-    display: -webkit-box;
-    line-clamp: 3;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: none;
 }
 
 /* Dot Navigation */
@@ -455,13 +512,12 @@ html[data-theme='light'] .project-image {
         font-size: 1.3rem;
     }
     
-    /* Make mobile images bigger and symmetric */
+    /* Make mobile images fit to frame like desktop */
     .card-image {
-        height: auto;
-        aspect-ratio: 16 / 9;
+        height: 250px;
     }
     .card-image img {
-        object-fit: contain; /* don't crop image on mobile */
+        object-fit: fill; /* fit to frame, allow stretch */
     }
     
     .card-content {
@@ -492,7 +548,11 @@ html[data-theme='light'] .project-image {
     }
     
     .card-image {
-        height: auto; /* keep 16:9 ratio from previous rule */
+        height: 200px; /* fixed height on small mobile */
+    }
+    
+    .card-image img {
+        object-fit: fill; /* fit to frame */
     }
     
     .filter-btn {
