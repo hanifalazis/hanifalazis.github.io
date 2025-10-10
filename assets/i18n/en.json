@@ -89,5 +89,10 @@
   "footer.title": "Interested in Working Together?",
   "footer.desc": "I'm always open to discussions, projects, or new opportunities. Reach me via:",
   "footer.email": "hanif@hifaliz.com",
-  "footer.phone": "+62 812-8053-4553"
+  "footer.phone": "+62 812-8053-4553",
+  "cookie.title": "We Use Cookies",
+  "cookie.description": "This site uses cookies to enhance your experience and analyze website traffic through Google Analytics. The data collected is anonymous and helps us understand how visitors interact with our site.",
+  "cookie.learnMore": "Learn more",
+  "cookie.accept": "Accept",
+  "cookie.decline": "Decline"
 }

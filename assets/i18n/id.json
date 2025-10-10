@@ -89,5 +89,10 @@
   "footer.title": "Tertarik untuk Bekerja Sama?",
   "footer.desc": "Saya selalu terbuka untuk diskusi, proyek, atau peluang baru. Hubungi saya melalui:",
   "footer.email": "hanif@hifaliz.com",
-  "footer.phone": "0812-8053-4553"
+  "footer.phone": "0812-8053-4553",
+  "cookie.title": "Kami Menggunakan Cookies",
+  "cookie.description": "Situs ini menggunakan cookies untuk meningkatkan pengalaman Anda dan menganalisis traffic website melalui Google Analytics. Data yang dikumpulkan bersifat anonim dan membantu kami memahami bagaimana pengunjung berinteraksi dengan situs kami.",
+  "cookie.learnMore": "Pelajari lebih lanjut",
+  "cookie.accept": "Terima",
+  "cookie.decline": "Tolak"
 }

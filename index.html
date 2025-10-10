@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
         <link rel="stylesheet" href="assets/css/style.css?v=2024">
         <link rel="stylesheet" href="assets/css/projects.css?v=2024">
+        <link rel="stylesheet" href="assets/css/cookie-consent.css?v=2024">
         <!-- Tailwind config must be defined BEFORE loading the CDN script -->
             <script>
                 window.tailwind = window.tailwind || {};
@@ -174,14 +175,16 @@
         }
         </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT9P227DET"></script>
+    <!-- Google tag (gtag.js) - Loaded conditionally based on cookie consent -->
     <script>
+      // Initialize gtag placeholder (will be loaded after consent)
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-BT9P227DET');
+      
+      // Default consent to denied
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied'
+      });
     </script>
 </head>
 <body>
@@ -466,6 +469,7 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="assets/js/script.js?v=2024"></script>
     <script src="assets/js/projects.js?v=2024"></script>
+    <script src="assets/js/cookie-consent.js?v=2024"></script>
     
     <!-- Native scrollbar with custom styling -->
 
