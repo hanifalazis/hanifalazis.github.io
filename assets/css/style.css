@@ -1,6 +1,9 @@
-/* Education List Style - match skills-grid li */
+/**
+ * Education List Styles
+ * Styled list items with left border accent and arrow indicators
+ * Matches visual pattern of skills-grid items
+ */
 #education ul {
-    /* Use default block flow, keep spacing via li margins */
     padding-left: 0;
     list-style: none;
 }
@@ -8,24 +11,27 @@
     background: rgba(42, 93, 168, 0.1);
     border-radius: 1rem;
     border-left: 4px solid #2a5da8;
-    padding: 0.8rem 1.5rem 0.8rem 2.8rem; /* extra left padding for breathing room */
+    padding: 0.8rem 1.5rem 0.8rem 2.8rem;
     font-size: 1.6rem;
     color: #eee;
-    margin-bottom: 1.2rem; /* spacing between items */
+    margin-bottom: 1.2rem;
     position: relative;
-    display: block;         /* standard single-column list item */
+    display: block;
     line-height: 1.7;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
-/* Panah pendidikan: beri jarak dan sejajarkan dengan teks */
+/**
+ * Arrow indicator positioned before education list items
+ * Vertically aligned with text content
+ */
 #education li::before {
-    content: '▶';               /* explicit to avoid inheritance quirks */
+    content: '▶';
     position: absolute;
-    left: 0.6rem;               /* sit inside left padding */
-    top: 0.9rem;                /* align vertically with first line */
-    width: 1.2em;               /* visual width of the arrow */
+    left: 0.6rem;
+    top: 0.9rem;
+    width: 1.2em;
     text-align: center;
     color: #2a5da8;
 }
@@ -35,7 +41,10 @@
     transition: all 0.3s ease;
 }
 
-/* Accessibility helpers */
+/**
+ * Accessibility: Skip-to-content link
+ * Hidden by default, visible on keyboard focus
+ */
 .skip-link {
     position: absolute;
     left: -9999px;
@@ -56,7 +65,10 @@
     z-index: 2000;
 }
 
-/* Respect reduced motion */
+/**
+ * Reduced Motion Support
+ * Disables animations for users who prefer reduced motion
+ */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation: none !important;
@@ -68,7 +80,10 @@
     }
 }
 
-/* Focus-visible styling for keyboard users */
+/**
+ * Keyboard Focus Indicator
+ * Enhanced outline for keyboard navigation accessibility
+ */
 :focus-visible {
     outline: 3px solid #3f78d1;
     outline-offset: 3px;
@@ -77,12 +92,18 @@ html[data-theme='light'] :focus-visible {
     outline-color: #2a5da8;
 }
 
-/* Custom Arrow Pointer Cursor (Tailwind-style) */
+/**
+ * Custom Cursor Styling
+ * Arrow pointer with SVG data URI for consistent cross-browser appearance
+ */
 body {
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
 }
 
-/* Interactive elements with pointer cursor */
+/**
+ * Interactive Element Cursor
+ * Pointer cursor applied to all clickable elements
+ */
 a,
 button,
 .filter-btn,
@@ -98,11 +119,27 @@ input[type="radio"],
 select,
 [role="button"],
 [onclick] {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer !important;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-/* Light theme cursor */
+/* Ensure all children of clickable elements inherit pointer cursor */
+a *, 
+button *, 
+.filter-btn *, 
+.project-card *, 
+.theme-toggle *, 
+.nav-link *, 
+.lang-toggle *,
+[role="button"] *,
+[onclick] * {
+    cursor: inherit !important;
+}
+
+/**
+ * Light Theme Cursor Variant
+ * Darker stroke color for better visibility on light backgrounds
+ */
 html[data-theme='light'] body {
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
 }
@@ -122,10 +159,13 @@ html[data-theme='light'] input[type="radio"],
 html[data-theme='light'] select,
 html[data-theme='light'] [role="button"],
 html[data-theme='light'] [onclick] {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, pointer !important;
 }
 
-/* Subtle hover scale effect */
+/**
+ * Hover Interaction Feedback
+ * Subtle scale transformation for tactile response
+ */
 a:hover,
 button:hover,
 .filter-btn:hover,
@@ -134,7 +174,10 @@ button:hover,
     transform: scale(1.02);
 }
 
-/* Active state (when clicking) */
+/**
+ * Active State Styling
+ * Pressed appearance when clicking interactive elements
+ */
 a:active,
 button:active,
 .filter-btn:active,
@@ -144,34 +187,51 @@ button:active,
 }
 
 /* Text cursor for selectable text and inputs (Tailwind cursor-text) */
-p,
-h1, h2, h3, h4, h5, h6,
-span,
-div,
-li,
 input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
 textarea,
 [contenteditable="true"] {
     cursor: text;
 }
 
-/* Override text cursor for non-selectable elements */
-.no-select,
-.theme-toggle,
-.hamburger,
-nav,
-header,
-footer {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+/* Text cursor for text content including headings */
+p,
+h1, h2, h3, h4, h5, h6,
+span:not(button span):not(.social-links span):not(nav span):not(.hamburger span):not(.theme-toggle span):not(.lang-toggle span),
+li,
+dt, dd,
+label:not(button label),
+.hero-title,
+.hero-desc,
+.section-title,
+.about-text p,
+.about-description,
+.contact-info p,
+footer p,
+footer span:not(.social-links *) {
+    cursor: text;
+    user-select: text;
 }
 
-html[data-theme='light'] .no-select,
-html[data-theme='light'] .theme-toggle,
-html[data-theme='light'] .hamburger,
-html[data-theme='light'] nav,
-html[data-theme='light'] header,
-html[data-theme='light'] footer {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+/* Exception: UI component text should not be selectable */
+button,
+button *,
+.hamburger,
+.hamburger *,
+.theme-toggle,
+.theme-toggle *,
+.lang-toggle,
+.lang-toggle *,
+.switch,
+.switch *,
+.social-links,
+.social-links *,
+.logo,
+nav a,
+nav span,
+.filter-btn,
+.filter-btn * {
+    cursor: inherit !important;
+    user-select: none;
 }
 
 /* Disabled cursor (Tailwind cursor-not-allowed) */
@@ -1323,6 +1383,9 @@ html[data-theme='light'] .home-img { animation-name: aura-ring-light; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Removed nowrap to avoid clipping on some widths */
@@ -1517,6 +1580,9 @@ section h2 {
     text-align: center;
     position: relative;
     z-index: 2;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 html[data-theme='dark'] section h2 {
@@ -1685,6 +1751,8 @@ html[data-theme='dark'] #skills { background: transparent; }
     align-items: center;
     flex-wrap: nowrap;
     column-gap: 0.7em;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .skills-grid li::before {
@@ -1800,6 +1868,8 @@ html[data-theme='light'] .si-img {
     font-weight: 700;
     z-index: 2;
     position: relative;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .job span {
@@ -1824,6 +1894,8 @@ html[data-theme='light'] .si-img {
     margin-bottom: 1rem;
     padding-left: 2rem;
     position: relative;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .job li::before {

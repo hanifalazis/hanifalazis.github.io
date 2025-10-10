@@ -1,20 +1,24 @@
-// script.js
+/**
+ * Main script for Hifaliz Portfolio Website
+ * Handles cursor effects, navigation, theme switching, language localization, and smooth scrolling
+ */
 
-// ===== CURSOR TRAIL EFFECT (Standard Cursor) =====
+/**
+ * Cursor Trail Effect
+ * Creates a particle trail effect that follows the mouse cursor with directional offset
+ * Automatically disabled on touch devices and when user prefers reduced motion
+ */
 (function initCursorTrail() {
-  // Check if device supports hover (skip on touch devices)
   const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   if (!hasHover || prefersReducedMotion) {
-    return; // Don't initialize cursor trail on touch devices or when reduced motion is preferred
+    return;
   }
   
-  // Cursor trail effect - positioned at the back of the cursor (tail)
   let lastTrailTime = 0;
-  const trailDelay = 30; // milliseconds between trail particles
+  const trailDelay = 30;
   
-  // Track previous mouse positions for trail offset
   let prevMouseX = 0;
   let prevMouseY = 0;
   
@@ -46,19 +50,20 @@
     trail.style.top = (e.clientY + offsetY) + 'px';
     document.body.appendChild(trail);
     
-    // Update previous position
     prevMouseX = e.clientX;
     prevMouseY = e.clientY;
     
-    // Remove trail after animation
     setTimeout(() => {
       trail.remove();
     }, 600);
   });
 })();
 
-// ===== HAMBURGER MENU =====
-// Enhanced Hamburger Menu with better accessibility and focus management
+/**
+ * Hamburger Menu Controller
+ * Manages mobile navigation menu with accessibility features including ARIA attributes,
+ * keyboard navigation, focus management, and staggered animation effects
+ */
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 let menuFocusableElements = null;
@@ -90,21 +95,17 @@ function toggleMenu() {
         link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         link.style.opacity = '1';
         link.style.transform = 'translateX(0)';
-      }, 50 + (index * 50)); // Stagger delay
+      }, 50 + (index * 50));
     });
     
-    // Focus first menu item for better keyboard navigation
     if (menuFocusableElements.length > 0) {
       setTimeout(() => menuFocusableElements[0].focus(), 100);
     }
     
-    // Add escape key listener
     document.addEventListener('keydown', handleEscapeKey);
     
-    // Refresh highlight based on current scroll position
     window.dispatchEvent(new Event('scroll'));
   } else {
-    // Menu is closing - quick fade out
     const navLinks = navMenu.querySelectorAll('a, .nav-theme-toggle, .lang-dropdown');
     navLinks.forEach((link) => {
       link.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
@@ -112,7 +113,7 @@ function toggleMenu() {
       link.style.transform = 'translateX(-10px)';
     });
     
-    hamburger.focus(); // Return focus to hamburger button
+    hamburger.focus();
     document.removeEventListener('keydown', handleEscapeKey);
   }
 }
@@ -124,7 +125,6 @@ function handleEscapeKey(e) {
   }
 }
 
-// Enhanced keyboard navigation
 hamburger.addEventListener('click', toggleMenu);
 hamburger.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
@@ -133,7 +133,7 @@ hamburger.addEventListener('keydown', (e) => {
   }
 });
 
-// Close menu when clicking outside
+// Close menu when user clicks outside the navigation area
 document.addEventListener('click', (e) => {
   if (hamburger.classList.contains('active') && 
       !navMenu.contains(e.target) && 

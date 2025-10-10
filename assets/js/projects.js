@@ -1,4 +1,8 @@
-// Project management for Decap CMS integration with Carousel
+/**
+ * ProjectManager Class
+ * Manages portfolio projects with filtering, infinite carousel, and drag/swipe functionality
+ * Integrates with internationalization system and supports both CMS and fallback data sources
+ */
 class ProjectManager {
     constructor() {
         this.projects = [];
@@ -6,7 +10,7 @@ class ProjectManager {
         this.activeFilter = 'All';
         this.filteredProjects = [];
         this.autoSlideInterval = null;
-        this.autoSlideDelay = 4000; // 4 seconds
+        this.autoSlideDelay = 4000;
         this.isUserInteracting = false;
         this.translateX = 0;
         this.cardWidth = 0;
@@ -14,31 +18,37 @@ class ProjectManager {
         this.init();
     }
 
+    /**
+     * Initializes the project manager
+     * Loads projects, sets up filters and carousel, starts auto-slide animation
+     */
     async init() {
         await this.loadProjects();
         this.normalizeProjects();
         this.setupFilters();
         this.renderProjects();
         this.setupCarousel();
-        // Start auto-slide after a small delay to ensure rendering is complete
+        
         setTimeout(() => {
             this.startAutoSlide();
         }, 100);
-        // Update dynamic labels when language changes
+        
         window.addEventListener('i18n:changed', (e) => {
             const dict = e && e.detail ? e.detail.dict : null;
             this.updateI18nLabels(dict);
         });
     }
 
+    /**
+     * Attempts to load projects from API endpoint
+     * Falls back to hardcoded project data if API is unavailable
+     */
     async loadProjects() {
         try {
-            // Try to load from _projects folder (if using Jekyll/static generation)
             const response = await fetch('/api/projects.json');
             if (response.ok) {
                 this.projects = await response.json();
             } else {
-                // Fallback to manual project data
                 this.loadFallbackProjects();
             }
         } catch (error) {
@@ -129,7 +139,10 @@ class ProjectManager {
         ];
     }
 
-    // Ensure each project has a stable category_key for i18n and filtering
+    /**
+     * Normalizes project data by mapping category strings to standardized i18n keys
+     * Ensures consistent category naming across different language versions
+     */
     normalizeProjects() {
         const mapCategoryToKey = (cat) => {
             if (!cat) return 'other';

@@ -4,24 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Let the browser know we support dark and light UA styling -->
+    
+    <!-- Color scheme support for system-level dark/light mode preferences -->
     <meta name="color-scheme" content="light dark">
-    <!-- Browser theme colors for dark/light -->
+    
+    <!-- Dynamic theme color adaptation based on user's color scheme preference -->
     <meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#f3f6fb" media="(prefers-color-scheme: light)">
-    <!-- SEO Meta Tags -->
+    
+    <!-- Search Engine Optimization metadata -->
     <meta name="description" content="Hifaliz — Portofolio Muhammad Hanif Al Azis: Web Developer, Programmer, dan IT Enthusiast. Lihat karya, pengalaman, dan keahlian saya di sini.">
     <meta name="keywords" content="Hanif Al Azis, Portofolio, Data Analyst, Web Developer, Programmer, Python, SQL, Power BI, Tableau, Looker Studio, Statistika, hifaliz.com">
     <meta name="author" content="Muhammad Hanif Al Azis">
     <link rel="canonical" href="https://hifaliz.com/" />
     <meta name="application-name" content="Hifaliz">
     
-    <!-- Fonts: move from CSS @import to optimized head includes -->
+    <!-- Preconnect to Google Fonts CDN for optimized font loading performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Social media sharing metadata (Open Graph protocol) -->
     <meta property="og:title" content="Hifaliz | Portofolio Muhammad Hanif Al Azis" />
     <meta property="og:description" content="Hifaliz — Web Developer, Programmer, dan IT Enthusiast. Lihat karya, pengalaman, dan keahlian saya di sini." />
     <meta property="og:type" content="website" />
@@ -29,7 +32,7 @@
     <meta property="og:image" content="https://hifaliz.com/assets/images/profile.jpg" />
     <meta property="og:site_name" content="Hifaliz" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter Card metadata for enhanced social media preview -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hifaliz | Portofolio Muhammad Hanif Al Azis" />
     <meta name="twitter:description" content="Hifaliz — Web Developer, Programmer, dan IT Enthusiast. Lihat karya, pengalaman, dan keahlian saya di sini." />
@@ -40,7 +43,8 @@
         <link rel="stylesheet" href="assets/css/style.css?v=2024">
         <link rel="stylesheet" href="assets/css/projects.css?v=2024">
         <link rel="stylesheet" href="assets/css/cookie-consent.css?v=2024">
-        <!-- Tailwind config must be defined BEFORE loading the CDN script -->
+        
+        <!-- Tailwind CSS configuration object initialized before CDN script loads -->
             <script>
                 window.tailwind = window.tailwind || {};
                 tailwind.config = {
@@ -62,68 +66,80 @@
                     }
                 };
             </script>
-        <!-- Tailwind CSS CDN (for rapid theming) -->
+        
+        <!-- Tailwind CSS CDN for utility-first styling -->
         <script src="https://cdn.tailwindcss.com"></script>
-        <!-- Back-to-Top icon color guard + animations -->
+        
+        <!-- Back-to-top button styling with animations and theme-aware colors -->
         <style>
-            /* Back-to-Top: blue arrow only + smooth show/hide + interactions */
+            /* Base styles: hidden state with smooth transitions */
             #back-to-top {
                 color: #2a5da8 !important;
                 background: transparent !important;
                 border: 0 !important;
                 box-shadow: none !IMPORTANT;
-                /* Animation state (hidden by default) */
+                
+                /* Hidden state: opacity 0 with slight transform for smooth entrance */
                 opacity: 0;
                 transform: translateY(12px) scale(0.96);
                 pointer-events: none;
                 transition: opacity .28s ease, transform .28s ease;
                 will-change: transform, opacity;
             }
+            
+            /* Visible state: fully opaque with restored transform */
             #back-to-top.btt-visible {
                 opacity: 1;
                 transform: translateY(0) scale(1);
                 pointer-events: auto;
             }
-            /* Icon color and slight stroke to thicken */
+            
+            /* Primary color applied to icon with subtle stroke for visual weight */
             #back-to-top i {
                 color: #2a5da8 !important;
                 -webkit-text-stroke: 0.6px #2a5da8;
             }
-            /* Hover/pressed effects */
+            
+            /* Interactive states: hover enlarges, active shrinks for tactile feedback */
             #back-to-top:hover { transform: translateY(0) scale(1.08); }
             #back-to-top:hover, #back-to-top:hover i { color: #3f78d1 !important; }
             #back-to-top:active { transform: translateY(1px) scale(0.94); }
+            
+            /* Keyboard focus indicator with rounded outline */
             #back-to-top:focus-visible { outline: 3px solid rgba(42,93,168,0.35); outline-offset: 4px; border-radius: 9999px; }
             
-            /* Dark mode: make the arrow glow (neon-like) so it's clearly visible */
+            /* Dark mode: enhanced visibility with subtle glow effect */
             html.dark #back-to-top,
             html.dark #back-to-top i { color: #3f78d1 !important; }
+            
+            /* Subtle luminous glow for dark mode visibility */
             html.dark #back-to-top i {
-                /* Softer, subtler glow for dark mode */
                 text-shadow:
                     0 0 3px rgba(63,120,209,0.55),
                     0 0 8px rgba(63,120,209,0.35);
                 filter: drop-shadow(0 0 1px rgba(63,120,209,0.30));
             }
-            /* Stronger glow on hover/focus for feedback */
+            
+            /* Enhanced glow on interactive states for user feedback */
             html.dark #back-to-top:hover i,
             html.dark #back-to-top:focus-visible i {
-                /* Slightly stronger than base, but still gentle */
                 text-shadow:
                     0 0 5px rgba(63,120,209,0.75),
                     0 0 12px rgba(63,120,209,0.50);
                 filter: drop-shadow(0 0 2px rgba(63,120,209,0.45));
             }
-            /* Larger tap target on touch devices */
-            /* Larger tap target on touch devices */
+            
+            /* Touch device optimization: increased tap target for mobile usability */
             @media (pointer: coarse) { #back-to-top { padding: 14px !important; } }
-            /* Respect Reduced Motion */
+            
+            /* Accessibility: respects user's motion preferences */
             @media (prefers-reduced-motion: reduce) {
                 #back-to-top { transition: none; transform: none; }
                 #back-to-top.btt-visible { transform: none; }
             }
         </style>
-        <!-- App Icons -->
+        
+        <!-- Progressive Web App icons and manifest -->
     <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/assets/icons/favicon-192.png" sizes="192x192" type="image/png">
     <link rel="icon" href="/assets/icons/favicon-512.png" sizes="512x512" type="image/png">
@@ -133,7 +149,11 @@
     <meta name="msapplication-TileColor" content="#2a5da8">
         
         <script>
-            // Early theme init to prevent FOUC. Default follows system unless user has chosen.
+            /**
+             * Theme initialization script
+             * Executes before DOM ready to prevent Flash of Unstyled Content (FOUC)
+             * Prioritizes user preference from localStorage, falls back to system preference
+             */
             (function() {
                 try {
                     const stored = localStorage.getItem('theme');
@@ -152,7 +172,7 @@
         </script>
     <title>Hifaliz | Portofolio Muhammad Hanif Al Azis</title>
     
-        <!-- JSON-LD Structured Data -->
+        <!-- Structured data markup for search engine rich snippets (Schema.org JSON-LD format) -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -175,13 +195,15 @@
         }
         </script>
 
-    <!-- Google tag (gtag.js) - Loaded conditionally based on cookie consent -->
+    <!--
+      Google Analytics (gtag.js) with Consent Mode
+      Analytics storage denied by default per GDPR requirements
+      Full tracking script loads after user consent via cookie-consent.js
+    -->
     <script>
-      // Initialize gtag placeholder (will be loaded after consent)
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
-      // Default consent to denied
       gtag('consent', 'default', {
         'analytics_storage': 'denied'
       });
@@ -203,7 +225,8 @@
             <a href="#portfolio" data-i18n="nav.portfolio">Portofolio</a>
             <a href="#skills" data-i18n="nav.skills">Keahlian</a>
             <a href="#footer" data-i18n="nav.contact">Kontak</a>
-            <!-- Theme switch: desktop (right of nav) and mobile (bottom of menu) -->
+            
+            <!-- Theme toggle switch integrated within navigation menu -->
             <div class="nav-theme-toggle" aria-label="Theme switch container">
                 <label for="theme-toggle-input" class="switch-label" data-i18n="theme.darkMode">Mode Gelap</label>
                 <label class="switch" title="Dark mode">
@@ -442,12 +465,14 @@
             </div>
         </div>
     </footer>
-    <!-- Bottom copyright -->
+    
+    <!-- Copyright notice with privacy policy link -->
     <div class="footer-bottom">
-        Muhammad Hanif Al Azis Portfolio © 2025
+        Muhammad Hanif Al Azis Portfolio © 2025 | 
+        <a href="/privacy.html" style="color: var(--primary-color); text-decoration: none; margin-left: 0.5rem;" data-i18n="cookie.privacy">Kebijakan Privasi</a>
     </div>
 
-    <!-- Theme transition overlay -->
+    <!-- Animated theme transition overlay with sun/moon/stars visual elements -->
     <div class="theme-transition" aria-hidden="true">
         <div class="theme-transition__sky">
             <div class="theme-transition__sun" role="presentation"></div>
@@ -470,16 +495,14 @@
     <script src="assets/js/script.js?v=2024"></script>
     <script src="assets/js/projects.js?v=2024"></script>
     <script src="assets/js/cookie-consent.js?v=2024"></script>
-    
-    <!-- Native scrollbar with custom styling -->
 
-    <!-- Back to top button -->
+    <!-- Floating action button: scrolls to top of page when clicked -->
     <button id="back-to-top" class="fixed right-6 bottom-10 md:right-8 md:bottom-10 p-4 md:p-5 transition z-[1100] text-3xl md:text-4xl text-primary" aria-label="Kembali ke atas" title="Kembali ke atas" data-i18n-title="backToTop.title" data-i18n-aria="backToTop.aria" aria-hidden="true" tabindex="-1">
         <i class="fa-solid fa-arrow-up !text-primary" aria-hidden="true"></i>
     </button>
 
-    <!-- Cloudflare Web Analytics -->
+    <!-- Cloudflare Web Analytics: privacy-first analytics without cookies -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "27aa49e234084b38a10408ed7321975f"}'></script>
-    <!-- End Cloudflare Web Analytics -->
+</invoke>
 </body>
 </html>

@@ -1,6 +1,13 @@
-/* Enhanced Project Styling for CMS Integration with Carousel */
+/**
+ * Portfolio Projects Stylesheet
+ * Styles for project cards, filters, infinite carousel, and drag/swipe interactions
+ * Integrated with CMS data and supports both light/dark themes
+ */
 
-/* Portfolio Filters */
+/**
+ * Portfolio Filter Buttons
+ * Pill-shaped buttons with glassmorphism effects in dark mode
+ */
 .portfolio-filters {
     display: flex;
     justify-content: center;
@@ -56,7 +63,10 @@ html[data-theme='dark'] .filter-btn.active {
     box-shadow: 0 22px 42px rgba(30, 64, 175, 0.5);
 }
 
-/* Portfolio Container */
+/**
+ * Portfolio Container
+ * Main wrapper for carousel with overflow control and drag cursor
+ */
 .portfolio-container {
     position: relative;
     overflow: hidden;
@@ -67,7 +77,10 @@ html[data-theme='dark'] .filter-btn.active {
     -ms-user-select: none;
 }
 
-/* Carousel */
+/**
+ * Carousel Track
+ * Flexbox layout with GPU-accelerated transforms for smooth infinite scrolling
+ */
 .portfolio-carousel {
     display: flex;
     gap: 2rem;
@@ -76,13 +89,20 @@ html[data-theme='dark'] .filter-btn.active {
     transition: none;
 }
 
+/**
+ * Dragging State
+ * Changes cursor and disables transitions during user interaction
+ */
 .portfolio-carousel.dragging {
     cursor: grabbing;
     transition: none !important;
     animation: none !important;
 }
 
-/* Smooth continuous auto-scrolling */
+/**
+ * Auto-scrolling Animation
+ * Continuous smooth scroll with pause-on-hover functionality
+ */
 .portfolio-carousel.auto-scrolling {
     animation: smoothScroll 15s linear infinite;
     cursor: grab;
@@ -101,7 +121,10 @@ html[data-theme='dark'] .filter-btn.active {
     }
 }
 
-/* Carousel Cards */
+/**
+ * Carousel Card Styles
+ * Two-column layout cards with glassmorphism effects
+ */
 .carousel-card {
     flex: 0 0 auto;
     width: calc(50% - 1rem);
@@ -157,10 +180,19 @@ html[data-theme='dark'] .filter-btn.active {
     transition: opacity 0.3s ease;
 }
 
+/**
+ * Overlay Visibility
+ * Shows overlay content on card hover
+ */
 .carousel-card:hover .card-overlay {
     opacity: 1;
 }
 
+/**
+ * Overlay Layout Sections
+ * Top section contains category badge and link button
+ * Bottom section contains project description
+ */
 .overlay-top {
     display: flex;
     justify-content: space-between;
@@ -175,6 +207,10 @@ html[data-theme='dark'] .filter-btn.active {
     cursor: pointer;
 }
 
+/**
+ * Category Badge
+ * Pill-shaped indicator for project type
+ */
 .card-category {
     background: rgba(42, 93, 168, 0.9);
     color: #fff;
@@ -185,6 +221,10 @@ html[data-theme='dark'] .filter-btn.active {
     cursor: pointer;
 }
 
+/**
+ * External Link Button
+ * Circular button with icon for project links
+ */
 .card-link {
     width: 40px;
     height: 40px;
@@ -203,10 +243,18 @@ html[data-theme='dark'] .filter-btn.active {
     transform: scale(1.1);
 }
 
+/**
+ * Overlay Title
+ * Hidden to avoid duplication with card-content title
+ */
 .overlay-title {
     display: none;
 }
 
+/**
+ * Overlay Description
+ * Truncated text with text-shadow for readability over images
+ */
 .overlay-description {
     font-size: 1.4rem;
     color: rgba(255, 255, 255, 0.95);

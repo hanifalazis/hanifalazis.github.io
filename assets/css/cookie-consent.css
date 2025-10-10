@@ -1,4 +1,13 @@
-/* Cookie Consent Banner */
+/**
+ * Cookie Consent Banner Styles
+ * GDPR-compliant consent UI with glassmorphism design
+ * Supports light/dark themes and mobile responsiveness
+ */
+
+/**
+ * Banner Container
+ * Fixed bottom position with slide-up animation and backdrop blur
+ */
 .cookie-consent-banner {
     position: fixed;
     bottom: 0;
@@ -13,12 +22,21 @@
     z-index: 10000;
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%233f78d1' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto !important;
 }
 
+/**
+ * Visible State
+ * Slides banner into view from bottom
+ */
 .cookie-consent-banner.show {
     transform: translateY(0);
 }
 
+/**
+ * Content Layout
+ * Flexbox layout with responsive wrapping for text and buttons
+ */
 .cookie-consent-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -27,11 +45,17 @@
     justify-content: space-between;
     gap: 2rem;
     flex-wrap: wrap;
+    cursor: inherit;
 }
 
+/**
+ * Text Section
+ * Contains heading, description, and privacy policy links
+ */
 .cookie-consent-text {
     flex: 1;
     min-width: 300px;
+    cursor: inherit;
 }
 
 .cookie-consent-text h3 {
@@ -42,10 +66,15 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    user-select: text;
+    cursor: text;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .cookie-consent-text h3 i {
     color: #4a9eff;
+    cursor: text;
 }
 
 .cookie-consent-text p {
@@ -53,30 +82,52 @@
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
     margin: 0;
+    user-select: text;
+    cursor: text;
+    width: fit-content;
+    max-width: 100%;
+}
+
+.cookie-consent-text p span {
+    cursor: text;
 }
 
 .cookie-consent-text a {
     color: #4a9eff;
     text-decoration: underline;
     transition: color 0.2s ease;
+    cursor: pointer !important;
 }
 
 .cookie-consent-text a:hover {
     color: #6bb3ff;
 }
 
+.cookie-consent-text a i {
+    cursor: pointer !important;
+}
+
+/**
+ * Button Container
+ * Flexible layout for action buttons with wrapping support
+ */
 .cookie-consent-buttons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    cursor: inherit;
 }
 
+/**
+ * Base Button Styles
+ * Shared styles for all cookie consent buttons
+ */
 .cookie-btn {
     padding: 1rem 2rem;
     border-radius: 0.5rem;
     font-size: 1.4rem;
     font-weight: 500;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: all 0.3s ease;
     border: none;
     white-space: nowrap;
@@ -85,6 +136,14 @@
     gap: 0.5rem;
 }
 
+.cookie-btn * {
+    cursor: pointer !important;
+}
+
+/**
+ * Accept Button
+ * Primary action with blue background and shadow
+ */
 .cookie-btn-accept {
     background: #4a9eff;
     color: #fff;
@@ -97,6 +156,10 @@
     box-shadow: 0 6px 16px rgba(74, 158, 255, 0.4);
 }
 
+/**
+ * Decline Button
+ * Secondary action with subtle transparent background
+ */
 .cookie-btn-decline {
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.9);
@@ -108,6 +171,10 @@
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+/**
+ * Settings Button (Optional)
+ * Tertiary action for detailed cookie preferences
+ */
 .cookie-btn-settings {
     background: transparent;
     color: rgba(255, 255, 255, 0.7);
@@ -120,11 +187,15 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Light Theme */
+/**
+ * Light Theme Overrides
+ * Inverted color scheme for light mode
+ */
 html[data-theme='light'] .cookie-consent-banner {
     background: rgba(255, 255, 255, 0.98);
     border-top-color: rgba(0, 0, 0, 0.1);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z' fill='white' stroke='%232a5da8' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto !important;
 }
 
 html[data-theme='light'] .cookie-consent-text h3 {
@@ -155,7 +226,18 @@ html[data-theme='light'] .cookie-btn-settings:hover {
     color: rgba(0, 0, 0, 0.9);
 }
 
-/* Mobile Responsive */
+html[data-theme='light'] .cookie-consent-text a {
+    color: #2563eb;
+}
+
+html[data-theme='light'] .cookie-consent-text a:hover {
+    color: #1d4ed8;
+}
+
+/**
+ * Mobile Responsive Design
+ * Stacked layout with full-width buttons on smaller screens
+ */
 @media (max-width: 768px) {
     .cookie-consent-banner {
         padding: 1.5rem 1.5rem;
@@ -190,7 +272,10 @@ html[data-theme='light'] .cookie-btn-settings:hover {
     }
 }
 
-/* Animation */
+/**
+ * Slide-Up Animation
+ * Smooth entrance animation for banner appearance
+ */
 @keyframes slideUp {
     from {
         transform: translateY(100%);
