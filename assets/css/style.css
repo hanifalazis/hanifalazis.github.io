@@ -2173,16 +2173,18 @@ html[data-theme='light'] .footer-socials a:hover {
             max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
             opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
             transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            overflow 0s 0.4s; /* Delay overflow change when collapsing */
     }
 
     nav.active {
         /* Animation: Visible state */
-        max-height: 600px;
+        max-height: 800px; /* Increased to accommodate dropdown */
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        padding: 1.5rem 0;
+        padding: 0rem 0;
+        overflow: visible; /* Allow dropdown to be visible outside nav bounds */
     }
     
     /* Light theme adjustments */
@@ -2319,7 +2321,7 @@ html[data-theme='light'] .footer-socials a:hover {
 
     /* Place theme switch at the bottom of mobile menu - modern design */
     .nav-theme-toggle {
-        order: 100;
+        order: 99;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -2443,7 +2445,7 @@ html[data-theme='light'] .footer-socials a:hover {
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        z-index: 1000;
+        z-index: 1002; /* Above navigation and lang-dropdown */
         min-width: 180px;
         
         transition: 
@@ -2528,7 +2530,7 @@ html[data-theme='light'] .footer-socials a:hover {
 
     /* Language dropdown for mobile - positioned after theme toggle */
     .lang-dropdown {
-        order: 99;
+        order: 100;
         display: flex;
         justify-content: flex-start; /* Left align */
         align-items: center;
@@ -2540,6 +2542,8 @@ html[data-theme='light'] .footer-socials a:hover {
         border-bottom: 1px solid rgba(42, 93, 168, 0.1); /* Match nav separator */
         width: 100%; /* Full width without calc */
         box-sizing: border-box;
+        position: relative; /* Enable absolute positioning for dropdown options */
+        z-index: 1001; /* Above navigation background */
     }
     .switch-label { 
         font-size: 1.6rem; /* Same as nav items */
