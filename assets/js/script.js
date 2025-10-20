@@ -1107,3 +1107,79 @@ AOS.init({
     attachHoverHandlers(document);
   }
 })();
+
+// Experience modal: show hidden job details in a reusable dialog
+(function initExperienceModal(){
+  function qs(sel, el=document){ return el.querySelector(sel); }
+  function qsa(sel, el=document){ return Array.from(el.querySelectorAll(sel)); }
+
+  const modal = qs('#job-detail-modal');
+  if (!modal) return;
+  const overlay = qs('.job-modal__overlay', modal);
+  const dlg = qs('.job-modal__dialog', modal);
+  const closeBtns = qsa('[data-modal-close]', modal);
+  const titleEl = qs('.job-modal__title', modal);
+  const periodEl = qs('.job-modal__period', modal);
+  const bodyEl = qs('.job-modal__body', modal);
+
+  let previouslyFocused = null;
+
+  function openModal(fromBtn){
+    previouslyFocused = fromBtn || document.activeElement;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    setTimeout(() => {
+      dlg.focus({ preventScroll: true });
+    }, 10);
+    document.addEventListener('keydown', onKeyDown);
+  }
+
+  function closeModal(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    document.removeEventListener('keydown', onKeyDown);
+    if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+  }
+
+  function onKeyDown(e){
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+    }
+  }
+
+  // Delegate clicks on detail buttons
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.job-detail-btn');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-detail-target');
+    if (!targetId) return;
+    const job = btn.closest('.job');
+    const hidden = job ? job.querySelector(`#${CSS.escape(targetId)}`) : null;
+    if (!hidden) return;
+
+    // Title and period
+    const title = job.querySelector('h3');
+    const period = job.querySelector('.job-period');
+    if (title) titleEl.innerHTML = title.innerHTML;
+    if (period) periodEl.innerHTML = period.innerHTML;
+
+    // Details body: clone list to preserve i18n spans
+    bodyEl.innerHTML = '';
+    const list = hidden.querySelector('ul');
+    if (list) {
+      bodyEl.appendChild(list.cloneNode(true));
+    }
+
+    openModal(btn);
+  });
+
+  // Close actions
+  closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
+  overlay && overlay.addEventListener('click', closeModal);
+
+  // Make dialog focusable
+  if (dlg && !dlg.hasAttribute('tabindex')) dlg.setAttribute('tabindex', '-1');
+})();

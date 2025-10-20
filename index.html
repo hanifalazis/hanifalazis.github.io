@@ -313,52 +313,119 @@
     <!-- Pengalaman Kerja -->
     <section id="experience" data-aos="fade-up">
     <h2 data-i18n="experience.title">Pengalaman Kerja</h2>
-        <div class="experience-list">
-            <div class="job">
-                <h3 data-i18n="exp.1.title">Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)</h3>
-                <span data-i18n="exp.1.period">Februari 2025 – Sekarang</span>
-                <ul>
-                    <li data-i18n="exp.1.li1">Memastikan kualitas dan konsistensi data material serta operasional.</li>
-                    <li data-i18n="exp.1.li2">Melakukan mapping & standardisasi data historis ke format terkini.</li>
-                    <li data-i18n="exp.1.li3">Menganalisis data penggunaan material 5 tahun terakhir.</li>
-                    <li data-i18n="exp.1.li4">Merancang template checksheet standar untuk maintenance.</li>
-                    <li data-i18n="exp.1.li5">Mendukung transformasi digital melalui data yang bersih & terstruktur.</li>
-                </ul>
+        <div class="experience-layout">
+            <div class="experience-roadmap" aria-hidden="true">
+                <svg class="experience-roadmap__svg" viewBox="0 0 220 800" preserveAspectRatio="xMidYMin slice">
+                    <defs>
+                        <linearGradient id="roadmapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.9"/>
+                            <stop offset="50%" stop-color="#3f78d1" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.7"/>
+                        </linearGradient>
+                        <filter id="roadmapGlow" x="-40%" y="-40%" width="180%" height="180%">
+                            <feGaussianBlur stdDeviation="6" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path class="experience-roadmap__path" d="M60 40 C 170 110 40 200 150 280 S 30 430 150 520 S 60 700 160 800" fill="none" stroke="url(#roadmapGradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#roadmapGlow)" stroke-dasharray="18 24"/>
+                </svg>
+                <div class="roadmap-traveler"></div>
+                <div class="roadmap-node node-1">
+                    <span class="roadmap-node__year">2025</span>
+                    <span class="roadmap-node__tag" data-i18n="roadmap.now">Sekarang</span>
+                </div>
+                <div class="roadmap-node node-2">
+                    <span class="roadmap-node__year">2024</span>
+                    <span class="roadmap-node__tag" data-i18n="roadmap.pic">PIC &amp; Co-Founder</span>
+                </div>
+                <div class="roadmap-node node-3">
+                    <span class="roadmap-node__year">2023</span>
+                    <span class="roadmap-node__tag" data-i18n="roadmap.management">Manajemen</span>
+                </div>
+                <div class="roadmap-node node-4">
+                    <span class="roadmap-node__year">2022</span>
+                    <span class="roadmap-node__tag" data-i18n="roadmap.coFounder">Co-Founder</span>
+                </div>
+                <div class="roadmap-node node-5">
+                    <span class="roadmap-node__year">2021</span>
+                    <span class="roadmap-node__tag" data-i18n="roadmap.marketing">Marketing</span>
+                </div>
             </div>
-            <div class="job">
+            <div class="experience-list">
+                <div class="job" data-detail-id="exp-1">
+                    <h3 data-i18n="exp.1.title">Data Cleansing Engineer | PT Fan Integrasi Teknologi (Assigned to PT KAI)</h3>
+                    <div class="job-meta">
+                        <span class="job-period" data-i18n="exp.1.period">Februari 2025 – Sekarang</span>
+                        <button type="button" class="job-detail-btn icon-only" data-detail-target="exp-1" aria-haspopup="dialog" aria-controls="job-detail-modal" data-i18n-aria="experience.detail" aria-label="Lihat detail" title="Lihat detail"></button>
+                    </div>
+                    <div class="job-detail-content" id="exp-1" hidden>
+                        <ul>
+                            <li data-i18n="exp.1.li1">Memastikan kualitas dan konsistensi data material serta operasional.</li>
+                            <li data-i18n="exp.1.li2">Melakukan mapping &amp; standardisasi data historis ke format terkini.</li>
+                            <li data-i18n="exp.1.li3">Menganalisis data penggunaan material 5 tahun terakhir.</li>
+                            <li data-i18n="exp.1.li4">Merancang template checksheet standar untuk maintenance.</li>
+                            <li data-i18n="exp.1.li5">Mendukung transformasi digital melalui data yang bersih &amp; terstruktur.</li>
+                        </ul>
+                    </div>
+                </div>
+            <div class="job" data-detail-id="exp-2">
                 <h3 data-i18n="exp.2.title">Person in Charge (PIC) | Aetozee Aesthetic Galaxy – Skincare</h3>
-                <span data-i18n="exp.2.period">Juni 2024 – September 2024</span>
-                <ul>
-                    <li data-i18n="exp.2.li1">Menyusun dan menganalisis laporan keuangan (laba rugi & neraca).</li>
-                    <li data-i18n="exp.2.li2">Merancang sistem faktur yang efisien.</li>
-                    <li data-i18n="exp.2.li3">Bekerja sama dengan distributor untuk optimalisasi supply chain.</li>
-                </ul>
+                <div class="job-meta">
+                    <span class="job-period" data-i18n="exp.2.period">Juni 2024 – September 2024</span>
+                    <button type="button" class="job-detail-btn icon-only" data-detail-target="exp-2" aria-haspopup="dialog" aria-controls="job-detail-modal" data-i18n-aria="experience.detail" aria-label="Lihat detail" title="Lihat detail"></button>
+                </div>
+                <div class="job-detail-content" id="exp-2" hidden>
+                    <ul>
+                        <li data-i18n="exp.2.li1">Menyusun dan menganalisis laporan keuangan (laba rugi &amp; neraca).</li>
+                        <li data-i18n="exp.2.li2">Merancang sistem faktur yang efisien.</li>
+                        <li data-i18n="exp.2.li3">Bekerja sama dengan distributor untuk optimalisasi supply chain.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="job">
+            <div class="job" data-detail-id="exp-3">
                 <h3 data-i18n="exp.3.title">Manajemen | Bakso Sehat Bakso Atom Galaxy – Restoran</h3>
-                <span data-i18n="exp.3.period">September 2023 – September 2024</span>
-                <ul>
-                    <li data-i18n="exp.3.li1">Menganalisis data penjualan mingguan & bulanan untuk insight bisnis.</li>
-                    <li data-i18n="exp.3.li2">Mengawasi SOP operasional restoran.</li>
-                    <li data-i18n="exp.3.li3">Melakukan analisis inventaris untuk efisiensi stok & mengurangi pemborosan.</li>
-                </ul>
+                <div class="job-meta">
+                    <span class="job-period" data-i18n="exp.3.period">September 2023 – September 2024</span>
+                    <button type="button" class="job-detail-btn icon-only" data-detail-target="exp-3" aria-haspopup="dialog" aria-controls="job-detail-modal" data-i18n-aria="experience.detail" aria-label="Lihat detail" title="Lihat detail"></button>
+                </div>
+                <div class="job-detail-content" id="exp-3" hidden>
+                    <ul>
+                        <li data-i18n="exp.3.li1">Menganalisis data penjualan mingguan &amp; bulanan untuk insight bisnis.</li>
+                        <li data-i18n="exp.3.li2">Mengawasi SOP operasional restoran.</li>
+                        <li data-i18n="exp.3.li3">Melakukan analisis inventaris untuk efisiensi stok &amp; mengurangi pemborosan.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="job">
+            <div class="job" data-detail-id="exp-4">
                 <h3 data-i18n="exp.4.title">Co-Founder | Beifimil – Skincare</h3>
-                <span data-i18n="exp.4.period">Oktober 2022 – Mei 2024</span>
-                <ul>
-                    <li data-i18n="exp.4.li1">Membuat rencana bisnis & menyiapkan kebutuhan perusahaan (HKI, cetak biru).</li>
-                    <li data-i18n="exp.4.li2">Bekerja sama dengan maklon skincare untuk pengembangan produk.</li>
-                </ul>
+                <div class="job-meta">
+                    <span class="job-period" data-i18n="exp.4.period">Oktober 2022 – Mei 2024</span>
+                    <button type="button" class="job-detail-btn icon-only" data-detail-target="exp-4" aria-haspopup="dialog" aria-controls="job-detail-modal" data-i18n-aria="experience.detail" aria-label="Lihat detail" title="Lihat detail"></button>
+                </div>
+                <div class="job-detail-content" id="exp-4" hidden>
+                    <ul>
+                        <li data-i18n="exp.4.li1">Membuat rencana bisnis &amp; menyiapkan kebutuhan perusahaan (HKI, cetak biru).</li>
+                        <li data-i18n="exp.4.li2">Bekerja sama dengan maklon skincare untuk pengembangan produk.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="job">
+            <div class="job" data-detail-id="exp-5">
                 <h3 data-i18n="exp.5.title">Marketing | Unggul Generasi Propertindo – Developer Properti</h3>
-                <span data-i18n="exp.5.period">Juli 2021 – Juni 2022</span>
-                <ul>
-                    <li data-i18n="exp.5.li1">Mengelola kampanye iklan Facebook & Instagram.</li>
-                    <li data-i18n="exp.5.li2">Menganalisis performa iklan berbayar.</li>
-                    <li data-i18n="exp.5.li3">Melatih karyawan baru di bidang pemasaran digital.</li>
-                </ul>
+                <div class="job-meta">
+                    <span class="job-period" data-i18n="exp.5.period">Juli 2021 – Juni 2022</span>
+                    <button type="button" class="job-detail-btn icon-only" data-detail-target="exp-5" aria-haspopup="dialog" aria-controls="job-detail-modal" data-i18n-aria="experience.detail" aria-label="Lihat detail" title="Lihat detail"></button>
+                </div>
+                <div class="job-detail-content" id="exp-5" hidden>
+                    <ul>
+                        <li data-i18n="exp.5.li1">Mengelola kampanye iklan Facebook &amp; Instagram.</li>
+                        <li data-i18n="exp.5.li2">Menganalisis performa iklan berbayar.</li>
+                        <li data-i18n="exp.5.li3">Melatih karyawan baru di bidang pemasaran digital.</li>
+                    </ul>
+                </div>
+            </div>
             </div>
         </div>
     </section>
@@ -498,6 +565,22 @@
     <div class="footer-bottom">
         Muhammad Hanif Al Azis Portfolio © 2025 | 
         <a href="/privacy.html" style="color: var(--primary-color); text-decoration: none; margin-left: 0.5rem;" data-i18n="cookie.privacy">Kebijakan Privasi</a>
+    </div>
+
+    <!-- Experience detail modal -->
+    <div class="job-modal" id="job-detail-modal" aria-hidden="true">
+        <div class="job-modal__overlay" data-modal-close></div>
+        <div class="job-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="job-modal-title">
+            <button type="button" class="job-modal__close" data-modal-close aria-label="Close dialog">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only" data-i18n="modal.close">Tutup</span>
+            </button>
+            <div class="job-modal__header">
+                <h3 class="job-modal__title" id="job-modal-title"></h3>
+                <span class="job-modal__period"></span>
+            </div>
+            <div class="job-modal__body"></div>
+        </div>
     </div>
 
     <!-- Animated theme transition overlay with sun/moon/stars visual elements -->
