@@ -80,7 +80,7 @@ class ProjectManager {
                 id: 1,
                 title: "Aplikasi Akuntansi berbasis Google Spreadsheet",
                 description: "Aplikasi akuntansi lengkap dengan fitur jurnal kas, penjualan, pembelian, laporan aset, inventory, laba rugi, dan neraca menggunakan Google Spreadsheet.",
-                image: "/assets/images/projects/accounting-app.png",
+                image: "/assets/images/projects/accounting-app.webp",
                 tech_stack: ["Google Spreadsheet", "INDEX MATCH", "SUMIFS", "QUERY", "UNIQUE", "FILTER", "CHOOSECOLUMN"],
                 link: "https://docs.google.com/spreadsheets/d/19gcBJWEpWHnxFLaINBM3fFnQVFF4HSfbXfmzvMIjUEw/edit?usp=sharing",
                 category: "Data Analysis",
@@ -92,7 +92,7 @@ class ProjectManager {
                 id: 2,
                 title: "Analisis Data Python – Amazon Best Sellers (Valentine 2024)",
                 description: "Analisis tren produk terlaris Amazon untuk Valentine 2024 menggunakan Python dengan visualisasi data yang komprehensif menggunakan Pandas dan Matplotlib.",
-                image: "/assets/images/projects/amazon-analysis.png",
+                image: "/assets/images/projects/amazon-analysis.webp",
                 tech_stack: ["Python", "Pandas", "Matplotlib", "Seaborn", "Jupyter Notebook"],
                 link: "https://github.com/hanifalazis/Amazon-Valentine-Dashboard-2024",
                 category: "Data Analysis", 
@@ -104,7 +104,7 @@ class ProjectManager {
                 id: 5,
                 title: "Dashboard Analisis Tingkat Pengangguran di Indonesia",
                 description: "Dashboard interaktif untuk analisis Tingkat Pengangguran Terbuka (TPT) di Indonesia, menampilkan tren waktu, perbandingan wilayah, dan demografi.",
-                image: "/assets/images/projects/Analisis-TPT-Indonesia.jpg",
+                image: "/assets/images/projects/Analisis-TPT-Indonesia.webp",
                 tech_stack: ["Google Looker Studio"],
                 link: "https://lookerstudio.google.com/s/g8O4PwuMQlw",
                 category: "Dashboard",
@@ -116,7 +116,7 @@ class ProjectManager {
                 id: 3,
                 title: "Dashboard Consumer Complaints CFPB",
                 description: "Dashboard interaktif untuk visualisasi data keluhan konsumen CFPB menggunakan Decap CMS dan Google Looker Studio.",
-                image: "/assets/images/projects/dashboard-cfpb.jpg",
+                image: "/assets/images/projects/dashboard-cfpb.webp",
                 tech_stack: ["Google Looker Studio"],
                 link: "https://lookerstudio.google.com/s/nRGtBzuZ5eo",
                 category: "Dashboard",
@@ -128,7 +128,7 @@ class ProjectManager {
                 id: 4,
                 title: "Demographics and Member Distribution Dashboard",
                 description: "Dashboard interaktif untuk visualisasi demografi dan distribusi anggota menggunakan Google Looker Studio.",
-                image: "/assets/images/projects/dashboard-member.jpg",
+                image: "/assets/images/projects/dashboard-member.webp",
                 tech_stack: ["Google Looker Studio"],
                 link: "https://lookerstudio.google.com/s/nIGl8VBmpWs",
                 category: "Dashboard",
@@ -396,6 +396,40 @@ class ProjectManager {
                         this.startAutoSlide();
                     }
                 }, 1000);
+            }
+        });
+
+        // Tap-to-toggle only on touch/coarse pointers (mobile/tablet). Desktop uses hover only.
+        const isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        if (isCoarsePointer) {
+            carousel.addEventListener('click', (e) => {
+                // Ignore if drag happened, or clicking a link/button
+                if (isDragging) return;
+                if (e.target.closest('a, button')) return;
+                const card = e.target.closest('.carousel-card');
+                if (!card) return;
+
+                const wasActive = card.classList.contains('active');
+                // Close others
+                document.querySelectorAll('.carousel-card.active').forEach(c => c.classList.remove('active'));
+                if (!wasActive) {
+                    card.classList.add('active');
+                    this.handleUserInteraction(); // pause auto-slide while reading
+                } else {
+                    // resume auto-slide shortly after closing
+                    setTimeout(() => {
+                        this.isUserInteracting = false;
+                        this.startAutoSlide();
+                    }, 1500);
+                }
+            });
+        }
+
+        // If mouse leaves the page (desktop), revert to initial state (no active cards)
+        window.addEventListener('mouseout', (e) => {
+            // When leaving window, relatedTarget is null
+            if (!e.relatedTarget) {
+                document.querySelectorAll('.carousel-card.active').forEach(c => c.classList.remove('active'));
             }
         });
 
