@@ -104,6 +104,8 @@
   "portfolio.p4.d1": "Dashboard interaktif untuk visualisasi demografi dan distribusi anggota menggunakan Google Looker Studio.",
   "portfolio.p5.title": "Dashboard Analisis Tingkat Pengangguran di Indonesia",
   "portfolio.p5.d1": "Dashboard interaktif untuk analisis Tingkat Pengangguran Terbuka (TPT) di Indonesia, menampilkan tren waktu, perbandingan wilayah, dan demografi.",
+  "portfolio.p6.title": "Dashboard Penjualan Properti",
+  "portfolio.p6.d1": "Dashboard untuk memantau status akad, pemberkasan, booking dan unit yang masih open. Melihat siapa marketing yang paling berkontribusi dan persentase unit yang terjual.",
   "portfolio.viewPrefix": "Lihat",
   "carousel.goToSlidePrefix": "Ke slide",
   "carousel.prev": "Proyek sebelumnya",

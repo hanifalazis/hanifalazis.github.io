@@ -101,6 +101,18 @@ class ProjectManager {
                 i18n_key: "portfolio.p2"
             },
             {
+                id: 6,
+                title: "Dashboard Penjualan Properti",
+                description: "Dashboard ini untuk memantau status akad, pemberkasan, booking dan unit yang masih open. Melihat siapa marketing yang paling berkontribusi dan persentase unit yang terjual.",
+                image: "/assets/images/projects/Dashboard_Penjualan_Properti.webp",
+                tech_stack: ["Google Looker Studio"],
+                link: "#",
+                category: "Dashboard",
+                date: "2024-10-15",
+                featured: true,
+                i18n_key: "portfolio.p6"
+            },
+            {
                 id: 5,
                 title: "Dashboard Analisis Tingkat Pengangguran di Indonesia",
                 description: "Dashboard interaktif untuk analisis Tingkat Pengangguran Terbuka (TPT) di Indonesia, menampilkan tren waktu, perbandingan wilayah, dan demografi.",
