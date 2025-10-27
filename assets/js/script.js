@@ -1183,3 +1183,40 @@ AOS.init({
   // Make dialog focusable
   if (dlg && !dlg.hasAttribute('tabindex')) dlg.setAttribute('tabindex', '-1');
 })();
+
+// Force CV download (bypass in-browser PDF preview)
+(function forceCvDownload(){
+  const link = document.getElementById('download-cv');
+  if (!link) return;
+  const url = link.getAttribute('href');
+  const filename = link.getAttribute('download') || 'CV.pdf';
+
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      }, 0);
+    } catch (err) {
+      // Fallback: rely on native download attribute
+      const a = document.createElement('a');
+      a.href = url;
+      a.setAttribute('download', filename);
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  });
+})();

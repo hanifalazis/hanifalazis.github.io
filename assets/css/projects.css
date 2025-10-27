@@ -148,7 +148,9 @@ html[data-theme='dark'] .filter-btn.active {
 .card-image {
     position: relative;
     width: 100%;
-    height: 300px;
+    /* Responsive aspect ratio to avoid "gepeng" look on tablet */
+    height: auto;
+    aspect-ratio: 16 / 9; /* default desktop */
     overflow: hidden;
     background: rgba(255, 255, 255, 0.05);
     display: flex;
@@ -195,6 +197,16 @@ html[data-theme='dark'] .filter-btn.active {
 /* Subtle image highlight on hover */
 .carousel-card:hover .card-image img {
     transform: scale(1.03);
+}
+
+/* Make image taller on tablet for better balance */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .card-image { aspect-ratio: 3 / 2; }
+}
+
+/* Slightly taller on mobile for readability */
+@media (max-width: 640px) {
+    .card-image { aspect-ratio: 4 / 3; }
 }
 
 /* Overlay is visible by default for title-on-image design */
