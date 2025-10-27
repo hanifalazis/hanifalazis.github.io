@@ -1713,6 +1713,96 @@ html[data-theme='dark'] .home { background: transparent; }
 
 html[data-theme='dark'] #about { background: transparent; }
 
+#about .about-layout {
+    margin-top: 2.4rem;
+    display: flex;
+    gap: clamp(3.2rem, 3vw + 1.6rem, 5.6rem);
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#about .about-badge {
+    flex: 0 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#about .about-badge a {
+    display: block;
+    line-height: 0;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+#about .about-badge a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+    width: 40%;
+    transform: translateX(-120%) skewX(-15deg);
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#about .about-badge a:hover::before {
+    transform: translateX(320%) skewX(-15deg);
+    opacity: 1;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+#about .about-badge img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    transition: filter 0.3s ease;
+}
+
+/* #about .about-badge:hover img {
+    filter: drop-shadow(0 8px 16px rgba(42, 93, 168, 0.4));
+} */
+
+#about .about-text {
+    flex: 1 1 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    max-width: 720px;
+}
+
+#about .about-text p {
+    line-height: 1.8;
+    font-size: clamp(1.6rem, 1.5rem + 0.3vw, 1.8rem);
+}
+
+@media (max-width: 900px) {
+    #about .about-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 3.2rem;
+    }
+
+    #about .about-text {
+        text-align: center;
+    }
+
+    #about .about-badge {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #about .about-badge {
+        padding: 1.6rem;
+    }
+}
+
 html[data-theme='dark'] #experience { background: transparent; }
 
 html[data-theme='dark'] #portfolio { background: transparent; }
