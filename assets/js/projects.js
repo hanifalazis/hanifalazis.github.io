@@ -106,7 +106,7 @@ class ProjectManager {
                 description: "Dashboard ini untuk memantau status akad, pemberkasan, booking dan unit yang masih open. Melihat siapa marketing yang paling berkontribusi dan persentase unit yang terjual.",
                 image: "/assets/images/projects/Dashboard_Penjualan_Properti.webp",
                 tech_stack: ["Google Looker Studio"],
-                link: "#",
+                link: "https://lookerstudio.google.com/s/vbuT0_BB6l0",
                 category: "Dashboard",
                 date: "2024-10-15",
                 featured: true,
