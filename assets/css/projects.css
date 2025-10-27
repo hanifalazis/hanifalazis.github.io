@@ -162,8 +162,8 @@ html[data-theme='dark'] .filter-btn.active {
 .card-image img {
     width: 100%;
     height: 100%;
-    /* Keep image crisp and highlighted without distortion */
-    object-fit: cover;
+    /* Show the whole image (no crop). OK to stretch to fill the frame */
+    object-fit: fill;
     transition: transform 0.4s ease;
     cursor: pointer;
 }
