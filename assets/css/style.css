@@ -1733,27 +1733,33 @@ html[data-theme='dark'] #about { background: transparent; }
 #about .about-badge a {
     display: block;
     line-height: 0;
-    border-radius: 0;
-    overflow: hidden;
     position: relative;
+    -webkit-mask-image: url('../images/microsoft-office-specialist-excel-expert-microsoft-365-apps.png');
+    mask-image: url('../images/microsoft-office-specialist-excel-expert-microsoft-365-apps.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 #about .about-badge a::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
-    width: 40%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 100%);
+    width: 50%;
     transform: translateX(-120%) skewX(-15deg);
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
-    opacity: 0;
+    opacity: 1;
+    mix-blend-mode: screen;
+    z-index: 1;
 }
 
 #about .about-badge a:hover::before {
     transform: translateX(320%) skewX(-15deg);
-    opacity: 1;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
 #about .about-badge img {
