@@ -157,8 +157,8 @@
             (function() {
                 try {
                     const stored = localStorage.getItem('theme');
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    const useDark = stored ? stored === 'dark' : prefersDark;
+                    // Default to light theme instead of system preference
+                    const useDark = stored ? stored === 'dark' : false;
                     const html = document.documentElement;
                     if (useDark) {
                         html.classList.add('dark');
